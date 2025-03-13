@@ -191,7 +191,6 @@ DEFINE_ACTION_FUNCTION ~INSTALL_TILESETS~
 	RET file_list
 		wed_list
 BEGIN
-	PRINT ~install_tileset format: %format%~
 	ACTION_IF (VARIABLE_IS_SET $EVAL ~remapped_tis~(~%are%~) OR FILE_EXISTS_IN_GAME ~%are%.are~) BEGIN
 		ACTION_IF (~%purple%~ STR_EQ ~BG1~) BEGIN
 			OUTER_TEXT_SPRINT are2 $EVAL ~remapped_tis~(~%are%~)
@@ -542,7 +541,6 @@ BEGIN
 			
 			// Converting texture to Android
 			ACTION_IF (~%format%~ STR_EQ ~ETC2_RGBA~) BEGIN
-				PRINT ~%format%~
 				LAF a7_convert_pvrz 
 					INT_VAR square = 0 override_only = 0 
 					STR_VAR format = EVAL ~%format%~ input_folder = EVAL ~%biffdir%~ output_folder = EVAL ~%biffdir%~ 
@@ -590,7 +588,7 @@ BEGIN
 		ACTION_PHP_EACH bg1_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~BG1~ format = ~~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~BG1~ format = EVAL ~%format%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END 
 		END
 	END
@@ -613,7 +611,7 @@ BEGIN
 		ACTION_PHP_EACH sod_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~SOD~ format = ~~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~SOD~ format = EVAL ~%format%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END
 		END
 	END
@@ -624,7 +622,7 @@ BEGIN
 		ACTION_PHP_EACH bgee_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~BG1EE~ format = ~~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~BG1EE~ format = EVAL ~%format%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END
 		END
 	END
@@ -635,7 +633,7 @@ BEGIN
 		ACTION_PHP_EACH bg2ee_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~BG2EE~ format = ~~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~BG2EE~ format = EVAL ~%format%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END
 		END
 	END
