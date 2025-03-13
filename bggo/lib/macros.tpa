@@ -185,12 +185,13 @@ DEFINE_ACTION_FUNCTION ~INSTALL_TILESETS~
 		debug = 0
 	STR_VAR
 		purple = ~~
+		format = ~~
 		file_list = EVAL ~%file_list%~ 
 		wed_list = EVAL  ~%wed_list%~
 	RET file_list
 		wed_list
 BEGIN
-	
+	PRINT ~install_tileset format: %format%~
 	ACTION_IF (VARIABLE_IS_SET $EVAL ~remapped_tis~(~%are%~) OR FILE_EXISTS_IN_GAME ~%are%.are~) BEGIN
 		ACTION_IF (~%purple%~ STR_EQ ~BG1~) BEGIN
 			OUTER_TEXT_SPRINT are2 $EVAL ~remapped_tis~(~%are%~)
@@ -238,9 +239,29 @@ BEGIN
 				END
 				PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/base/are_patch/%are%_are.tpa~ BEGIN // add animation for braziers, candles ...
 					PATCH_INCLUDE ~%MOD_FOLDER%/base/are_patch/%are%_are.tpa~
-				END
-			END
+				END				
+			END	
 			BUT_ONLY
+			
+			// Get files from compressed biffs
+			//code by Argent77 https://github.com/Argent77/A7-BiffedAreasFix
+			LAF a7#get_are_resources
+				INT_VAR
+					compressed_only = 1
+					bmp = 1
+					mos = 1
+					tis = 1
+					wav = 1
+					wed = 1
+				STR_VAR
+					are_regexp = EVAL "^%are2%\.are$"
+				RET_ARRAY
+					resources
+				END
+			ACTION_PHP_EACH resources AS resource => ref_count BEGIN
+				COPY_EXISTING ~%resource%~ ~override~ IF_EXISTS
+			END
+			ACTION_CLEAR_ARRAY resources
 			
 			// biff only areas with tis and pvrz files
 			OUTER_SET area_biff = 0
@@ -302,7 +323,7 @@ BEGIN
 			
 			// day mos file
 			
-			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/mbcD/%ee%/%are%/%are%.mbc~ BEGIN
+			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/mbcD/%ee%/%are%/%are%.mos~ BEGIN
 				COPY ~%MOD_FOLDER%/base/mbcD/%ee%/%are%/%are%.mos~ ~%biffdir%/%are2%.mos~
 					LPM ~DEBUG~
 				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.mos~ END
@@ -402,7 +423,7 @@ BEGIN
 			END
 			
 			// night mos
-			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/mbcN/%ee%/%are%N/%are%N.mbc~ BEGIN						
+			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/mbcN/%ee%/%are%N/%are%N.mos~ BEGIN						
 				COPY ~%MOD_FOLDER%/base/mbcN/%ee%/%are%N/%are%N.mos~ ~%biffdir%/%are2%N.mos~
 					LPM ~DEBUG~
 				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.mos~ END
@@ -519,6 +540,15 @@ BEGIN
 			
 			OUTER_SET night = 0
 			
+			// Converting texture to Android
+			ACTION_IF (~%format%~ STR_EQ ~ETC2_RGBA~) BEGIN
+				PRINT ~%format%~
+				LAF a7_convert_pvrz 
+					INT_VAR square = 0 override_only = 0 
+					STR_VAR format = EVAL ~%format%~ input_folder = EVAL ~%biffdir%~ output_folder = EVAL ~%biffdir%~ 
+				END
+			END
+			
 			// biffing
 			ACTION_IF (area_biff = 1) BEGIN
 				MAKE_BIFF ~go%are2%~ BEGIN ~%biffdir%~ ~^.*$~ END
@@ -535,6 +565,7 @@ END
 				
 DEFINE_ACTION_FUNCTION ~INSTALL_MAIN~
 	INT_VAR debug = 0
+	STR_VAR format = ~~
 BEGIN
 	MKDIR ~%MOD_FOLDER%/bif~	
 	MKDIR ~%MOD_FOLDER%/bif/goMAIN~
@@ -559,7 +590,7 @@ BEGIN
 		ACTION_PHP_EACH bg1_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~BG1~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~BG1~ format = ~~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END 
 		END
 	END
@@ -567,10 +598,11 @@ BEGIN
 	// BG2+TOB Areas
 	ACTION_IF GAME_IS ~eet bgt bg2ee tob~ BEGIN
 		PRINT ~BG2 + ToB Areas~
+		PRINT ~install_main format: %format%~
 		ACTION_PHP_EACH bg2_tob_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~TOB~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~TOB~ format = EVAL ~%format%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END 
 		END
 	END
@@ -581,7 +613,7 @@ BEGIN
 		ACTION_PHP_EACH sod_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~SOD~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~SOD~ format = ~~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END
 		END
 	END
@@ -592,7 +624,7 @@ BEGIN
 		ACTION_PHP_EACH bgee_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~BG1EE~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~BG1EE~ format = ~~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END
 		END
 	END
@@ -603,7 +635,7 @@ BEGIN
 		ACTION_PHP_EACH bg2ee_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~BG2EE~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~BG2EE~ format = ~~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END
 		END
 	END

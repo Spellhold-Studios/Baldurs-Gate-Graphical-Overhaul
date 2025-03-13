@@ -1,0 +1,130 @@
+/**
+ * This function scans ARE resources of the game to find referenced game files.
+ *
+ * INT_VAR compressed_only  Whether only resources in compressed BIFF archives should be returned. Default: 1
+ * INT_VAR bmp              Whether to consider BMP resources in the scan. Default: 0
+ * INT_VAR mos              Whether to consider MOS resources in the scan. Default: 0
+ * INT_VAR tis              Whether to consider TIS resources in the scan. Default: 0
+ * INT_VAR wav              Whether to consider WAV resources in the scan. Default: 0
+ * INT_VAR wed              Whether to consider WED resources in the scan. Default: 0
+ * STR_VAR are_regexp       File name pattern as regular expression to filter ARE resources.
+ *                          The pattern should always end with "\.are$" to match ARE resources.
+ *                          Default: "^.+\.are$"
+ * RET_ARRAY resources      Associative array with the referenced game resources.
+ *                          (key: resource name, value: reference count)
+ */
+DEFINE_ACTION_FUNCTION a7#get_are_resources
+INT_VAR
+  compressed_only = 1
+  bmp = 0
+  mos = 0
+  tis = 0
+  wav = 0
+  wed = 0
+STR_VAR
+  are_regexp = "^.+\.are$"
+RET_ARRAY
+  resources
+BEGIN
+  ACTION_IF (~%are_regexp%~ STR_EQ ~~) BEGIN
+    OUTER_SPRINT are_regexp ~^.+\.are$~
+  END
+
+  COPY_EXISTING_REGEXP ~%are_regexp%~ ~override~
+    READ_ASCII 0x00 sig (8)
+    PATCH_IF (~%sig%~ STR_EQ ~AREAV1.0~) BEGIN
+      // bmp
+      PATCH_IF (bmp) BEGIN
+        PATCH_FOR_EACH suffix IN ~HT~ ~LM~ ~LN~ ~SR~ BEGIN
+          LPF a7#add_if_compressed INT_VAR compressed_only STR_VAR resref = EVAL ~%SOURCE_RES%%suffix%~ ext = ~BMP~ RET_ARRAY resources END
+        END
+      END
+
+      // mos
+      PATCH_IF (mos) BEGIN
+        PATCH_FOR_EACH suffix IN ~~ ~N~ BEGIN
+          LPF a7#add_if_compressed INT_VAR compressed_only STR_VAR resref = EVAL ~%SOURCE_RES%%suffix%~ ext = ~MOS~ RET_ARRAY resources END
+        END
+      END
+
+      PATCH_IF (wed || tis) BEGIN
+        READ_ASCII 0x08 resref (8) NULL
+        // wed
+        PATCH_IF (wed) BEGIN
+          LPF a7#add_if_compressed INT_VAR compressed_only STR_VAR resref ext = ~WED~ RET_ARRAY resources END
+        END
+
+        // tis
+        PATCH_IF (tis) BEGIN
+          INNER_ACTION BEGIN
+            COPY_EXISTING ~%resref%.WED~ ~override~
+              READ_ASCII 0x00 sig (8)
+              PATCH_IF (~%sig%~ STR_EQ ~WED V1.3~) BEGIN
+                READ_LONG 0x08 num_ovl
+                READ_LONG 0x10 ofs_ovl
+                FOR (i = 0; i < num_ovl; ++i) BEGIN
+                  SET cur_ofs = ofs_ovl + i * 0x18
+                  READ_ASCII (cur_ofs + 0x04) resref (8) NULL
+                  LPF a7#add_if_compressed INT_VAR compressed_only STR_VAR resref ext = ~TIS~ RET_ARRAY resources END
+                END
+              END
+            BUT_ONLY IF_EXISTS
+          END
+        END
+      END
+
+      // ambient sounds (wav)
+      PATCH_IF (wav) BEGIN
+        READ_SHORT 0x82 num_ambients
+        READ_LONG 0x84 ofs_ambients
+        FOR (i = 0; i < num_ambients; ++i) BEGIN
+          SET cur_ofs = ofs_ambients + i * 0xd4
+          READ_SHORT (cur_ofs + 0x80) num_sounds
+          SET num_sounds = (num_sounds > 10) ? 10 : num_sounds
+          FOR (j = 0; j < num_sounds; ++j) BEGIN
+            READ_ASCII (cur_ofs + 0x30 + j * 8) resref (8) NULL
+            LPF a7#add_if_compressed INT_VAR compressed_only STR_VAR resref ext = ~WAV~ RET_ARRAY resources END
+          END
+        END
+      END
+
+    END ELSE BEGIN
+      PATCH_WARN ~WARNING: a7#get_are_resources: Not an area file: %SOURCE_FILE%~
+    END
+  BUT_ONLY IF_EXISTS
+END
+
+
+/**
+ *Adds the specified resource to the "resources" array if it's located in a compressed BIFF archive.
+ *
+ * INT_VAR compressed_only  Whether only resources in compressed BIFF archives should be returned. Default: 1
+ * STR_VAR resref           Resref of the resource.
+ * STR_VAR ext              File extension of the resource.
+ * RET_ARRAY resources      Array entry with the resource if all conditions are met.
+ */
+DEFINE_PATCH_FUNCTION a7#add_if_compressed
+INT_VAR
+  compressed_only = 1
+STR_VAR
+  resref = ~~
+  ext = ~~
+RET_ARRAY
+  resources
+BEGIN
+  SPRINT resource ~%resref%.%ext%~
+
+  SET condition = NOT (~%resref%~ STR_EQ ~~ || ~%ext%~ STR_EQ ~~)
+  PATCH_IF (condition && compressed_only) BEGIN
+    SET condition = NOT FILE_EXISTS ~override/%resource%~ && FILE_IS_IN_COMPRESSED_BIFF ~%resource%~
+  END
+
+  PATCH_IF (condition) BEGIN
+    TO_UPPER ~resource~
+    PATCH_IF (VARIABLE_IS_SET $resources(~%resource%~)) BEGIN
+      SET $resources(~%resource%~) = $resources(~%resource%~) + 1
+    END ELSE BEGIN
+      SET $resources(~%resource%~) = 1
+    END
+  END
+END

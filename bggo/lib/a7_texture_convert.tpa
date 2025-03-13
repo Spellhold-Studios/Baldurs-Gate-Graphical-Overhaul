@@ -1,0 +1,119 @@
+DEFINE_ACTION_FUNCTION a7_convert_pvrz
+  INT_VAR
+    square = 0
+    override_only = 0
+    // exclude_format_0 = 0    // Skip texture matching specified PVR pixel format code
+    // exclude_format_1 = 1
+    // ...
+  STR_VAR
+    format = ~~
+	input_folder = ~~
+	output_folder = ~override~
+  BEGIN
+    ACTION_IF (NOT ~%format%~ STR_EQ ~~) BEGIN
+      OUTER_TEXT_SPRINT folder_base ~%MOD_FOLDER%/temp~
+      OUTER_TEXT_SPRINT folder_input ~%folder_base%/in~
+      OUTER_TEXT_SPRINT folder_output ~%folder_base%/out~
+      MKDIR ~%folder_input%~
+      MKDIR ~%folder_output%~
+
+      LAF GET_TOOL_BINARY
+      STR_VAR
+        tool_name = ~PVRTexToolCLI~
+      RET
+        tool_binary
+      END
+
+      OUTER_TEXT_SPRINT param_square ~-potcanvas +~
+      ACTION_IF (square) BEGIN
+        OUTER_TEXT_SPRINT param_square ~%param_square% -squarecanvas +~
+      END
+
+      OUTER_SET index = 0
+	  // Abfrage => ist pvrz folder angegeben, dann bitte die Quelle wählen sonst alter Code
+	  
+	  PRINT ~%input_folder% %output_folder%~
+	  ACTION_IF ~%input_folder%~ STR_CMP ~~ BEGIN
+	    ACTION_BASH_FOR ~%input_folder%~ ~^.+\.pvrz$~ BEGIN
+		  OUTER_TEXT_SPRINT $input_files(~%index%~) ~%BASH_FOR_RES%~
+		  OUTER_SET index += 1
+//		  ACTION_DEFINE_ARRAY input_files BEGIN "x" => "%BASH_FOR_RES%" END
+		END
+//	    GET_FILE_ARRAY input_files ~%input_folder%~ ~^.+\.pvrz$~
+//		ACTION_PHP_EACH input_files AS _ => fileRES BEGIN ~%BASH_FOR_RES%~
+//	      PRINT ~%fileRES%~
+//	    END
+//        ACTION_BASH_FOR ~%input_folder%~ ~^.+\.pvrz$~ BEGIN
+//		  OUTER_TEXT_SPRINT EVAL ~input_files_%input_files%~ ~%BASH_FOR_RES%~
+//		  OUTER_SET input_files += 1
+//		END
+      END ELSE BEGIN	  
+        COPY_EXISTING_REGEXP - ~.+\.pvrz~ ~override~
+          PATCH_IF (NOT override_only || FILE_EXISTS ~override/%SOURCE_FILE%~) BEGIN
+		    TEXT_SPRINT $input_files(~%index%~) ~%SOURCE_RES%~
+//            TEXT_SPRINT EVAL ~input_files_%input_files%~ ~%SOURCE_RES%~
+            SET index += 1
+          END
+        BUT_ONLY
+	  END
+
+//      OUTER_FOR (idx = 0; idx < input_files; ++idx) BEGIN
+//        OUTER_TEXT_SPRINT fileRes EVAL ~%input_files_%idx%%~
+      ACTION_PHP_EACH input_files AS _ => fileRes BEGIN
+        PRINT ~Converting %fileRes%.PVRZ...~
+		// Abfrage wie oben
+		ACTION_IF ~%input_folder%~ STR_CMP ~~ BEGIN
+		  COPY + ~%input_folder%/%fileRes%.PVRZ~ ~%folder_input%/%fileRes%.PVR~
+			READ_LONG 0 unc_size
+            DECOMPRESS_REPLACE_FILE 4 (BUFFER_LENGTH - 4) unc_size
+            READ_LONG 0x08 pixel_format
+		END ELSE BEGIN
+          COPY_EXISTING + ~%fileRes%.PVRZ~ ~%folder_input%/%fileRes%.PVR~
+            READ_LONG 0 unc_size
+            DECOMPRESS_REPLACE_FILE 4 (BUFFER_LENGTH - 4) unc_size
+            READ_LONG 0x08 pixel_format
+          BUT_ONLY
+		END
+
+        // skip if texture format matches
+        OUTER_SET match = 0
+        OUTER_FOR (idx2 = 0; NOT match && VARIABLE_IS_SET EVAL "exclude_format_%idx2%"; ++idx2) BEGIN
+          OUTER_SET fmt = EVAL ~exclude_format_%idx2%~
+          ACTION_IF (fmt = pixel_format) BEGIN
+            OUTER_SET match = 1
+          END
+        END
+
+        ACTION_IF (NOT match) BEGIN
+          LAF EXECUTE_TOOL
+          INT_VAR
+            exec_type = 0
+          STR_VAR
+            tool_binary = EVAL ~%tool_binary%~
+            arg_0 = EVAL ~-i "%folder_input%/%fileRes%.PVR"~
+            arg_1 = EVAL ~-o "%folder_output%/%fileRes%.PVR"~
+            arg_2 = EVAL ~-f %format%,UBN,lRGB~
+            arg_3 = EVAL ~%param_square%~
+          END
+          DELETE + ~%folder_input%/%fileRes%.PVR~
+		  // Hier auch das pvrz folder auswählen
+          COPY ~%folder_output%/%fileRes%.PVR~ ~%output_folder%/%fileRes%.PVRZ~
+            READ_LONG 0x30 sizeMeta
+            PATCH_IF (sizeMeta) BEGIN
+              DELETE_BYTES 0x34 sizeMeta
+              WRITE_LONG 0x30 0
+            END
+            SET len = BUFFER_LENGTH
+            COMPRESS_REPLACE_FILE 0 len 6
+            INSERT_BYTES 0 4
+            WRITE_LONG 0 len
+          BUT_ONLY
+          DELETE + ~%folder_output%/%fileRes%.PVR~
+        END ELSE BEGIN
+          DELETE + ~%folder_input%/%fileRes%.PVR~
+        END
+      END
+
+      DELETE + ~%folder_base%~
+    END
+  END
