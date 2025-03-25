@@ -15,7 +15,6 @@ ALWAYS
 	INCLUDE ~%MOD_FOLDER%/lib/debug.tpa~
 	INCLUDE ~%MOD_FOLDER%/lib/a7_pvrz_tis.tpa~
 	INCLUDE ~%MOD_FOLDER%/lib/a7_area_references.tpa~
-	INCLUDE ~%MOD_FOLDER%/lib/a7_texture_convert.tpa~
 
 	ACTION_IF GAME_IS ~eet bgee bg2ee~ BEGIN
 		OUTER_SPRINT ee ~ee~
@@ -156,22 +155,25 @@ END
 
 
 /////////////////////////////
-BEGIN ~Windows~
+BEGIN ~Baldurs Gate Graphical Overhaul for Windows~
 DESIGNATED 0 LABEL ~baldurs_gate_graphical_overhaul~
 REQUIRE_PREDICATE GAME_IS ~eet bgt tutu_totsc bgee bg2ee tob ~ ~This mod is currently for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 SUBCOMPONENT ~BGGO for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 
 LAF ~INSTALL_MAIN~ 
-	INT_VAR debug = 0  // list of all new used files
+	INT_VAR debug = 0 // list of all new used files
+	STR_VAR source_files = ~%MOD_FOLDER%/base~ 
 END
 
-BEGIN ~Android~
-DESIGNATED 1 LABEL ~baldurs_gate_graphical_overhaul~
+BEGIN ~Baldurs Gate Graphical Overhaul for Android~
+DESIGNATED 1 LABEL ~baldurs_gate_graphical_overhaul_android~
 REQUIRE_PREDICATE GAME_IS ~eet bgt tutu_totsc bgee bg2ee tob ~ ~This mod is currently for EET, BGT, BGEE, BG2EE, ToB and Tutu~
+REQUIRE_PREDICATE DIRECTORY_EXISTS ~BGGO-Android~ ~Please download the Android pack: ...~
 SUBCOMPONENT ~BGGO for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 
 LAF ~INSTALL_MAIN~ 
-	INT_VAR debug = 0 STR_VAR format = ~ETC2_RGBA~ // list of all new used files
+	INT_VAR debug = 0 // list of all new used files
+	STR_VAR source_files = ~BGGO-Android/base~ 
 END
 
 
