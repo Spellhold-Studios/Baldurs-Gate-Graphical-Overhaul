@@ -162,7 +162,7 @@ SUBCOMPONENT ~BGGO for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 
 LAF ~INSTALL_MAIN~ 
 	INT_VAR debug = 0 // list of all new used files
-	STR_VAR source_files = ~%MOD_FOLDER%/base~ 
+	STR_VAR source_files = EVAL ~%MOD_FOLDER%/base~ 
 END
 
 BEGIN ~Baldurs Gate Graphical Overhaul for Android~
