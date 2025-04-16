@@ -197,12 +197,12 @@ DEFINE_ACTION_FUNCTION ~INSTALL_TILESETS~
 		debug = 0
 	STR_VAR
 		purple = ~~
+		source_files = ~%MOD_FOLDER%/base~
 		file_list = EVAL ~%file_list%~ 
 		wed_list = EVAL  ~%wed_list%~
 	RET file_list
 		wed_list
 BEGIN
-	
 	ACTION_IF (VARIABLE_IS_SET $EVAL ~remapped_tis~(~%are%~) OR FILE_EXISTS_IN_GAME ~%are%.are~) BEGIN
 		ACTION_IF (~%purple%~ STR_EQ ~BG1~) BEGIN
 			OUTER_TEXT_SPRINT are2 $EVAL ~remapped_tis~(~%are%~)
@@ -276,10 +276,10 @@ BEGIN
 			
 			// biff only areas with tis and pvrz files
 			OUTER_SET area_biff = 0
-			ACTION_IF  (FILE_EXISTS ~%MOD_FOLDER%/base/tbcD/%are%/%ee%/%are%.tbc~ 
-						OR FILE_EXISTS ~%MOD_FOLDER%/base/tbcD/%are%/%ee%/%are%.tis~ 
-						OR FILE_EXISTS ~%MOD_FOLDER%/base/tbcN/%are%/%ee%/%are%N.tbc~ 
-						OR FILE_EXISTS ~%MOD_FOLDER%/base/tbcN/%are%/%ee%/%are%N.tis~) BEGIN
+			ACTION_IF  (FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tbc~ 
+						OR FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tis~ 
+						OR FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tbc~ 
+						OR FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tis~) BEGIN
 				MKDIR ~%MOD_FOLDER%/bif/%are2%~
 				OUTER_SPRINT biffdir ~%MOD_FOLDER%/bif/%are2%~
 				OUTER_SET area_biff = 1
@@ -298,29 +298,29 @@ BEGIN
 			
 			// day tis v1 or tis v2 file 
 			
-			ACTION_IF (FILE_EXISTS ~%MOD_FOLDER%/base/tbcD/%are%/%ee%/%are%.tbc~ OR FILE_EXISTS ~%MOD_FOLDER%/base/tbcD/%are%/%ee%/%are%.tis~) BEGIN
+			ACTION_IF (FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tbc~ OR FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tis~) BEGIN
 				ACTION_IF GAME_IS ~bgt tutu_totsc tob~ BEGIN
-					ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/tbcD/%are%/%ee%/%are%.tbc~ BEGIN
+					ACTION_IF FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tbc~ BEGIN
 						LAF HANDLE_TILECONV
 							STR_VAR
-								input_path    = EVAL ~%MOD_FOLDER%/base/tbcD/%are%/%ee%~
+								input_path    = EVAL ~%source_files%/tbcD/%are%/%ee%~
 								output_path	  = EVAL ~%temp%~
 						END
 						COPY_LARGE ~%temp%/%are%.tis~ ~%biffdir%/%are2%.tis~
 						OUTER_PATCH ~~ BEGIN LPM ~DEBUG~ END
 						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.tis~ END
 					END
-					ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/tbcD/%are%/%ee%/%are%.tis~ BEGIN	// some areas have artefacts during compression, no tbc file
-						COPY_LARGE ~%MOD_FOLDER%/base/tbcD/%are%/%ee%/%are%.tis~ ~%biffdir%/%are2%.tis~
+					ACTION_IF FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tis~ BEGIN	// some areas have artefacts during compression, no tbc file
+						COPY_LARGE ~%source_files%/tbcD/%are%/%ee%/%are%.tis~ ~%biffdir%/%are2%.tis~
 						OUTER_PATCH ~~ BEGIN LPM ~DEBUG~ END
 						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.tis~ END
 					END
 				END
 				ACTION_IF GAME_IS ~eet bgee bg2ee~ BEGIN
-					ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/tbcD/%are%/%ee%/%are%.tis~ BEGIN
+					ACTION_IF FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tis~ BEGIN
 						LAF COPY_TIS_PVRZ_BGGO
 							STR_VAR
-								tis_path_original   = EVAL "%MOD_FOLDER%/base/tbcD/%are%/%ee%"
+								tis_path_original   = EVAL "%source_files%/tbcD/%are%/%ee%"
 								tis_name_original   = EVAL "%are%"
 								tis_name_target     = EVAL "%are2%"
 								tis_path_target     = EVAL "%biffdir%"
@@ -399,29 +399,29 @@ BEGIN
 			
 			// night tis v1 or tis v2
 			
-			ACTION_IF (FILE_EXISTS ~%MOD_FOLDER%/base/tbcN/%are%/%ee%/%are%N.tbc~ OR FILE_EXISTS ~%MOD_FOLDER%/base/tbcN/%are%/%ee%/%are%N.tis~) BEGIN
+			ACTION_IF (FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tbc~ OR FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tis~) BEGIN
 				ACTION_IF GAME_IS ~bgt tutu_totsc tob~ BEGIN
-					ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/tbcN/%are%/%ee%/%are%N.tbc~ BEGIN
+					ACTION_IF FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tbc~ BEGIN
 						LAF HANDLE_TILECONV
 							STR_VAR
-								input_path    = EVAL ~%MOD_FOLDER%/base/tbcN/%are%/%ee%~
+								input_path    = EVAL ~%source_files%/tbcN/%are%/%ee%~
 								output_path	  = EVAL ~%temp%~
 						END
 						COPY_LARGE ~%temp%/%are%N.tis~ ~%biffdir%/%are2%N.tis~
 						OUTER_PATCH ~~ BEGIN LPM ~DEBUG~ END
 						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.tis~ END
 					END
-					ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/tbcN/%are%/%ee%/%are%N.tis~ BEGIN // some areas have artefacts during compression, no tbc file
-						COPY_LARGE ~%MOD_FOLDER%/base/tbcN/%are%/%ee%/%are%N.tis~ ~%biffdir%/%are2%N.tis~
+					ACTION_IF FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tis~ BEGIN // some areas have artefacts during compression, no tbc file
+						COPY_LARGE ~%source_files%/tbcN/%are%/%ee%/%are%N.tis~ ~%biffdir%/%are2%N.tis~
 						OUTER_PATCH ~~ BEGIN LPM ~DEBUG~ END
 						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.tis~ END
 					END
 				END
 				ACTION_IF GAME_IS ~eet bgee bg2ee~ BEGIN
-					ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/tbcN/%are%/%ee%/%are%N.tis~ BEGIN
+					ACTION_IF FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tis~ BEGIN
 						LAF COPY_TIS_PVRZ_BGGO
 							STR_VAR
-								tis_path_original   = EVAL "%MOD_FOLDER%/base/tbcN/%are%/%ee%"
+								tis_path_original   = EVAL "%source_files%/tbcN/%are%/%ee%"
 								tis_name_original   = EVAL "%are%N"
 								tis_name_target     = EVAL "%are2%N"
 								tis_path_target     = EVAL "%biffdir%"
@@ -550,7 +550,7 @@ BEGIN
 			END
 			
 			OUTER_SET night = 0
-			
+						
 			// biffing
 			ACTION_IF (area_biff = 1) BEGIN
 				MAKE_BIFF ~go%are2%~ BEGIN ~%biffdir%~ ~^.*$~ END
@@ -567,6 +567,7 @@ END
 				
 DEFINE_ACTION_FUNCTION ~INSTALL_MAIN~
 	INT_VAR debug = 0
+	STR_VAR source_files = ~~
 BEGIN
 	MKDIR ~%MOD_FOLDER%/bif~	
 	MKDIR ~%MOD_FOLDER%/bif/goMAIN~
@@ -574,9 +575,9 @@ BEGIN
 	MKDIR ~%MOD_FOLDER%/backup_ovr~
 	
 	// tis files for water overlays
-	ACTION_BASH_FOR ~%MOD_FOLDER%/base/tbcN/ys~ ~^.+\.tis$~ BEGIN
+	ACTION_BASH_FOR ~%source_files%/tbcN/ys~ ~^.+\.tis$~ BEGIN
 		ACTION_IF NOT FILE_EXISTS_IN_GAME ~%BASH_FOR_FILE%~ BEGIN
-			COPY + ~%MOD_FOLDER%/base/tbcN/ys/%BASH_FOR_FILE%~ ~%MOD_FOLDER%/bif/goMAIN~
+			COPY + ~%source_files%/tbcN/ys/%BASH_FOR_FILE%~ ~%MOD_FOLDER%/bif/goMAIN~
 		END
 	END
 	
@@ -591,7 +592,7 @@ BEGIN
 		ACTION_PHP_EACH bg1_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~BG1~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~BG1~ source_files = EVAL ~%source_files%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END 
 		END
 	END
@@ -602,7 +603,7 @@ BEGIN
 		ACTION_PHP_EACH bg2_tob_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~TOB~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~TOB~ source_files = EVAL ~%source_files%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END 
 		END
 	END
@@ -613,7 +614,7 @@ BEGIN
 		ACTION_PHP_EACH sod_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~SOD~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~SOD~ source_files = EVAL ~%source_files%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END
 		END
 	END
@@ -624,7 +625,7 @@ BEGIN
 		ACTION_PHP_EACH bgee_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~BG1EE~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~BG1EE~ source_files = EVAL ~%source_files%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END
 		END
 	END
@@ -635,7 +636,7 @@ BEGIN
 		ACTION_PHP_EACH bg2ee_areas AS idx => are BEGIN
 			LAF ~INSTALL_TILESETS~ 
 			INT_VAR debug = ~%debug%~ 
-			STR_VAR purple = ~BG2EE~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
+			STR_VAR purple = ~BG2EE~ source_files = EVAL ~%source_files%~ file_list = EVAL ~%file_list%~ wed_list = EVAL ~%wed_list%~ 
 			RET file_list wed_list END
 		END
 	END
