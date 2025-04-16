@@ -10,6 +10,7 @@
 # Windows scripts require CR LF line ending
 *.ahk  text eol=crlf
 *.bat  text eol=crlf
+*.cmd  text eol=crlf
 *.ps1  text eol=crlf
 
 # Store these text files with LF line ending in the repo object database
@@ -25,16 +26,22 @@
 *.ids  text
 *.ini  text
 *.lua  text
+*.md   text
 *.menu text
 *.mus  text
 *.sql  text
-*.tbl  text
 *.tp2  text
 *.tpa  text
 *.tph  text
 *.tpp  text
 *.tra  text
 *.txt  text
+*.yaml text
+*.yml  text
+
+# Git-related metadata
+.gitattributes text
+.gitignore     text
 
 # Compiled IE scripts require LF line ending
 *.bcs  text eol=lf
@@ -61,9 +68,11 @@
 *.jpeg binary
 *.jpg  binary
 *.key  binary
+*.mbc  binary
 *.mos  binary
 *.moz  binary
 *.mve  binary
+*.ogg  binary
 *.plt  binary
 *.png  binary
 *.pro  binary
@@ -71,16 +80,18 @@
 *.sav  binary
 *.spl  binary
 *.sto  binary
+*.tbc  binary
 *.tis  binary
 *.tiz  binary
 *.tlk  binary
+*.toh  binary
+*.tot  binary
 *.ttf  binary
-*.var  binary
 *.vef  binary
 *.vvc  binary
 *.wav  binary
 *.wbm  binary
-*.webm binary
+*.webp binary
 *.wed  binary
 *.wfx  binary
 *.wmp  binary

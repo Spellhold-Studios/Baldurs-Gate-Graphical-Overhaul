@@ -79,6 +79,14 @@ BEGIN
 					DEFINE_ASSOCIATIVE_ARRAY PVR_PAGE_LIST BEGIN "%pvr_page_original%", "old" => "%pvr_page_original%" END
 				END
 			END
+		// delete every existing pvrz file, because the new one can have a less number of files
+		ACTION_PHP_EACH PVR_PAGE_LIST AS idx => pvr_index BEGIN
+			ACTION_IF ( pvr_index < 10 ) BEGIN OUTER_SPRINT pvr_index_final ~0%pvr_index%~ END ELSE BEGIN OUTER_SPRINT pvr_index_final ~%pvr_index%~ END
+			ACTION_IF FILE_EXISTS_IN_GAME ~%prefix_target%%pvr_index_final%.PVRZ~ BEGIN
+				COPY_EXISTING ~%prefix_target%%pvr_index_final%.PVRZ~ ~override~
+				DELETE ~override/%prefix_target%%pvr_index_final%.PVRZ~
+			END 
+		END
 	END
 	
 	COPY ~%tis_path_original%/%tis_name_original%.tis~ ~%tis_path_target%/%tis_name_target%.tis~
@@ -129,6 +137,10 @@ BEGIN
 			ACTION_IF ( dest   < 10 ) BEGIN OUTER_SPRINT destX   ~0%dest%~   END ELSE BEGIN OUTER_SPRINT destX   ~%dest%~   END
 			ACTION_IF ( FILE_EXISTS ~%tis_path_original%/%prefix_original%%sourceX%.PVRZ~ ) BEGIN
 				COPY ~%tis_path_original%/%prefix_original%%sourceX%.PVRZ~ ~%tis_path_target%/%prefix_target%%destX%.PVRZ~
+				// backup for pvrz files in override because of biffing
+				ACTION_IF FILE_EXISTS ~override/%prefix_target%%dest_final%.PVRZ~ BEGIN
+					MOVE ~override/%prefix_target%%dest_final%.PVRZ~ ~%MOD_FOLDER%/backup_ovr~
+				END 
 			END
 	END		
 END
