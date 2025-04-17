@@ -1,8 +1,3 @@
-<hr>
-
-:warning: **The maintenance and support of this project has been moved to a [new repository](https://github.com/Spellhold-Studios/Baldurs-Gate-Graphical-Overhaul).**
-
-<hr><br>
 
 ![Platform](https://img.shields.io/static/v1?label=Platform&message=Windows%20%7C%20Mac%20%7C%20Linux&color=informational)
 ![Language](https://img.shields.io/static/v1?label=Language&message=every%20language&color=limegreen)
