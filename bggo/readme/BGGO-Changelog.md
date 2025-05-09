@@ -1,4 +1,5 @@
 ### Version 3.4 (by Weigo)
+- BG0900 fixes
 - AR4900 fixes
 - AR5500 fixes
 - Android ETC2 component
