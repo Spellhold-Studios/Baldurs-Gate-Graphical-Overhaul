@@ -167,7 +167,7 @@ LAF ~INSTALL_MAIN~
 END
 
 BEGIN ~Baldurs Gate Graphical Overhaul for Android~
-DESIGNATED 1 LABEL ~baldurs_gate_graphical_overhaul_android~
+DESIGNATED 1 LABEL ~baldurs_gate_graphical_overhaul~
 REQUIRE_PREDICATE GAME_IS ~eet bgt tutu_totsc bgee bg2ee tob ~ ~This mod is currently for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 REQUIRE_PREDICATE DIRECTORY_EXISTS ~BGGO-Android~ ~Please download the Android pack: ...~
 SUBCOMPONENT ~BGGO for EET, BGT, BGEE, BG2EE, ToB and Tutu~
