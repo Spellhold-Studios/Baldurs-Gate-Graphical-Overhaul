@@ -1,3 +1,8 @@
+### Version 3.5 (by Weigo)
+ - more labels
+ I have now written a different selection routine for the Windows and Android versions. This means that unique labels are used. This should prevent any further warnings during installation.
+ If the BGGO-Android directory is not in the main directory of Baldur's Gate, it automatically selects the Windows version and you can then install the core component. Otherwise, the selection is made with the help of subcomponents, and then you can select the core component.
+
 ### Version 3.4 (by Weigo)
 - BG0900 fixes
 - AR4900 fixes
