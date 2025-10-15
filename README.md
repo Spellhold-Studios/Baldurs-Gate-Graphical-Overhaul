@@ -22,7 +22,7 @@
 &nbsp;
 
 <div align="center">
-<a href="#intro">Overview</a> &#8226; <a href="#compat">Compatibility</a> &#8226; <a href="#installation">Installation</a> &#8226; <a href="#credits">Credits and Acknowledgements</a>&#8226; <a href="#modding">Modding</a> &#8226; <a href="#versions">Version History</a></br>
+<a href="#intro">Overview</a> &#8226; <a href="#compat">Compatibility</a> &#8226; <a href="#installation">Installation</a> &#8226; <a href="#credits">Credits and Acknowledgements</a>&#8226; <a href="#modding">Modding</a> &#8226; <a href="https://github.com/Spellhold-Studios/Baldurs-Gate-Graphical-Overhaul/blob/master/bggo/readme/BGGO-Changelog.md">Version History</a></br>
 </div>
 
 <hr>
