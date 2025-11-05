@@ -7,6 +7,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY turn_off_anim_at_night BEGIN // to remove distra
 		AR900WN4 => BG0900
 		AR900WD1 => BG0900
 END
+
 ACTION_IF GAME_IS ~tutu_totsc~ BEGIN
 	ACTION_DEFINE_ASSOCIATIVE_ARRAY turn_off_at_night BEGIN // turn off sleeping animals at night
 		_bird => 1
@@ -166,6 +167,9 @@ DEFINE_PATCH_MACRO ~CLEAR_ARRAY~
 BEGIN
 	CLEAR_ARRAY x_coord
 	CLEAR_ARRAY y_coord
+	CLEAR_ARRAY z_coord
+	CLEAR_ARRAY name
+	CLEAR_ARRAY bam_resref
 END
 
 DEFINE_PATCH_MACRO ~DELETE_EXISTING_ANIMATIONS~ // to delete torches, candles ...
@@ -174,15 +178,26 @@ BEGIN
 	PATCH_IF debug BEGIN
 		LPF animation_counter END 
 	END
-	PATCH_IF LONG_AT 0xc0 = 0 BEGIN
-		WRITE_LONG 0xc0 BUFFER_LENGTH
+	// IWD2 has area v9.1 version
+	PATCH_IF GAME_IS ~iwd2~ BEGIN
+		SET rest_enc_off = 0xd0
+		SET songs_off = 0xcc
+		GET_OFFSET_ARRAY animation_array 0xc0 4 0xbc 4 0 0 0x4c
+	END ELSE BEGIN  //are v1.0
+		SET rest_enc_off = 0xc0
+		SET songs_off = 0xbc
+		GET_OFFSET_ARRAY animation_array 0xb0 4 0xac 4 0 0 0x4c
+	END
+	// fj_are_struct doesn't work with empty offsets for rest encounter and songs
+	PATCH_IF LONG_AT rest_enc_off = 0 BEGIN	//rest encounter offset
+		WRITE_LONG rest_enc_off BUFFER_LENGTH
 		INSERT_BYTES BUFFER_LENGTH 0xe4
 	END
-	PATCH_IF LONG_AT 0xbc = 0 BEGIN
-		WRITE_LONG 0xbc BUFFER_LENGTH
+	PATCH_IF LONG_AT songs_off = 0 BEGIN	//songs offset
+		WRITE_LONG songs_off BUFFER_LENGTH
 		INSERT_BYTES BUFFER_LENGTH 0x90
 	END
-	GET_OFFSET_ARRAY animation_array ARE_V10_ANIMATIONS
+	// delete existing animations with same coordinates
 	PATCH_PHP_EACH animation_array AS animation_num => animation_offset BEGIN
 		READ_SHORT animation_offset+0x20 animation_pos_x
 		READ_SHORT animation_offset+0x22 animation_pos_y
@@ -219,6 +234,10 @@ BEGIN
 		ACTION_IF (~%purple%~ STR_EQ ~BG1EE~) BEGIN
 			OUTER_TEXT_SPRINT are2 ~%are%~
 		END
+		COPY - ~%MOD_FOLDER%/lib/remapped_tis.tpa~ ~%MOD_FOLDER%/lib/remapped_tis.tpa~
+			REPLACE_EVALUATE CASE_INSENSITIVE ~"\(%are%\)".*=>.*"%\(.+?\)%"~ BEGIN
+			END	~~
+		PRINT ~%are% ==> %are2% : %MATCH2%~
 		
 		ACTION_IF debug BEGIN
 			OUTER_SPRINT file_list ~%file_list%%LNL%%seperator%%LNL%%are%%LNL%~
@@ -229,8 +248,19 @@ BEGIN
 			COPY_EXISTING ~%are2%.are~ ~override~
 			PATCH_IF SOURCE_SIZE > 0x11b BEGIN // Valid size check
 				PATCH_IF (((BYTE_AT 0x48) << 7) & BIT7) BEGIN // Toggle only outdoor areas
-					WRITE_BYTE 0x48 (THIS | BIT6 | BIT1 | BIT2) // Toggle extended night flag (BIT6) and day/night flag (BIT1) and weather flag (BIT2)
-					GET_OFFSET_ARRAY actors 0x54 4 0x58 2 0 0 0x110		// turn off creatures at night time
+					PATCH_IF GAME_IS ~iwd2~ BEGIN // IWD2 & IWD2EE don't use BIT6 flag for extended
+						WRITE_BYTE 0x48 (THIS BAND BNOT BIT6 | BIT1 | BIT2) // Toggle extended night flag (BIT6) and day/night flag (BIT1) and weather flag (BIT2)
+					END ELSE BEGIN
+						WRITE_BYTE 0x48 (THIS | BIT6 | BIT1 | BIT2) // Toggle extended night flag (BIT6) and day/night flag (BIT1) and weather flag (BIT2)
+					END
+					// IWD2 has area v9.1 version
+					PATCH_IF GAME_IS ~iwd2~ BEGIN
+						GET_OFFSET_ARRAY actors 0x64 4 0x68 2 0 0 0x110		// turn off creatures at night time
+						GET_OFFSET_ARRAY animations 0xc0 4 0xbc 4 0 0 0x4c	// turn off animations at night time
+					END ELSE BEGIN // v1.0
+						GET_OFFSET_ARRAY actors 0x54 4 0x58 2 0 0 0x110		// turn off creatures at night time
+						GET_OFFSET_ARRAY animations 0xb0 4 0xac 4 0 0 0x4c	// turn off animations at night time
+					END
 					PHP_EACH actors AS i => off BEGIN
 						READ_ASCII off + 0x80 cre_resref
 						TO_LOWER cre_resref
@@ -238,20 +268,19 @@ BEGIN
 							WRITE_LONG off + 0x40 0x1ffe0 // 05:30 to 17:29
 						END
 					END
-					GET_OFFSET_ARRAY animations 0xb0 4 0xac 4 0 0 0x4c	// turn off animations at night time
 					PHP_EACH animations AS i => off BEGIN
 						READ_ASCII off + 0x0028 animation
 						TO_UPPER animation
 						PATCH_IF VARIABLE_IS_SET $turn_off_anim_at_night("%animation%") BEGIN
 							WRITE_LONG off+0x34 0x00
 						END
-						
 					END
+					
 				END
 				PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/base/are_patch/%are%_are.tpa~ BEGIN // add animation for braziers, candles ...
 					PATCH_INCLUDE ~%MOD_FOLDER%/base/are_patch/%are%_are.tpa~
-				END				
-			END	
+				END
+			END
 			BUT_ONLY
 			
 			// Get files from compressed biffs
@@ -291,6 +320,11 @@ BEGIN
 			// biff only day or night files with the tis areas
 			OUTER_SET day = 0
 			OUTER_SET night = 0
+			
+			// baf + bcs patches
+			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/baf_patch/%are%_baf.tpa~ BEGIN // append area scripts ...
+				INCLUDE ~%MOD_FOLDER%/base/baf_patch/%are%_baf.tpa~
+			END
 			
 			//**************************************************
 			// Day files
@@ -334,8 +368,8 @@ BEGIN
 			
 			// day mos file
 			
-			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/mbcD/%ee%/%are%/%are%.mos~ BEGIN
-				COPY ~%MOD_FOLDER%/base/mbcD/%ee%/%are%/%are%.mos~ ~%biffdir%/%are2%.mos~
+			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/mbcD/%ee%/%are%.mos~ BEGIN
+				COPY ~%MOD_FOLDER%/base/mbcD/%ee%/%are%.mos~ ~%biffdir%/%are2%.mos~
 					LPM ~DEBUG~
 				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.mos~ END
 			END ELSE BEGIN
@@ -434,8 +468,8 @@ BEGIN
 			END
 			
 			// night mos
-			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/mbcN/%ee%/%are%N/%are%N.mos~ BEGIN						
-				COPY ~%MOD_FOLDER%/base/mbcN/%ee%/%are%N/%are%N.mos~ ~%biffdir%/%are2%N.mos~
+			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/mbcN/%ee%/%are%N.mos~ BEGIN						
+				COPY ~%MOD_FOLDER%/base/mbcN/%ee%/%are%N.mos~ ~%biffdir%/%are2%N.mos~
 					LPM ~DEBUG~
 				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.mos~ END
 			END ELSE BEGIN

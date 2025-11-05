@@ -104,7 +104,7 @@ ALWAYS
 		BG3336 BG3337 BG3338 BG3339 BG3340 BG3341 BG3342 BG3343 BG3344 BG3345 
 		BG3346 BG3347 BG3348 BG3349 BG3350 BG3351 BG3352 BG3353 BG3354 BG3355 
 		BG3356 BG3357 BG3401 BG3402 BG3901 BG4001 BG4002 BG4003 BG4004 BG4005 
-		BG4006 BG4007 BG4008 BG4009 BG4010 BG4011 BG4012 BG4013 BG4014 BG4201 
+		BG4006 BG4007 BG4008 BG4009 BG4010 BG4011 BG4012 BG4013 BG4014 //BG4201 no entry
 		BG4801 BG4803 BG4804 BG4805 BG4806 BG4807 BG4808 BG4809 BG4810 BG4901 
 		BG4902 BG4903 BG4904 BG4905 BG4906 BG4907 BG4908 BG4909 BG5201 BG5401 
 		BG5402 BG5403 BG5404 BG5405 BG5406 
@@ -151,12 +151,6 @@ ALWAYS
 		// indoor
 		OH5120 OH6460 OH7000 OH7100 OH8000 OH8100
 	END
-	// source file for windows and android
-	// standard is windows
-	ACTION_IF NOT VARIABLE_IS_SET one_time_execution BEGIN // check to make this happen only once per install
-		OUTER_SET one_time_execution = 1
-		OUTER_SPRINT graphic_files ~%MOD_FOLDER%/base~
-	END
 END
 
 
@@ -180,7 +174,7 @@ OUTER_SPRINT graphic_files ~%MOD_FOLDER%/base~
 
 BEGIN ~Baldurs Gate Graphical Overhaul for Android~
 DESIGNATED 2 LABEL ~baldurs_gate_graphical_overhaul_android~
-REQUIRE_PREDICATE GAME_IS ~eet bgt tutu_totsc bgee bg2ee tob ~ ~This mod is currently for EET, BGT, BGEE, BG2EE, ToB and Tutu~
+REQUIRE_PREDICATE GAME_IS ~eet bgee bg2ee~ ~The Android graphic mod is currently for EET, BGEE, BG2EE~
 REQUIRE_PREDICATE DIRECTORY_EXISTS ~BGGO-Android~ ~Please download the Android pack: ...~
 SUBCOMPONENT ~BGGO for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 
@@ -198,6 +192,12 @@ BEGIN ~Baldurs Gate Graphical Overhaul Core~
 DESIGNATED 0 LABEL ~baldurs_gate_graphical_overhaul~
 REQUIRE_PREDICATE GAME_IS ~eet bgt tutu_totsc bgee bg2ee tob ~ ~This mod is currently for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 
+// source file for windows is standard
+ACTION_IF !VARIABLE_IS_SET graphic_files BEGIN
+	OUTER_SPRINT graphic_files ~%MOD_FOLDER%/base~
+END
+
+// install the graphics
 LAF ~INSTALL_MAIN~ 
 	INT_VAR debug = 0 // list of all new used files
 	STR_VAR source_files = EVAL ~%graphic_files%~ 
