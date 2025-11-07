@@ -1,7 +1,15 @@
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Spellhold-Studios/.github/main/profile/assets/images/shs-banner.jpg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Spellhold-Studios/.github/main/profile/assets/images/shs-banner.jpg" />
+    <img alt="Spellhold Studios" src="https://raw.githubusercontent.com/Spellhold-Studios/.github/main/profile/assets/images/shs-banner.jpg">
+  </picture>
+
 
 ![Platform](https://img.shields.io/static/v1?label=Platform&message=Windows%20%7C%20Mac%20%7C%20Linux&color=informational)
 ![Language](https://img.shields.io/static/v1?label=Language&message=every%20language&color=limegreen)
 ![SupportedGames](https://img.shields.io/static/v1?label=Supported%20games&message=EET%20%7C%20BGT%20%7C%20BG2%3AEE%20%7C%20TOB%20%7C%20BG1%3AEE%20%7C%20TuTu_TOSC&color=blue)
+</div>
 
 <div align="center"><h1>Baldur's Gate Graphical Overhaul</h1>
 
@@ -39,6 +47,24 @@ Not only were all the old graphics from BG1 reworked, but they also decided to a
 This means that there are now 83 new night maps. In total 636 maps will be improved.
 These are the night maps and also day maps. Light maps are added, graphical bugs are fixed, animated water areas are added, over 7000 animated candles, torches and lights are added.
 Especially with the animated candles, torches and lights, old maps can be improved at any time.
+
+### Some pictures
+
+<img src="https://github.com/user-attachments/assets/1544ad33-9f34-43ef-a583-616963bbf696" alt="BG0100" width="100%" max-width="3000px"/><br>
+Left: Original Baldur's Gate NW &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Right: BGGO  
+<br>
+
+<img src="https://github.com/user-attachments/assets/fe7dc5d3-6c9e-412a-86e4-057d8284ceb5" alt="BG0700" width="100%" max-width="3000px"/><br>
+Left: Original Baldur's Gate Central &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Right: BGGO  
+<br>
+
+<img src="https://github.com/user-attachments/assets/c737d948-d4ed-496b-a211-c17b7b0bdef3" alt="BG0100" width="100%" max-width="3000px"/><br>
+Left: Brynnlaw
+<br>
+
+<img src="https://github.com/user-attachments/assets/062c362a-28d6-4389-8c02-5379dbf1e342" alt="BG0100" width="100%" max-width="3000px"/><br>
+Left: Amkethran
+<br>
 
 <div align="right"><a href="#top">Back to top</a></div>
 
