@@ -49,7 +49,7 @@ DEFINE_ACTION_FUNCTION ~BACKUP_BIFFING~ // for the uninstallation of the mod
 		ext = ~~
 BEGIN
 	ACTION_IF FILE_EXISTS ~override/%are2%%ext%~ BEGIN
-		MOVE ~override/%are2%%ext%~ ~%MOD_FOLDER%/backup_ovr~
+		MOVE ~override/%are2%%ext%~ ~%backup_ovr%~
 	END
 END
 
@@ -65,9 +65,11 @@ BEGIN
 	ACTION_CLEAR_ARRAY PVR_PAGE_LIST
 	ACTION_CLEAR_ARRAY OFFSET_ARRAY
 	
+	// prefix for pvrz file (AR1000 => A1000)
 	LAF TIS_RES_TO_PVRZ STR_VAR tis_res = EVAL ~%tis_name_target%.tis~ RET prefix_target = prefix END
 	LAF TIS_RES_TO_PVRZ STR_VAR tis_res = EVAL ~%tis_name_original%.tis~ RET prefix_original = prefix END
 	
+	// creates an array with the prefixes from original existing file
 	ACTION_IF FILE_EXISTS_IN_GAME  ~%tis_name_target%.tis~ BEGIN
 		COPY_EXISTING - ~%tis_name_target%.tis~ ~%temp%~
 			READ_LONG 0x8  "tiles_cnt"
@@ -90,6 +92,7 @@ BEGIN
 		END
 	END
 	
+	// adds to the prefix array new prefixes
 	COPY ~%tis_path_original%/%tis_name_original%.tis~ ~%tis_path_target%/%tis_name_target%.tis~
 		LPM ~DEBUG~
 		READ_LONG 0x8  "tiles_cnt"
@@ -99,13 +102,13 @@ BEGIN
 			SET offset = tiles_off + tiles_length * i
 			READ_LONG offset pvr_page_target
 			PATCH_IF (pvr_page_target >= 0) BEGIN
-				DEFINE_ASSOCIATIVE_ARRAY OFFSET_ARRAY BEGIN "%offset%" => "%pvr_page_target%" END
+				DEFINE_ASSOCIATIVE_ARRAY OFFSET_ARRAY BEGIN "%offset%" => "%pvr_page_target%" END  // offset array for each pvrz number in tis file
 				PATCH_IF !(VARIABLE_IS_SET $PVR_PAGE_LIST("%pvr_page_target%" "old")) BEGIN
 					DEFINE_ASSOCIATIVE_ARRAY PVR_PAGE_LIST BEGIN "%pvr_page_target%", "new" => "%pvr_page_target%" END
 				END
 			END
 		END
-		
+		//sort the array
 		SORT_ARRAY_INDICES PVR_PAGE_LIST NUMERICALLY
 		SET num_to_reserve = 0
 		PATCH_PHP_EACH PVR_PAGE_LIST AS idx => pvr_index BEGIN
@@ -113,6 +116,7 @@ BEGIN
 				SET num_to_reserve += 1
 			END
 		END
+		//find free pvrz numbers
 		LPF FIND_FREE_PVRZ_INDEX INT_VAR num_to_reserve = "%num_to_reserve%" STR_VAR prefix = EVAL "%prefix_target%" RET free_index END
 		PATCH_PHP_EACH PVR_PAGE_LIST AS idx => pvr_index BEGIN
 			PATCH_IF ("%idx_1%" STR_EQ "new") BEGIN
@@ -121,7 +125,7 @@ BEGIN
 			END
 			PATCH_IF debug BEGIN PATCH_PRINT ~%idx_0%, %idx_1% => %pvr_index% : %free_index% %num_to_reserve%~ END
 		END
-		
+		//patch offset array with new numbers and write it to tis file
 		PHP_EACH OFFSET_ARRAY AS offset => value BEGIN
 			SET new_value = 0
 			PATCH_IF ( VARIABLE_IS_SET $PVR_PAGE_LIST( ~%value%~ ~old~ ) ) BEGIN
@@ -132,15 +136,15 @@ BEGIN
 			END
 			WRITE_LONG ~%offset%~ ~%new_value%~
 		END
-		
+	// patch pvrz files with new number 	
 	ACTION_PHP_EACH PVR_PAGE_LIST AS source => dest BEGIN
-			ACTION_IF ( source_0 < 10 ) BEGIN OUTER_SPRINT sourceX ~0%source_0%~ END ELSE BEGIN OUTER_SPRINT sourceX ~%source_0%~ END
-			ACTION_IF ( dest   < 10 ) BEGIN OUTER_SPRINT destX   ~0%dest%~   END ELSE BEGIN OUTER_SPRINT destX   ~%dest%~   END
-			ACTION_IF ( FILE_EXISTS ~%tis_path_original%/%prefix_original%%sourceX%.PVRZ~ ) BEGIN
-				COPY ~%tis_path_original%/%prefix_original%%sourceX%.PVRZ~ ~%tis_path_target%/%prefix_target%%destX%.PVRZ~
+			ACTION_IF ( source_0 < 10 ) BEGIN OUTER_SPRINT source_final ~0%source_0%~ END ELSE BEGIN OUTER_SPRINT source_final ~%source_0%~ END
+			ACTION_IF ( dest   < 10 ) BEGIN OUTER_SPRINT dest_final   ~0%dest%~   END ELSE BEGIN OUTER_SPRINT dest_final   ~%dest%~   END
+			ACTION_IF ( FILE_EXISTS ~%tis_path_original%/%prefix_original%%source_final%.PVRZ~ ) BEGIN
+				COPY ~%tis_path_original%/%prefix_original%%source_final%.PVRZ~ ~%tis_path_target%/%prefix_target%%dest_final%.PVRZ~
 				// backup for pvrz files in override because of biffing
 				ACTION_IF FILE_EXISTS ~override/%prefix_target%%dest_final%.PVRZ~ BEGIN
-					MOVE ~override/%prefix_target%%dest_final%.PVRZ~ ~%MOD_FOLDER%/backup_ovr~
+					MOVE ~override/%prefix_target%%dest_final%.PVRZ~ ~%backup_ovr%~
 				END 
 			END
 	END		
@@ -249,7 +253,7 @@ BEGIN
 			PATCH_IF SOURCE_SIZE > 0x11b BEGIN // Valid size check
 				PATCH_IF (((BYTE_AT 0x48) << 7) & BIT7) BEGIN // Toggle only outdoor areas
 					PATCH_IF GAME_IS ~iwd2~ BEGIN // IWD2 & IWD2EE don't use BIT6 flag for extended
-						WRITE_BYTE 0x48 (THIS BAND BNOT BIT6 | BIT1 | BIT2) // Toggle extended night flag (BIT6) and day/night flag (BIT1) and weather flag (BIT2)
+						WRITE_BYTE 0x48 (THIS BAND BNOT BIT6 | BIT1 | BIT2) // Toggle extended night flag off (BIT6) and day/night flag (BIT1) and weather flag (BIT2)
 					END ELSE BEGIN
 						WRITE_BYTE 0x48 (THIS | BIT6 | BIT1 | BIT2) // Toggle extended night flag (BIT6) and day/night flag (BIT1) and weather flag (BIT2)
 					END
@@ -309,13 +313,13 @@ BEGIN
 						OR FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tis~ 
 						OR FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tbc~ 
 						OR FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tis~) BEGIN
-				MKDIR ~%MOD_FOLDER%/bif/%are2%~
-				OUTER_SPRINT biffdir ~%MOD_FOLDER%/bif/%are2%~
+				MKDIR ~%workspace%/bif/%are2%~
+				OUTER_SPRINT biffdir ~%workspace%/bif/%are2%~
 				OUTER_SET area_biff = 1
 			END ELSE BEGIN
-				OUTER_SPRINT biffdir ~%MOD_FOLDER%/bif/goMAIN~
+				OUTER_SPRINT biffdir ~%workspace%/bif/goMAIN~
 			END
-			OUTER_SPRINT temp ~%MOD_FOLDER%/bif/temp~
+			OUTER_SPRINT temp ~%workspace%/bif/temp~
 			
 			// biff only day or night files with the tis areas
 			OUTER_SET day = 0
@@ -331,8 +335,8 @@ BEGIN
 			//**************************************************
 			
 			// day tis v1 or tis v2 file 
-			
 			ACTION_IF (FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tbc~ OR FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tis~) BEGIN
+				// old v1 tis format
 				ACTION_IF GAME_IS ~bgt tutu_totsc tob~ BEGIN
 					ACTION_IF FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tbc~ BEGIN
 						LAF HANDLE_TILECONV
@@ -350,6 +354,7 @@ BEGIN
 						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.tis~ END
 					END
 				END
+				//new v2 tis format
 				ACTION_IF GAME_IS ~eet bgee bg2ee~ BEGIN
 					ACTION_IF FILE_EXISTS ~%source_files%/tbcD/%are%/%ee%/%are%.tis~ BEGIN
 						LAF COPY_TIS_PVRZ_BGGO
@@ -360,14 +365,12 @@ BEGIN
 								tis_path_target     = EVAL "%biffdir%"
 						END
 						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.tis~ END
-						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.pvrz~ END
 					END
 				END
 				OUTER_SET day = 1
 			END
 			
 			// day mos file
-			
 			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/mbcD/%ee%/%are%.mos~ BEGIN
 				COPY ~%MOD_FOLDER%/base/mbcD/%ee%/%are%.mos~ ~%biffdir%/%are2%.mos~
 					LPM ~DEBUG~
@@ -386,25 +389,20 @@ BEGIN
 			END
 			
 			// day lightmap
-			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpLM/%are%LM.2da~ BEGIN
-				LAF ~SRHTLMLN~ STR_VAR type = ~LM~ END
+			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpLM/%are%LM.bmp~ BEGIN
+				COPY ~%MOD_FOLDER%/base/bmpLM/%are%LM.bmp~ ~%biffdir%/%are2%LM.bmp~
+					LPM ~DEBUG~
 				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~LM.bmp~ END
-			END ELSE BEGIN
-				ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpLM/%are%LM.bmp~ BEGIN
-					COPY ~%MOD_FOLDER%/base/bmpLM/%are%LM.bmp~ ~%biffdir%/%are2%LM.bmp~
+				END ELSE BEGIN
+				ACTION_IF (area_biff = 1) AND (day = 1) BEGIN
+					COPY_EXISTING ~%are2%LM.bmp~ ~%biffdir%~
 						LPM ~DEBUG~
 					LAF ~BACKUP_BIFFING~ STR_VAR ext = ~LM.bmp~ END
-					END ELSE BEGIN
-					ACTION_IF (area_biff = 1) AND (day = 1) BEGIN
-						COPY_EXISTING ~%are2%LM.bmp~ ~%biffdir%~
-							LPM ~DEBUG~
-						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~LM.bmp~ END
-					END
 				END
 			END
+
 			
 			// day wed file
-			
 			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/wedD/%ee%/%are%.wed~ BEGIN
 				COPY ~%MOD_FOLDER%/base/wedD/%ee%/%are%.wed~ ~%biffdir%/%are2%.wed~
 					REPLACE_TEXTUALLY ~%are%~ ~%are2%~
@@ -432,9 +430,10 @@ BEGIN
 			END
 			
 			// night tis v1 or tis v2
-			
 			ACTION_IF (FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tbc~ OR FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tis~) BEGIN
+				// old v1 tis format
 				ACTION_IF GAME_IS ~bgt tutu_totsc tob~ BEGIN
+					// tbc format
 					ACTION_IF FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tbc~ BEGIN
 						LAF HANDLE_TILECONV
 							STR_VAR
@@ -445,6 +444,7 @@ BEGIN
 						OUTER_PATCH ~~ BEGIN LPM ~DEBUG~ END
 						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.tis~ END
 					END
+					// tis format
 					ACTION_IF FILE_EXISTS ~%source_files%/tbcN/%are%/%ee%/%are%N.tis~ BEGIN // some areas have artefacts during compression, no tbc file
 						COPY_LARGE ~%source_files%/tbcN/%are%/%ee%/%are%N.tis~ ~%biffdir%/%are2%N.tis~
 						OUTER_PATCH ~~ BEGIN LPM ~DEBUG~ END
@@ -460,7 +460,7 @@ BEGIN
 								tis_name_target     = EVAL "%are2%N"
 								tis_path_target     = EVAL "%biffdir%"
 						END
-						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.tis~ END
+						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.tis~ END
 						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.pvrz~ END
 					END
 				END
@@ -497,31 +497,25 @@ BEGIN
 			END
 			
 			// night lightmap
-			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpLN/%ee%/%are%LN.2da~ BEGIN
-				LAF ~SRHTLMLN~ STR_VAR type = ~LN~ END
+			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpLN/%ee%/%are%LN.bmp~ BEGIN
 				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~LN.bmp~ END
-			END ELSE BEGIN
-				ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpLN/%ee%/%are%LN.bmp~ BEGIN
-					LAF ~BACKUP_BIFFING~ STR_VAR ext = ~LN.bmp~ END
-					COPY ~%MOD_FOLDER%/base/bmpLN/%ee%/%are%LN.bmp~ ~%biffdir%/%are2%LN.bmp~
-						LPM ~DEBUG~
+				COPY ~%MOD_FOLDER%/base/bmpLN/%ee%/%are%LN.bmp~ ~%biffdir%/%are2%LN.bmp~
+					LPM ~DEBUG~
+				END ELSE BEGIN
+				ACTION_IF (area_biff = 1) AND (night = 1) BEGIN
+					ACTION_IF FILE_EXISTS_IN_GAME ~%are2%LN.bmp~ BEGIN
+						COPY_EXISTING ~%are2%LN.bmp~ ~%biffdir%~
+							LPM ~DEBUG~
+						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~LN.bmp~ END
 					END ELSE BEGIN
-					ACTION_IF (area_biff = 1) AND (night = 1) BEGIN
-						ACTION_IF FILE_EXISTS_IN_GAME ~%are2%LN.bmp~ BEGIN
-							COPY_EXISTING ~%are2%LN.bmp~ ~%biffdir%~
-								LPM ~DEBUG~
-							LAF ~BACKUP_BIFFING~ STR_VAR ext = ~LN.bmp~ END
-						END ELSE BEGIN
-							COPY_EXISTING ~%are2%LM.bmp~ ~%biffdir%/%are2%LN.bmp~
-								LPM ~DEBUG~
-							LAF ~BACKUP_BIFFING~ STR_VAR ext = ~LN.bmp~ END
-						END
+						COPY_EXISTING ~%are2%LM.bmp~ ~%biffdir%/%are2%LN.bmp~
+							LPM ~DEBUG~
+						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~LN.bmp~ END
 					END
 				END
 			END
 			
 			// night wed
-			
 			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/wedN/%ee%/%are%N.wed~ BEGIN
 				COPY ~%MOD_FOLDER%/base/wedN/%ee%/%are%N.wed~ ~%biffdir%/%are2%N.wed~
 					REPLACE_TEXTUALLY ~%are%~ ~%are2%~
@@ -547,7 +541,6 @@ BEGIN
 			END
 			
 			// searchmap
-			
 			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpSR/%are%SR.2da~ BEGIN // changes to existing SR
 				LAF ~SRHTLMLN~ STR_VAR type = ~SR~ END
 				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~SR.bmp~ END
@@ -566,30 +559,29 @@ BEGIN
 			END
 								
 			// heightmap
-			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpHT/%are%HT.2da~ BEGIN
-				LAF ~SRHTLMLN~ STR_VAR type = ~HT~ END
+			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpHT/%are%HT.bmp~ BEGIN
+				COPY ~%MOD_FOLDER%/base/bmpHT/%are%HT.bmp~ ~%biffdir%/%are2%HT.bmp~
+					LPM ~DEBUG~
 				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~HT.bmp~ END
-			END ELSE BEGIN
-				ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/base/bmpHT/%are%HT.bmp~ BEGIN
-					COPY ~%MOD_FOLDER%/base/bmpHT/%are%HT.bmp~ ~%biffdir%/%are2%HT.bmp~
+				END ELSE BEGIN
+				ACTION_IF (area_biff = 1) BEGIN
+					COPY_EXISTING ~%are2%HT.bmp~ ~%biffdir%~
 						LPM ~DEBUG~
 					LAF ~BACKUP_BIFFING~ STR_VAR ext = ~HT.bmp~ END
-					END ELSE BEGIN
-					ACTION_IF (area_biff = 1) BEGIN
-						COPY_EXISTING ~%are2%HT.bmp~ ~%biffdir%~
-							LPM ~DEBUG~
-						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~HT.bmp~ END
-					END
 				END
 			END
 			
 			OUTER_SET night = 0
-						
+			
 			// biffing
 			ACTION_IF (area_biff = 1) BEGIN
 				MAKE_BIFF ~go%are2%~ BEGIN ~%biffdir%~ ~^.*$~ END
+				ACTION_BASH_FOR ~%biffdir%~ ~^.*$~ BEGIN
+					DELETE +  ~%BASH_FOR_FILESPEC%~
+				END
+				DELETE + ~%biffdir%~
 			END
-			
+
 			ACTION_IF debug BEGIN
 				COPY ~.../debug_include.tpa~ ~%temp%~
 				REINCLUDE ~%temp%/debug_include.tpa~
@@ -603,21 +595,22 @@ DEFINE_ACTION_FUNCTION ~INSTALL_MAIN~
 	INT_VAR debug = 0
 	STR_VAR source_files = ~~
 BEGIN
-	MKDIR ~%MOD_FOLDER%/bif~	
-	MKDIR ~%MOD_FOLDER%/bif/goMAIN~
-	MKDIR ~%MOD_FOLDER%/bif/temp~
-	MKDIR ~%MOD_FOLDER%/backup_ovr~
+	MKDIR ~%workspace%/bif~	
+	MKDIR ~%workspace%/bif/goMAIN~
+	MKDIR ~%workspace%/bif/temp~
+	OUTER_SPRINT backup_ovr ~weidu_external/backup/%MOD_FOLDER%/backup_ovr~
+	MKDIR ~weidu_external/backup/%MOD_FOLDER%/backup_ovr~
 	
 	// tis files for water overlays
 	ACTION_BASH_FOR ~%source_files%/tbcN/ys~ ~^.+\.tis$~ BEGIN
 		ACTION_IF NOT FILE_EXISTS_IN_GAME ~%BASH_FOR_FILE%~ BEGIN
-			COPY + ~%source_files%/tbcN/ys/%BASH_FOR_FILE%~ ~%MOD_FOLDER%/bif/goMAIN~
+			COPY + ~%source_files%/tbcN/ys/%BASH_FOR_FILE%~ ~%workspace%/bif/goMAIN~
 		END
 	END
 	
 	// bam animations
 	ACTION_BASH_FOR ~%MOD_FOLDER%/base/bam~ ~^.+\.bam$~ BEGIN
-		COPY + ~%MOD_FOLDER%/base/bam/%BASH_FOR_FILE%~ ~%MOD_FOLDER%/bif/goMAIN~
+		COPY + ~%MOD_FOLDER%/base/bam/%BASH_FOR_FILE%~ ~%workspace%/bif/goMAIN~
 	END
 
 	//	BG1 Areas
@@ -675,17 +668,23 @@ BEGIN
 		END
 	END
 	
-	MAKE_BIFF ~goMAIN~ BEGIN ~%MOD_FOLDER%/bif/goMAIN~ ~^.*$~ END
+	MAKE_BIFF ~goMAIN~ BEGIN ~%workspace%/bif/goMAIN~ ~^.*$~ END
+	ACTION_BASH_FOR ~%workspace%/bif/goMAIN~ ~^.*$~ BEGIN
+		DELETE +  ~%BASH_FOR_FILESPEC%~
+	END
+	DELETE + ~%workspace%/bif/goMAIN~
+	DELETE + ~%workspace%/bif~
+	DELETE + ~%workspace%~
 	
 	// create the log files
 	ACTION_IF debug BEGIN
-		PRINT ~The log files debug.log and all_files.log are in the %MOD_FOLDER%/ directory~
+		PRINT ~The log files debug.log and all_files.log are in the %workspace%/ directory~
 		<<<<<<<< .../debug.log
 		>>>>>>>>
 		LAM ~COMPLETE_LIST_OF_FILES~
-		COPY ~.../debug.log~ ~%MOD_FOLDER%/debug.log~
-		APPEND_OUTER + ~%MOD_FOLDER%/debug.log~ ~%file_list%~
-		APPEND_OUTER + ~%MOD_FOLDER%/debug.log~ ~%wed_list%~
+		COPY ~.../debug.log~ ~%workspace%/debug.log~
+		APPEND_OUTER + ~%workspace%/debug.log~ ~%file_list%~
+		APPEND_OUTER + ~%workspace%/debug.log~ ~%wed_list%~
 	END	
 	
 END

@@ -1,11 +1,14 @@
-BACKUP ~bggo/backup~
+BACKUP ~weidu_external/backup/bggo/~
 AUTHOR ~Yovaneth, White Agnus, Weigo~
 
-VERSION ~v3.5~
+VERSION ~v3.6~
 
 README ~bggo/readme/readme.html~
 
 ALWAYS
+	OUTER_SPRINT workspace "weidu_external/workspace/%MOD_FOLDER%"
+    MKDIR "%workspace%"
+	
 	INCLUDE ~%MOD_FOLDER%/lib/a7_tools.tpa~
 	INCLUDE ~%MOD_FOLDER%/lib/macros.tpa~
 	INCLUDE ~%MOD_FOLDER%/lib/eet_cpmvars.tpa~
@@ -23,25 +26,6 @@ ALWAYS
 
 	ACTION_IF GAME_IS ~bgt tutu_totsc tob~ BEGIN
 		OUTER_SPRINT ee ~non-ee~
-	END
-	
-	// remove bif directory
-	ACTION_IF (DIRECTORY_EXISTS ~%MOD_FOLDER%/bif~) BEGIN
-		ACTION_IF ~%WEIDU_OS%~ STR_EQ ~win32~ BEGIN
-			AT_NOW ~rmdir /s /q %MOD_FOLDER%\bif~ EXACT
-		END ELSE BEGIN //osx, unix
-			AT_NOW ~rm -rf %MOD_FOLDER%/bif~ EXACT
-		END
-	END
-	ACTION_IF ~%WEIDU_OS%~ STR_EQ ~win32~ BEGIN
-		AT_EXIT ~rmdir /s /q %MOD_FOLDER%\bif~ EXACT
-	END ELSE BEGIN //osx, unix
-		AT_EXIT ~rm -rf %MOD_FOLDER%/bif~ EXACT
-	END
-	ACTION_IF ~%WEIDU_OS%~ STR_EQ ~win32~ BEGIN
-		AT_UNINSTALL ~rmdir /s /q %MOD_FOLDER%\bif~ EXACT
-	END ELSE BEGIN //osx, unix
-		AT_UNINSTALL ~rm -rf %MOD_FOLDER%/bif~ EXACT
 	END
 	
 	// remove old goXXXX.bif in data directory
