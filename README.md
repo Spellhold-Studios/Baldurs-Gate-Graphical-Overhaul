@@ -233,11 +233,7 @@ Also with the searchmap you can prevent overwriting the files by using the SRmap
 
 ## <a name="versions" id="versions"></a>Version History
 
-#### Version 3.0 (Upcoming version)
+#### Version History
 
-By Yovaneth, Weigo
-
--completely revised version
-
-- Initial release (Yovaneth).
+See [BGGO-Changlog.md](https://github.com/Spellhold-Studios/Baldurs-Gate-Graphical-Overhaul/blob/master/bggo/readme/BGGO-Changelog.md)
 <div align="right"><a href="#top">Back to top</a></div>
