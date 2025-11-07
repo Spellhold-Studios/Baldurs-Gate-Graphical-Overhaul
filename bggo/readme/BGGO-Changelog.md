@@ -1,3 +1,10 @@
+### Version 3.6 (by Weigo)
+- fixed more labels
+- backup folder no in weidu_external
+- bugfix code
+- code similar to IWDGO
+- AR1900 and AR1901
+
 ### Version 3.5 (by Weigo)
  - more labels
  I have now written a different selection routine for the Windows and Android versions. This means that unique labels are used. This should prevent any further warnings during installation.
