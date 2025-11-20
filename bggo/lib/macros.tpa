@@ -239,8 +239,8 @@ BEGIN
 		ACTION_IF (~%purple%~ STR_EQ ~BG1EE~) BEGIN
 			OUTER_TEXT_SPRINT are2 ~%are%~
 		END
-		ACTION_IF (~%purple%~ STR_EQ ~alternate~) BEGIN
-			OUTER_SNPRINT 2 prefix ~are~
+		ACTION_IF (~%purple%~ STR_EQ ~Alternate~) BEGIN
+			OUTER_SNPRINT 2 prefix ~%are%~
 			ACTION_IF ~%prefix%~ STR_EQ ~BG~ BEGIN
 				OUTER_TEXT_SPRINT are2 $EVAL ~remapped_tis~(~%are%~)
 			END ELSE BEGIN
