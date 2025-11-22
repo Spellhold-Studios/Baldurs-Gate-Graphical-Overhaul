@@ -2,7 +2,7 @@
 // Water animation bridge Wyrms Crossing
 //**************************************************
 
-PATCH_IF ~%ee%~ STR_EQ ~ee~ BEGIN
+PATCH_IF ~%ee%~ STR_EQ ~ee~  AND !MOD_IS_INSTALLED "bggo.tp2" (ID_OF_LABEL "bggo.tp2" "baldurs_gate_graphical_overhaul" ) BEGIN
 	LPF fj_are_structure
 	INT_VAR
 		fj_loc_x       = 2560
@@ -37,3 +37,22 @@ PATCH_IF ~%ee%~ STR_EQ ~ee~ BEGIN
 		fj_bam_resref     = AR900WN7
 	END
 END
+
+//Add candles and torches
+PATCH_DEFINE_ARRAY x_coord BEGIN 121  172  END
+PATCH_DEFINE_ARRAY y_coord BEGIN 1097 1219 END
+PATCH_PHP_EACH x_coord AS index => x BEGIN
+	LPM ~DELETE_EXISTING_ANIMATIONS~
+	LPF fj_are_structure
+	INT_VAR
+		fj_loc_x = $x_coord("%index%")
+		fj_loc_y = $y_coord("%index%")
+		fj_schedule = 0b111111111111111111111111 //Hours 0.00 - 24.00
+		fj_flags = 0b00000000000000000001000001100011	// Visible, blend colours, not covered by wall, don't remove in combat
+		STR_VAR
+		fj_structure_type = animation
+		fj_name = FIRE_3
+		fj_bam_resref = FIRE_3 //bgrd
+	END
+END
+LPM ~CLEAR_ARRAY~

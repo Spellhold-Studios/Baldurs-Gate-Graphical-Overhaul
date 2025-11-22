@@ -291,8 +291,8 @@ BEGIN
 					END
 					
 				END
-				PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/base/are_patch/%are%_are.tpa~ BEGIN // add animation for braziers, candles ...
-					PATCH_INCLUDE ~%MOD_FOLDER%/base/are_patch/%are%_are.tpa~
+				PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/%base%/are_patch/%are%_are.tpa~ BEGIN // add animation for braziers, candles ...
+					PATCH_INCLUDE ~%MOD_FOLDER%/%base%/are_patch/%are%_are.tpa~
 				END
 			END
 			BUT_ONLY
