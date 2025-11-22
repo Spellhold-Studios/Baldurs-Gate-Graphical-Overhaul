@@ -30,7 +30,7 @@
 &nbsp;
 
 <div align="center">
-<a href="#intro">Overview</a> &#8226; <a href="#compat">Compatibility</a> &#8226; <a href="#installation">Installation</a> &#8226; <a href="#credits">Credits and Acknowledgements</a>&#8226; <a href="#modding">Modding</a> &#8226; <a href="https://github.com/Spellhold-Studios/Baldurs-Gate-Graphical-Overhaul/blob/master/bggo/readme/BGGO-Changelog.md">Version History</a></br>
+<a href="#intro">Overview</a> &#8226; <a href="#component">Components</a> &#8226; <a href="#compat">Compatibility</a> &#8226; <a href="#installation">Installation</a> &#8226; <a href="#credits">Credits and Acknowledgements</a>&#8226; <a href="#modding">Modding</a> &#8226; <a href="https://github.com/Spellhold-Studios/Baldurs-Gate-Graphical-Overhaul/blob/master/bggo/readme/BGGO-Changelog.md">Version History</a></br>
 </div>
 
 <hr>
@@ -48,7 +48,13 @@ This means that there are now 83 new night maps. In total 636 maps will be impro
 These are the night maps and also day maps. Light maps are added, graphical bugs are fixed, animated water areas are added, over 7000 animated candles, torches and lights are added.
 Especially with the animated candles, torches and lights, old maps can be improved at any time.
 
-### Some pictures
+## <a name="component" id="intro"></a>Components
+- The first component is the core component, which contains all files for the areas of Baldur's Gate 1 with TotSC and Baldur's Gate 2 with ToB.
+- The second component contains alternative area graphics and is optional. Currently, it is only available for one area, namely the bridge at Baldur's Gate, Wyrm's Crossing from BG1.
+As you can see in the image below, the city gate is already visible on the left side of the map. (left: original, right: alternativ)
+
+<img src="https://github.com/user-attachments/assets/0a3bcb0f-699c-4150-b514-a81f5a017a8d" alt="BG0100" width="100%" max-width="3000px"/><br>
+### Some pictures for impressions
 
 <img src="https://github.com/user-attachments/assets/1544ad33-9f34-43ef-a583-616963bbf696" alt="BG0100" width="100%" max-width="3000px"/><br>
 Left: Original Baldur's Gate NW &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Right: BGGO  
@@ -59,11 +65,11 @@ Left: Original Baldur's Gate Central &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Right:
 <br>
 
 <img src="https://github.com/user-attachments/assets/c737d948-d4ed-496b-a211-c17b7b0bdef3" alt="BG0100" width="100%" max-width="3000px"/><br>
-Left: Brynnlaw
+Brynnlaw
 <br>
 
 <img src="https://github.com/user-attachments/assets/062c362a-28d6-4389-8c02-5379dbf1e342" alt="BG0100" width="100%" max-width="3000px"/><br>
-Left: Amkethran
+Amkethran
 <br>
 
 <div align="right"><a href="#top">Back to top</a></div>
@@ -82,6 +88,7 @@ Additional built-in mod compatibility: <br>
  -Baldurans Seatower<br>
  -Gavin NPC<br>
  -TDDz<br>
+ -BG1NPC (alternative Wyrm's Crossing)
 
 <div align="right"><a href="#top">Back to top</a></div>
 
