@@ -2,38 +2,38 @@
 // Water animation bridge Wyrms Crossing
 //**************************************************
 
-
-LPF fj_are_structure
-INT_VAR
-	fj_loc_x       = 2560
-	fj_loc_y       = 2304
-	fj_flags       = 0b00000000000000000001000100000101	//visible, not illuminated, invisible in dark, covered by actors, shown in combat
-	fj_schedule	   = 0b00000000111000000000000000111111
-STR_VAR
-	fj_structure_type = animation
-	fj_name           = AR900WN5
-	fj_bam_resref     = AR900WN5
+PATCH_IF ~%ee%~ STR_EQ ~ee~ BEGIN
+	LPF fj_are_structure
+	INT_VAR
+		fj_loc_x       = 2560
+		fj_loc_y       = 2304
+		fj_flags       = 0b00000000000000000001000100000101	//visible, not illuminated, invisible in dark, covered by actors, shown in combat
+		fj_schedule	   = 0b00000000111000000000000000111111
+	STR_VAR
+		fj_structure_type = animation
+		fj_name           = AR900WN5
+		fj_bam_resref     = AR900WN5
+	END
+	LPF fj_are_structure
+	INT_VAR
+		fj_loc_x       = 2624
+		fj_loc_y       = 2240
+		fj_flags       = 0b00000000000000000001000100000101	//visible, not illuminated, invisible in dark, covered by actors, shown in combat
+		fj_schedule	   = 0b00000000111000000000000000111111
+	STR_VAR
+		fj_structure_type = animation
+		fj_name           = AR900WN6
+		fj_bam_resref     = AR900WN6
+	END
+	LPF fj_are_structure
+	INT_VAR
+		fj_loc_x       = 2688
+		fj_loc_y       = 2176
+		fj_flags       = 0b00000000000000000001000100000101	//visible, not illuminated, invisible in dark, covered by actors, shown in combat
+		fj_schedule	   = 0b00000000111000000000000000111111
+	STR_VAR
+		fj_structure_type = animation
+		fj_name           = AR900WN7
+		fj_bam_resref     = AR900WN7
+	END
 END
-LPF fj_are_structure
-INT_VAR
-	fj_loc_x       = 2624
-	fj_loc_y       = 2240
-	fj_flags       = 0b00000000000000000001000100000101	//visible, not illuminated, invisible in dark, covered by actors, shown in combat
-	fj_schedule	   = 0b00000000111000000000000000111111
-STR_VAR
-	fj_structure_type = animation
-	fj_name           = AR900WN6
-	fj_bam_resref     = AR900WN6
-END
-LPF fj_are_structure
-INT_VAR
-	fj_loc_x       = 2688
-	fj_loc_y       = 2176
-	fj_flags       = 0b00000000000000000001000100000101	//visible, not illuminated, invisible in dark, covered by actors, shown in combat
-	fj_schedule	   = 0b00000000111000000000000000111111
-STR_VAR
-	fj_structure_type = animation
-	fj_name           = AR900WN7
-	fj_bam_resref     = AR900WN7
-END
-

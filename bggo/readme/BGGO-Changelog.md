@@ -1,6 +1,9 @@
 ### Version 3.6 (by Weigo)
+- fixed braziers in East Baldurs Gate
+- BG1NPC compatibility
+- 2. component with alternative graphics for Wyrm's crossing
 - fixed more labels
-- backup folder no in weidu_external
+- backup folder now in weidu_external
 - bugfix code
 - code similar to IWDGO
 - AR1900 and AR1901

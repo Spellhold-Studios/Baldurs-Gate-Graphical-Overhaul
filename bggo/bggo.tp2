@@ -28,21 +28,6 @@ ALWAYS
 		OUTER_SPRINT ee ~non-ee~
 	END
 	
-	// remove old goXXXX.bif in data directory
-	// prevents a long loading time, if a bif file should still be present in the data folder during installation
-	// close the program (e.g. Near Infinity, weidu)
-	ACTION_TRY
-		ACTION_BASH_FOR ~data~ ~^go.*\.bif$~ BEGIN
-			DELETE + ~%BASH_FOR_FILESPEC%~
-		END
-	WITH
-		DEFAULT
-			PRINT ~**********************************************************************************~
-			PRINT ~The %BASH_FOR_FILESPEC% is still in use by a program. e.g.: Near Infinity or WeiDU%LNL%Please close the programs and try again~
-			PRINT ~**********************************************************************************~
-			ACTION_RERAISE
-	END
-	
 	ACTION_DEFINE_ARRAY bg1_areas BEGIN
 		//outdoor
 		BG0100 BG0200 BG0300 BG0400 BG0500 BG0600 BG0621 BG0700 BG0800 BG0900 
@@ -135,6 +120,11 @@ ALWAYS
 		// indoor
 		OH5120 OH6460 OH7000 OH7100 OH8000 OH8100
 	END
+	
+	ACTION_DEFINE_ARRAY bg_alternate BEGIN
+		// outdoor
+		BG0900
+	END
 END
 
 
@@ -154,7 +144,7 @@ REQUIRE_PREDICATE GAME_IS ~eet bgt tutu_totsc bgee bg2ee tob ~ ~This mod is curr
 REQUIRE_PREDICATE DIRECTORY_EXISTS ~BGGO-Android~ ~Windows files are automatically used by core component: ...~
 SUBCOMPONENT ~BGGO for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 
-OUTER_SPRINT graphic_files ~%MOD_FOLDER%/base~
+OUTER_SPRINT graphic_files ~%MOD_FOLDER%~
 
 BEGIN ~Baldurs Gate Graphical Overhaul for Android~
 DESIGNATED 2 LABEL ~baldurs_gate_graphical_overhaul_android~
@@ -162,7 +152,7 @@ REQUIRE_PREDICATE GAME_IS ~eet bgee bg2ee~ ~The Android graphic mod is currently
 REQUIRE_PREDICATE DIRECTORY_EXISTS ~BGGO-Android~ ~Please download the Android pack: ...~
 SUBCOMPONENT ~BGGO for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 
-OUTER_SPRINT graphic_files ~BGGO-Android/base~
+OUTER_SPRINT graphic_files ~BGGO-Android~
 
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
@@ -176,13 +166,57 @@ BEGIN ~Baldurs Gate Graphical Overhaul Core~
 DESIGNATED 0 LABEL ~baldurs_gate_graphical_overhaul~
 REQUIRE_PREDICATE GAME_IS ~eet bgt tutu_totsc bgee bg2ee tob ~ ~This mod is currently for EET, BGT, BGEE, BG2EE, ToB and Tutu~
 
+// remove old goXXXX.bif in data directory
+// prevents a long loading time, if a bif file should still be present in the data folder during installation
+// close the program (e.g. Near Infinity, weidu)
+ACTION_TRY
+	ACTION_BASH_FOR ~data~ ~^go.*\.bif$~ BEGIN
+		DELETE + ~%BASH_FOR_FILESPEC%~
+	END
+WITH
+	DEFAULT
+		PRINT ~**********************************************************************************~
+		PRINT ~The %BASH_FOR_FILESPEC% is still in use by a program. e.g.: Near Infinity or WeiDU%LNL%Please close the programs and try again~
+		PRINT ~**********************************************************************************~
+		ACTION_RERAISE
+END
+	
 // source file for windows is standard
-ACTION_IF !VARIABLE_IS_SET graphic_files BEGIN
-	OUTER_SPRINT graphic_files ~%MOD_FOLDER%/base~
+ACTION_IF MOD_IS_INSTALLED "bggo.tp2" (ID_OF_LABEL "bggo.tp2" "baldurs_gate_graphical_overhaul_android" ) BEGIN
+	OUTER_SPRINT graphic_files ~BGGO-Android~
+END ELSE BEGIN
+	OUTER_SPRINT graphic_files ~%MOD_FOLDER%~
 END
 
 // install the graphics
 LAF ~INSTALL_MAIN~ 
 	INT_VAR debug = 0 // list of all new used files
-	STR_VAR source_files = EVAL ~%graphic_files%~ 
+	STR_VAR source_files = EVAL ~%graphic_files%~
+			base = ~base~
+END
+
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+/////                                                  \\\\\
+///// Alternative Graphics					           \\\\\
+/////                                                  \\\\\
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+
+BEGIN ~Baldurs Gate Graphical Overhaul Alternate Graphics~
+DESIGNATED 4 LABEL ~baldurs_gate_graphical_overhaul_alternate~
+REQUIRE_PREDICATE MOD_IS_INSTALLED "bggo.tp2" (ID_OF_LABEL "bggo.tp2" "baldurs_gate_graphical_overhaul" ) ~Core component is required~
+
+// source file for windows is standard
+ACTION_IF MOD_IS_INSTALLED "bggo.tp2" (ID_OF_LABEL "bggo.tp2" "baldurs_gate_graphical_overhaul_android" ) BEGIN
+	OUTER_SPRINT graphic_files ~BGGO-Android~
+END ELSE BEGIN
+	OUTER_SPRINT graphic_files ~%MOD_FOLDER%~
+END
+
+// install the graphics
+LAF ~INSTALL_MAIN~ 
+	INT_VAR debug = 0 // list of all new used files
+	STR_VAR source_files = EVAL ~%graphic_files%~
+			base = ~alternate~
 END

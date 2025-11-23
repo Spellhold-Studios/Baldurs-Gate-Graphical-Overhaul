@@ -1,0 +1,13 @@
+/* With BGGO Alternative Wyrms Crossing: The city wall is in the way*/
+ACTION_IF MOD_IS_INSTALLED "bg1npc.tp2" (ID_OF_LABEL "bg1npc.tp2" "bg1npc_project-banters_quests_interjections" ) BEGIN
+	COPY_EXISTING ~%are2%.bcs~ ~override~
+		DECOMPILE_AND_PATCH BEGIN
+			REPLACE_TEXTUALLY ~CreateCreature("P#IMANEL",\[258.1026\],NNE)~ ~CreateCreature("P#IMANEL",[601.617],14)~
+			REPLACE_TEXTUALLY ~CreateCreature("P#WOLF01",\[210.1030\],NNE)~ ~CreateCreature("P#WOLF01",[624.611],15)~
+			REPLACE_TEXTUALLY ~CreateCreature("P#WOLF02",\[225.1087\],NNE)~ ~CreateCreature("P#WOLF02",[554.608],14)~
+			REPLACE_TEXTUALLY ~CreateCreature("P#WOLF03",\[357.1100\],NNE)~ ~CreateCreature("P#WOLF03",[623.555],0)~
+			REPLACE_TEXTUALLY ~CreateCreature("P#WOLF04",\[280.1120\],NNE)~ ~CreateCreature("P#WOLF04",[562.566],13)~
+			REPLACE_TEXTUALLY ~CreateCreature("P#WOLF05",\[310.1055\],NNE)~ ~CreateCreature("P#WOLF05",[507.581],9)~
+		END
+END
+
