@@ -47,7 +47,7 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 	INT_VAR
 		fj_loc_x = $x_coord("%index%")
 		fj_loc_y = $y_coord("%index%")
-		fj_schedule = 0b111111111111111111111111 //Hours 0.00 - 24.00
+		fj_schedule = 0b00000000111000000000000000111111 //Hours 0.00 - 24.00
 		fj_flags = 0b00000000000000000001000001100011	// Visible, blend colours, not covered by wall, don't remove in combat
 		STR_VAR
 		fj_structure_type = animation
