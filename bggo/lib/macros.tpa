@@ -49,6 +49,9 @@ DEFINE_ACTION_FUNCTION ~BACKUP_BIFFING~ // for the uninstallation of the mod
 		ext = ~~
 BEGIN
 	ACTION_IF FILE_EXISTS ~override/%are2%%ext%~ BEGIN
+		ACTION_IF FILE_EXISTS ~%backup_ovr%/%are2%%ext%~ BEGIN
+			DELETE + ~%backup_ovr%/%are2%%ext%~
+		END
 		MOVE ~override/%are2%%ext%~ ~%backup_ovr%~
 	END
 END
