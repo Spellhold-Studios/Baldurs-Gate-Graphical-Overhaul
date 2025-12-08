@@ -632,6 +632,9 @@ BEGIN
 	ACTION_BASH_FOR ~%MOD_FOLDER%/base/bam~ ~^.+\.bam$~ BEGIN
 		COPY + ~%MOD_FOLDER%/base/bam/%BASH_FOR_FILE%~ ~%workspace%/bif/goMAIN~
 	END
+	
+	// scripts
+	COMPILE ~%MOD_FOLDER%/base/baf~
 
 	ACTION_IF ~%base%~ STR_EQ ~base~ BEGIN
 		//	BG1 Areas

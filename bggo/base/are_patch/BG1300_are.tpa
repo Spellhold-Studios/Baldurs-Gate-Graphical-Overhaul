@@ -19,3 +19,191 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 	END
 END
 LPM ~CLEAR_ARRAY~
+
+
+
+//////////////////////////////
+// Door0813 from BG0800
+//////////////////////////////
+GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+PHP_EACH triggers AS i => off BEGIN
+	READ_ASCII off triggername (32) NULL
+	PATCH_IF ~%triggername%~ STR_EQ ~Door0813~ BEGIN
+		WRITE_ASCII off ~bggo_BG0813~ #32
+	END
+END
+
+GET_OFFSET_ARRAY doors ARE_V10_DOORS
+PHP_EACH doors AS i => off BEGIN
+	READ_ASCII off doorname (32) NULL
+	PATCH_IF ~%doorname%~ STR_EQ ~Door0813~ BEGIN
+		WRITE_ASCII off + 0x9c ~bggo_BG0813~ #32
+	END
+END
+
+//////////////////////////////
+// Door0805 from BG0800
+//////////////////////////////
+
+// Add door and trigger
+GET_OFFSET_ARRAY doors ARE_V10_DOORS
+PHP_EACH doors AS i => off BEGIN
+	READ_ASCII off doorname (32) NULL
+	PATCH_IF ~%doorname%~ STR_EQ ~Door0805~ BEGIN
+		LPF fj_are_structure
+			INT_VAR fj_delete_mode = i
+			STR_VAR fj_structure_type = door
+		END 
+	END
+END
+
+LPF fj_are_structure
+    INT_VAR
+    fj_flags               = 0b01000010 //0b010000000
+    fj_open_box_left       = 1527
+    fj_open_box_top        = 75
+    fj_open_box_right      = 1573
+    fj_open_box_bottom     = 142
+    fj_closed_box_left     = 1566
+    fj_closed_box_top      = 77
+    fj_closed_box_right    = 1607
+    fj_closed_box_bottom   = 156
+    fj_cursor_idx          = 30
+	fj_trap_loc_x		   = 1620
+	fj_trap_loc_y		   = 126
+    fj_open_loc_x          = 1580
+    fj_open_loc_y          = 178
+    fj_closed_loc_x        = 1580
+    fj_closed_loc_y        = 178
+	fj_locked_diff		   = 30
+    fj_door_open_vert_0    = 1527 + (142 << 16)
+    fj_door_open_vert_1    = 1573 + (135 << 16)
+    fj_door_open_vert_2    = 1573 + (82  << 16)
+    fj_door_open_vert_3    = 1565 + (76  << 16)
+	fj_door_open_vert_4    = 1548 + (75  << 16)
+	fj_door_open_vert_5    = 1540 + (78  << 16)
+	fj_door_open_vert_6    = 1533 + (82  << 16)
+	fj_door_open_vert_7    = 1527 + (89  << 16)
+    fj_door_closed_vert_0  = 1566 + (135 << 16)
+	fj_door_closed_vert_1  = 1607 + (156 << 16)
+	fj_door_closed_vert_2  = 1607 + (104 << 16)
+	fj_door_closed_vert_3  = 1602 + (95  << 16)
+	fj_door_closed_vert_4  = 1597 + (88  << 16)
+    fj_door_closed_vert_5  = 1591 + (82  << 16)
+	fj_door_closed_vert_6  = 1584 + (77  << 16)
+	fj_door_closed_vert_7  = 1576 + (77  << 16)
+	fj_door_closed_vert_8  = 1570 + (80  << 16)
+	fj_door_closed_vert_9  = 1566 + (83  << 16)
+	fj_cell_open_vert_0    = 97 + (11 << 16)
+	fj_cell_open_vert_1    = 95 + (11 << 16)
+	fj_cell_closed_vert_0  = 54 + (11 << 16)
+	fj_cell_closed_vert_1  = 98 + (11 << 16)
+	fj_cell_closed_vert_2  = 99 + (11 << 16)
+	fj_cell_closed_vert_3  = 99 + (12 << 16)
+	fj_cell_closed_vert_4  = 10 + (12 << 16)
+	STR_VAR
+	fj_travel_trigger      = bggo_BG0805
+    fj_structure_type      = door
+    fj_name                = Door0805
+    fj_door_wed_id         = DOOR0805
+END
+
+LPF fj_are_structure
+    INT_VAR
+    fj_type         = 2    //travel
+    fj_box_left     = 1566
+    fj_box_top      = 77
+    fj_box_right    = 1607
+    fj_box_bottom   = 156
+    fj_cursor_idx   = 30   //door
+	fj_flags        = 0b000100000000000
+	fj_vertex_0  = 1566 + (135 << 16)
+	fj_vertex_1  = 1607 + (156 << 16)
+	fj_vertex_2  = 1607 + (104 << 16)
+	fj_vertex_3  = 1602 + (95  << 16)
+	fj_vertex_4  = 1597 + (88  << 16)
+	fj_vertex_5  = 1591 + (82  << 16)
+	fj_vertex_6  = 1584 + (77  << 16)
+	fj_vertex_7  = 1576 + (77  << 16)
+	fj_vertex_8  = 1570 + (80  << 16)
+	fj_vertex_9  = 1566 + (83  << 16)
+    STR_VAR
+    fj_structure_type   = region
+    fj_name             = bggo_BG0805
+    fj_destination_area = BG0805
+    fj_destination_name = Exit0800
+	fj_reg_script       = bggodest
+END
+
+LPF fj_are_structure
+    INT_VAR
+    fj_loc_x       = 1561
+    fj_loc_y       = 173
+    fj_orientation = 3
+    STR_VAR
+    fj_structure_type = entrance
+    fj_name           = Exit0805
+END
+
+/*
+//////////////////////////////////////////////////////////////
+// Door01 is visible in both BG1200 and BG1300.
+// For this reason, the shared trigger and door are renamed BG1200BG1300.
+// The door is now functional for future projects, but it can only be opened once 
+// the door flag has been changed from secret door to normal and a destination area has been specified.
+// The trigger can then be deactivated (via script or installation).
+// The door will function via a script so that when it is opened in BG1200, 
+// it is also open in BG1300 and the other way around. 
+///////////////////////////////////////////////////////////////
+// from BG1200
+// Rename the triggers to avoid confusion
+GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+PHP_EACH triggers AS i => off BEGIN
+	READ_ASCII off triggername (32) NULL
+	READ_SHORT off + 0x22 bound_left
+	PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND bound_left = 0 BEGIN
+		WRITE_ASCII off ~bggo_door01_trigger~ #32
+	END
+END
+
+LPF fj_are_structure
+    INT_VAR
+    fj_loc_x       = 11
+    fj_loc_y       = 495
+    fj_orientation = 0
+    STR_VAR
+    fj_structure_type = entrance
+    fj_name           = bggo_Door01_entrance
+ END
+  
+LPF fj_are_structure
+    INT_VAR
+    fj_flags               = 0b1000000 //0b010000000
+    fj_open_box_left       = 0
+    fj_open_box_top        = 405
+    fj_open_box_right      = 5
+    fj_open_box_bottom     = 465
+    fj_closed_box_left     = 4
+    fj_closed_box_top      = 405
+    fj_closed_box_right    = 36
+    fj_closed_box_bottom   = 492
+    fj_cursor_idx          = 30
+    fj_open_loc_x          = 11
+    fj_open_loc_y          = 495
+    fj_closed_loc_x        = 11
+    fj_closed_loc_y        = 495
+	fj_detect_diff 		   = 0xffff
+    fj_door_open_vert_0    = 0 + (465 << 16)
+    fj_door_open_vert_1    = 5 + (465 << 16)
+    fj_door_open_vert_2    = 5 + (405 << 16)
+    fj_door_open_vert_3    = 0 + (405 << 16)
+    fj_door_closed_vert_0  = 4  + (468 << 16)
+    fj_door_closed_vert_1  = 36 + (492 << 16)
+    fj_door_closed_vert_2  = 36 + (429 << 16)
+    fj_door_closed_vert_3  = 4  + (405 << 16)
+    STR_VAR
+    fj_structure_type      = door
+    fj_name                = bggo_Door01
+    fj_door_wed_id         = DOOR1300
+END
+*/

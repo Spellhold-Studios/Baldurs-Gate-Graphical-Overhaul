@@ -1,0 +1,26 @@
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0805.baf
+////////////////////////////////////////////////////////////
+// Door0805 trigger destination script
+////////////////////////////////////////////////////////////
+IF
+    Global("BG0805_entered","%EBaldursGate%",1)
+THEN
+    RESPONSE #100
+	TriggerActivation("Door0800",1)
+	TriggerActivation("bggo_BG1300",0)
+	SetGlobal("BG0805_entered","%EBaldursGate%",0)
+END
+
+IF
+    Global("BG0805_entered","%SEBaldursGate%",1)
+THEN
+    RESPONSE #100
+	TriggerActivation("Door0800",0)
+	TriggerActivation("bggo_BG1300",1)
+	SetGlobal("BG0805_entered","%SEBaldursGate%",0)
+END
+>>>>>>>> 
+
+EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0805.baf~
+	EVALUATE_BUFFER
+	

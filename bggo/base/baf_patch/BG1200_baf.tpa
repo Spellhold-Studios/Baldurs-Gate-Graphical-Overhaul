@@ -1,0 +1,51 @@
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG1200.baf
+//IF
+//	OpenState("Door1205",TRUE)
+//THEN
+//	RESPONSE #100
+//	SetGlobal("BG1200BG1300_open","%BaldursGateDocks%",1)
+//END
+
+IF
+	OpenState("Door1205",FALSE)
+THEN
+	RESPONSE #100
+	SetGlobal("BG1200BG1300_open","%BaldursGateDocks%",2)
+END
+
+/*
+IF
+	Global("BG1300BG1200_open","%SEBaldursGate%",0)
+THEN
+	RESPONSE #100
+	CloseDoor("BG1200BG1300")
+END
+IF
+	Global("BG1300BG1200_open","%SEBaldursGate%",1)
+THEN
+	RESPONSE #100
+	OpenDoor("BG1200BG1300")
+END
+
+IF
+	OpenState("BG1200BG1300",TRUE)
+THEN
+	RESPONSE #100
+	SetGlobal("BG1200BG1300_open","%BaldursGateDocks%",1)
+	SetGlobal("BG1300BG1200_open","%SEBaldursGate%",1)
+END
+
+IF
+	OpenState("BG1200BG1300",FALSE)
+THEN
+	RESPONSE #100
+	SetGlobal("BG1200BG1300_open","%BaldursGateDocks%",0)
+	SetGlobal("BG1300BG1200_open","%SEBaldursGate%",0)
+END
+*/
+>>>>>>>> 
+
+EXTEND_TOP ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG1200.baf~
+	EVALUATE_BUFFER
+
+

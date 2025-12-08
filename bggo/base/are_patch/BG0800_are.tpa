@@ -76,6 +76,41 @@ END
 LPM ~CLEAR_ARRAY~
 
 
+//////////////////////////////
+// Door0813 from BG0800
+//////////////////////////////
+
+// Rename the door to avoid confusion
+GET_OFFSET_ARRAY doors ARE_V10_DOORS
+PHP_EACH doors AS i => off BEGIN
+	READ_ASCII off doorname (32) NULL
+	PATCH_IF ~%doorname%~ STR_EQ ~Door Object 11~ BEGIN
+		WRITE_ASCII off ~Door0813~ #32
+	END
+END
+
+//////////////////////////////
+// Door0805 from BG0800
+//////////////////////////////
+
+// Rename the triggers to avoid confusion
+GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+PHP_EACH triggers AS i => off BEGIN
+	READ_ASCII off triggername (32) NULL
+	PATCH_IF ~%triggername%~ STR_EQ ~Door0805~ BEGIN
+		WRITE_ASCII off ~bggo_BG0805~ #32
+		WRITE_ASCII off + 0x7c ~bggodest~
+	END
+END
+
+GET_OFFSET_ARRAY doors ARE_V10_DOORS
+PHP_EACH doors AS i => off BEGIN
+	READ_ASCII off doorname (32) NULL
+	PATCH_IF ~%doorname%~ STR_EQ ~Door0805~ BEGIN
+		WRITE_ASCII off + 0x9c ~bggo_BG0805~ #32
+	END
+END
+
 //  I couldn't get the "AmbientActivate" action to work properly
 //  The flame to the left of the double door is hidden by the open door.
 /*
