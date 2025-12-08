@@ -3,6 +3,21 @@
 // Door0813 north of BG1300 and south of BG0800
 ////////////////////////////////////////////////////////////
 IF
+	OpenState("Door0813",TRUE)
+THEN
+	RESPONSE #100
+	SetGlobal("bggo_door_open_0813","%EBaldursGate%",1)
+	Continue()
+END
+IF
+	OpenState("Door0813",FALSE)
+THEN
+	RESPONSE #100
+	SetGlobal("bggo_door_open_0813","%EBaldursGate%",0)
+	Continue()
+END
+
+IF
 	Global("bggo_door_open_0813","%SEBaldursGate%",0)
 THEN
 	RESPONSE #100
@@ -20,6 +35,22 @@ END
 ////////////////////////////////////////////////////////////
 // Door0805 north of BG1300 and south of BG0800
 ////////////////////////////////////////////////////////////
+IF
+	OpenState("Door0805",TRUE)
+THEN
+	RESPONSE #100
+	SetGlobal("%EBaldursGate%_door_open_0805","%EBaldursGate%",1)
+	SetGlobal("%EBaldursGate%_door_unlocked_0805","%EBaldursGate%",1)
+	Continue()
+END
+IF
+	OpenState("Door0805",FALSE)
+THEN
+	RESPONSE #100
+	SetGlobal("%EBaldursGate%_door_open_0805","%EBaldursGate%",0)
+	Continue()
+END
+
 IF
     Global("%SEBaldursGate%_door_unlocked_0805","%SEBaldursGate%",1)
 THEN
@@ -42,24 +73,32 @@ THEN
 	Continue()
 END
 
+>>>>>>>> 
+
+EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0800.baf~
+	EVALUATE_BUFFER
+
+
+<<<<<<<< .../%MOD_FOLDER%/Door0705.baf
+////////////////////////////////////////////////////////////
+//  Door0705 script: The flame to the left of the double door is hidden by the open door.
+////////////////////////////////////////////////////////////
 IF
-	OpenState("Door0805",TRUE)
+  OpenState("Door0705",TRUE)
 THEN
-	RESPONSE #100
-	SetGlobal("%EBaldursGate%_door_open_0805","%EBaldursGate%",1)
-	SetGlobal("%EBaldursGate%_door_unlocked_0805","%EBaldursGate%",1)
-	Continue()
+  RESPONSE #100
+    AmbientActivate("FlmDoor0705",FALSE)
+    Continue()
 END
+
 IF
-	OpenState("Door0805",FALSE)
+  OpenState("Door0705",FALSE)
 THEN
-	RESPONSE #100
-	SetGlobal("%EBaldursGate%_door_open_0805","%EBaldursGate%",0)
+  RESPONSE #100
+	AmbientActivate("FlmDoor0705",TRUE)
 	Continue()
 END
 >>>>>>>> 
 
-
-EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0800.baf~
-	EVALUATE_BUFFER
+COMPILE ~.../%MOD_FOLDER%/Door0705.baf~
 	

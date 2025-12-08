@@ -17,9 +17,40 @@ THEN
 	Continue()
 END
 
+IF
+	Global("bggo_door_open_0813","%EBaldursGate%",0)
+THEN
+	RESPONSE #100
+	CloseDoor("Door0813")
+	Continue()
+END
+IF
+	Global("bggo_door_open_0813","%EBaldursGate%",1)
+THEN
+	RESPONSE #100
+	OpenDoor("Door0813")
+	Continue()
+END
+
 ////////////////////////////////////////////////////////////
 // Door0805 north of BG1300 and south of BG0800
 ////////////////////////////////////////////////////////////
+IF
+	OpenState("Door0805",TRUE)
+THEN
+	RESPONSE #100
+	SetGlobal("%SEBaldursGate%_door_open_0805","%SEBaldursGate%",1)
+	SetGlobal("%SEBaldursGate%_door_unlocked_0805","%SEBaldursGate%",1)
+	Continue()
+END
+IF
+	OpenState("Door0805",FALSE)
+THEN
+	RESPONSE #100
+	SetGlobal("%SEBaldursGate%_door_open_0805","%SEBaldursGate%",0)
+	Continue()
+END
+
 IF
     Global("%EBaldursGate%_door_unlocked_0805","%EBaldursGate%",1)
 THEN
@@ -42,19 +73,39 @@ THEN
 	Continue()
 END
 
+////////////////////////////////////////////////////////////
+// Door01 east of BG1200 and west of BG1300
+////////////////////////////////////////////////////////////
+
 IF
-	OpenState("Door0805",TRUE)
+	OpenState("bggo_Door01",TRUE)
 THEN
 	RESPONSE #100
-	SetGlobal("%SEBaldursGate%_door_open_0805","%SEBaldursGate%",1)
-	SetGlobal("%SEBaldursGate%_door_unlocked_0805","%SEBaldursGate%",1)
+	SetGlobal("%SEBaldursGate%_door_open_door01","%SEBaldursGate%",1)
+	Continue()
+END
+
+IF
+	OpenState("bggo_Door01",FALSE)
+THEN
+	RESPONSE #100
+	SetGlobal("%SEBaldursGate%_door_open_door01","%SEBaldursGate%",0)
+	Continue()
+END
+
+
+IF
+	Global("%BaldursGateDocks%_door_open_door01","%BaldursGateDocks%",0)
+THEN
+	RESPONSE #100
+	CloseDoor("bggo_Door01")
 	Continue()
 END
 IF
-	OpenState("Door0805",FALSE)
+	Global("%BaldursGateDocks%_door_open_door01","%BaldursGateDocks%",1)
 THEN
 	RESPONSE #100
-	SetGlobal("%SEBaldursGate%_door_open_0805","%SEBaldursGate%",0)
+	OpenDoor("bggo_Door01")
 	Continue()
 END
 

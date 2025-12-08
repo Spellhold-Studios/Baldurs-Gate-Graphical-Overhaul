@@ -1,51 +1,42 @@
 <<<<<<<< .../%MOD_FOLDER%/inlined_BG1200.baf
-//IF
-//	OpenState("Door1205",TRUE)
-//THEN
-//	RESPONSE #100
-//	SetGlobal("BG1200BG1300_open","%BaldursGateDocks%",1)
-//END
-
+////////////////////////////////////////////////////////////
+// Door01 east of BG1200 and west of BG1300
+////////////////////////////////////////////////////////////
 IF
-	OpenState("Door1205",FALSE)
+	OpenState("bggo_Door01",TRUE)
 THEN
 	RESPONSE #100
-	SetGlobal("BG1200BG1300_open","%BaldursGateDocks%",2)
-END
-
-/*
-IF
-	Global("BG1300BG1200_open","%SEBaldursGate%",0)
-THEN
-	RESPONSE #100
-	CloseDoor("BG1200BG1300")
-END
-IF
-	Global("BG1300BG1200_open","%SEBaldursGate%",1)
-THEN
-	RESPONSE #100
-	OpenDoor("BG1200BG1300")
+	SetGlobal("%BaldursGateDocks%_door_open_door01","%BaldursGateDocks%",1)
+	Continue()
 END
 
 IF
-	OpenState("BG1200BG1300",TRUE)
+	OpenState("bggo_Door01",FALSE)
 THEN
 	RESPONSE #100
-	SetGlobal("BG1200BG1300_open","%BaldursGateDocks%",1)
-	SetGlobal("BG1300BG1200_open","%SEBaldursGate%",1)
+	SetGlobal("%BaldursGateDocks%_door_open_door01","%BaldursGateDocks%",0)
+	Continue()
 END
 
+
 IF
-	OpenState("BG1200BG1300",FALSE)
+	Global("%SEBaldursGate%_door_open_door01","%SEBaldursGate%",0)
 THEN
 	RESPONSE #100
-	SetGlobal("BG1200BG1300_open","%BaldursGateDocks%",0)
-	SetGlobal("BG1300BG1200_open","%SEBaldursGate%",0)
+	CloseDoor("bggo_Door01")
+	Continue()
 END
-*/
+IF
+	Global("%SEBaldursGate%_door_open_door01","%SEBaldursGate%",1)
+THEN
+	RESPONSE #100
+	OpenDoor("bggo_Door01")
+	Continue()
+END
+
 >>>>>>>> 
 
-EXTEND_TOP ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG1200.baf~
+EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG1200.baf~
 	EVALUATE_BUFFER
 
 

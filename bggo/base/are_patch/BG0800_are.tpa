@@ -77,7 +77,7 @@ LPM ~CLEAR_ARRAY~
 
 
 //////////////////////////////
-// Door0813 from BG0800
+// Door0813 from BG1300
 //////////////////////////////
 
 // Rename the door to avoid confusion
@@ -90,7 +90,7 @@ PHP_EACH doors AS i => off BEGIN
 END
 
 //////////////////////////////
-// Door0805 from BG0800
+// Door0805 from BG1300
 //////////////////////////////
 
 // Rename the triggers to avoid confusion
@@ -111,9 +111,10 @@ PHP_EACH doors AS i => off BEGIN
 	END
 END
 
-//  I couldn't get the "AmbientActivate" action to work properly
-//  The flame to the left of the double door is hidden by the open door.
-/*
+////////////////////////////////////////////////////////////
+//  Door0705  The flame to the left of the double door is hidden by the open door.
+////////////////////////////////////////////////////////////
+
 PATCH_DEFINE_ARRAY x_coord BEGIN 1777 END
 PATCH_DEFINE_ARRAY y_coord BEGIN 2339 END
 PATCH_PHP_EACH x_coord AS index => x BEGIN
@@ -127,49 +128,26 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 		fj_transparent = 0
 		STR_VAR
 		fj_structure_type = animation
-		fj_name = FlmDoor1
+		fj_name = FlmDoor0705
 		fj_bam_resref = FLAME2N //bgrd
 	END
 END
 LPM ~CLEAR_ARRAY~
 
-INNER_ACTION BEGIN
-
-<<<<<<<< .../bBG0800.baf
-
-
-IF
-  OpenState("Door0705",TRUE)
-  TimeGT(20)
-  TimeLT(6)
-THEN
-  RESPONSE #100
-    StaticStart("FlmDoor1")
-    AmbientActivate("FlmDoor1",TRUE)
-    Continue()
+// Rename the triggers to avoid confusion
+GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+PHP_EACH triggers AS i => off BEGIN
+	READ_ASCII off triggername (32) NULL
+	PATCH_IF ~%triggername%~ STR_EQ ~Door0705~ BEGIN
+		WRITE_ASCII off ~bggo_BG0705~ #32
+	END
 END
 
-IF
-  OpenState("Door0705",FALSE)
-  TimeGT(20)
-  TimeLT(6)
-THEN
-  RESPONSE #100
-	StaticStop("FlmDoor1")
-	AmbientActivate("FlmDoor1",FALSE)
-	Continue()
+GET_OFFSET_ARRAY doors ARE_V10_DOORS
+PHP_EACH doors AS i => off BEGIN
+	READ_ASCII off doorname (32) NULL
+	PATCH_IF ~%doorname%~ STR_EQ ~Door0705~ BEGIN
+		WRITE_ASCII off + 0x9c ~bggo_BG0705~ #32
+		WRITE_ASCII off + 0x80 ~Door0705~
+	END
 END
-
-IF
-  TimeGT(5)
-  TimeLT(21)
-THEN
-  RESPONSE #100
-	AmbientActivate("FlmDoor1",FALSE)
-	Continue()
-END
->>>>>>>>
-
-	EXTEND_BOTTOM ~BG0800.BCS~ ~.../bBG0800.baf~
-END
-*/

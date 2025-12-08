@@ -20,6 +20,23 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 END
 LPM ~CLEAR_ARRAY~
 
+//////////////////////////////
+// Add actor, who sits in BG1200 at this position
+//////////////////////////////
+LPF fj_are_structure
+    INT_VAR
+    fj_loc_x          = 33
+    fj_loc_y          = 598
+    fj_dest_x         = 33
+    fj_dest_y         = 598
+    fj_animation      = 0x4100
+    fj_orientation    = 2     //SW
+	fj_schedule       = 0b000111111111111111110000
+    STR_VAR
+    fj_structure_type = actor
+    fj_name           = "Male Townsfolk"
+    fj_cre_resref     = MTOWBASC
+  END
 
 
 //////////////////////////////
@@ -145,7 +162,7 @@ LPF fj_are_structure
     fj_name           = Exit0805
 END
 
-/*
+
 //////////////////////////////////////////////////////////////
 // Door01 is visible in both BG1200 and BG1300.
 // For this reason, the shared trigger and door are renamed BG1200BG1300.
@@ -155,6 +172,7 @@ END
 // The door will function via a script so that when it is opened in BG1200, 
 // it is also open in BG1300 and the other way around. 
 ///////////////////////////////////////////////////////////////
+
 // from BG1200
 // Rename the triggers to avoid confusion
 GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
@@ -173,12 +191,12 @@ LPF fj_are_structure
     fj_orientation = 0
     STR_VAR
     fj_structure_type = entrance
-    fj_name           = bggo_Door01_entrance
+    fj_name           = bggo_Door01_exit
  END
   
 LPF fj_are_structure
     INT_VAR
-    fj_flags               = 0b1000000 //0b010000000
+    fj_flags               = 0b010000000
     fj_open_box_left       = 0
     fj_open_box_top        = 405
     fj_open_box_right      = 5
@@ -206,4 +224,3 @@ LPF fj_are_structure
     fj_name                = bggo_Door01
     fj_door_wed_id         = DOOR1300
 END
-*/

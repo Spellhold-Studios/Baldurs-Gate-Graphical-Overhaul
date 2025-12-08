@@ -84,7 +84,7 @@ LPF fj_are_structure
     fj_orientation = 2
     STR_VAR
     fj_structure_type = entrance
-    fj_name           = bggo_Door01_entrance
+    fj_name           = bggo_Door01_exit
  END
 
 GET_OFFSET_ARRAY doors ARE_V10_DOORS
@@ -100,7 +100,7 @@ END
   
 LPF fj_are_structure
     INT_VAR
-    fj_flags               = 0b1000000 //0b010000000
+    fj_flags               = 0b010000000
     fj_open_box_left       = 4236
     fj_open_box_top        = 420
     fj_open_box_right      = 4284
