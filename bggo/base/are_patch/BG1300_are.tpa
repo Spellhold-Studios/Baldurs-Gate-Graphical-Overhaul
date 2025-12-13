@@ -68,6 +68,7 @@ STR_VAR
 RET
 	travel_trigger_found
 	bggo_deleted
+	existing_door_name
 END
 
 LPF CreateAreaTravelScript
@@ -77,6 +78,7 @@ LPF CreateAreaTravelScript
 		from_area 	   = EVAL ~%SEBaldursGate%~
 		to_area   	   = EVAL ~%EBaldursGate%~
 		door_name 	   = Door0805
+		old_door_name  = EVAL ~%existing_door_name%~
 END
 
 // Install only, if the door is not working or found

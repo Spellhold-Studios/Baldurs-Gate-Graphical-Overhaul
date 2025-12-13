@@ -82,7 +82,9 @@ LPF Door_trigger_script_patch
 STR_VAR
 	door_name_wed	 	= DOOR01
 RET
+	travel_trigger_found
 	bggo_deleted
+	existing_door_name
 END
 
 LPF CreateAreaTravelScript
@@ -90,6 +92,7 @@ LPF CreateAreaTravelScript
 		from_area 	   = EVAL ~%BaldursGateDocks%~
 		to_area   	   = EVAL ~%SEBaldursGate%~
 		door_name 	   = Door01
+		old_door_name  = EVAL ~%existing_door_name%~
 END
 
 LPF fj_are_structure

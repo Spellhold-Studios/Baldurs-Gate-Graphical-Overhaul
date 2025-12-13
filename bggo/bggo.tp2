@@ -19,7 +19,7 @@ ALWAYS
 	INCLUDE ~%MOD_FOLDER%/lib/debug.tpa~
 	INCLUDE ~%MOD_FOLDER%/lib/a7_pvrz_tis.tpa~
 	INCLUDE ~%MOD_FOLDER%/lib/a7_area_references.tpa~
-	INCLUDE ~%MOD_FOLDER%/lib/functions.tpa~
+	INCLUDE ~%MOD_FOLDER%/lib/door_functions.tpa~
 	INCLUDE ~%MOD_FOLDER%/lib/door_baf_templates.tpa~
 
 	ACTION_IF GAME_IS ~eet bgee bg2ee~ BEGIN

@@ -1,0 +1,31 @@
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0159.baf
+////////////////////////////////////////////////////////////
+// Door0805 trigger destination script
+////////////////////////////////////////////////////////////
+IF
+    Global("BG0159_entered","%NWBaldursGate%",1)
+THEN
+    RESPONSE #100
+	TriggerActivation("Door0100",1)
+	TriggerActivation("bggo_BG0200",0)
+	SetGlobal("BG0159_entered","%EBaldursGate%",0)
+END
+
+IF
+    Global("BG0159_entered","%NBaldursGate%",1)
+THEN
+    RESPONSE #100
+	TriggerActivation("Door0100",0)
+	TriggerActivation("bggo_BG0200",1)
+	SetGlobal("BG0159_entered","%SEBaldursGate%",0)
+END
+>>>>>>>> 
+
+ACTION_IF FILE_EXISTS_IN_GAME ~%are2%.bcs~ BEGIN
+	EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0159.baf~ EVAL
+		
+END ELSE BEGIN
+	COPY ~.../%MOD_FOLDER%/inlined_BG0159.baf~ ~%workspace%/bif/temp/%are2%.baf~
+	COMPILE EVAL ~%workspace%/bif/temp/%are2%.baf~
+END
+	

@@ -73,3 +73,68 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 	END
 END
 LPM ~CLEAR_ARRAY~
+
+////////////////////////////////////////////////////////////
+//  Door0157  The flame to the left of the door is hidden by the open door.
+////////////////////////////////////////////////////////////
+
+PATCH_DEFINE_ARRAY x_coord BEGIN 3641 END
+PATCH_DEFINE_ARRAY y_coord BEGIN 2170 END
+PATCH_PHP_EACH x_coord AS index => x BEGIN
+	LPM ~DELETE_EXISTING_ANIMATIONS~
+	LPF fj_are_structure
+	INT_VAR
+		fj_loc_x = $x_coord("%index%")
+		fj_loc_y = $y_coord("%index%")
+		fj_schedule = 0b111000000000000000111111 //Hours 22.00 - 07.00
+		fj_flags = 0b00000000000000000001000001100011	// Visible, blend colours, not covered by wall, don't remove in combat
+		fj_transparent = 0
+		STR_VAR
+		fj_structure_type = animation
+		fj_name = FlmDoor0157
+		fj_bam_resref = FLAME2N //bgrd
+	END
+END
+LPM ~CLEAR_ARRAY~
+
+// Create the doorscript for animations
+LPF CreateDoorScriptPatchAnimation
+STR_VAR
+	animation_name   = FlmDoor0157
+	door_name   	 = Door0157
+END
+
+// Rename the triggers to avoid confusion add door script
+LPF Door_trigger_script_patch
+STR_VAR
+	door_name		 = Door0157
+	new_trigger_name = bggo_BG0157
+	door_script		 = Door0157
+END
+
+//////////////////////////////
+// Door0159 from BG0200
+//////////////////////////////
+LPF CreateTriggerScriptBggodest
+STR_VAR
+	script_name = dest0159
+	area_name = EVAL ~%NWBaldursGate_House1_L1%~
+RET
+	script_name
+END
+
+LPF Door_trigger_script_patch
+STR_VAR
+	door_name	 		= Door0159
+	new_trigger_name	= bggo_BG0159
+	trigger_script   	= EVAL ~%script_name%~
+END
+
+LPF CreateAreaTravelScript
+	INT_VAR
+		bggo_locked	   = 1
+	STR_VAR
+		from_area 	   = EVAL ~%NWBaldursGate%~
+		to_area   	   = EVAL ~%NBaldursGate%~
+		door_name 	   = Door0159
+END

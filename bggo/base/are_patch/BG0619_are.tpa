@@ -10,7 +10,7 @@ PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/base/are_patch/%identical_area%_are.tpa~ BEGI
 END
 
 ////////////////////////////////////////////
-// trigger to leave to BG1300
+// trigger to leave to BG1100
 ////////////////////////////////////////////
 LPF fj_are_structure
     INT_VAR

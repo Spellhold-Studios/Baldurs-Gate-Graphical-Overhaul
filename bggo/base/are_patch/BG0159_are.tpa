@@ -8,3 +8,27 @@ SPRINT identical_area "BG0169"
 PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/base/are_patch/%identical_area%_are.tpa~ BEGIN // add animation for braziers, candles ...
 	PATCH_INCLUDE ~%MOD_FOLDER%/base/are_patch/%identical_area%_are.tpa~
 END
+
+////////////////////////////////////////////
+// trigger to leave to BG0200
+////////////////////////////////////////////
+LPF fj_are_structure
+    INT_VAR
+    fj_type         = 2    //travel
+    fj_box_left     = 419
+    fj_box_top      = 302
+    fj_box_right    = 500
+    fj_box_bottom   = 420
+	fj_flags        = 0b100000000
+    fj_cursor_idx   = 30   //door
+	fj_vertex_0  = 419 + (341 << 16)
+	fj_vertex_1  = 419 + (341 << 16)
+	fj_vertex_2  = 419 + (420 << 16)
+	fj_vertex_3  = 500 + (380 << 16)
+	fj_vertex_4  = 500 + (302 << 16)
+    STR_VAR
+    fj_structure_type   = region
+    fj_name             = bggo_BG0200
+    fj_destination_area = BG0200
+    fj_destination_name = Exit0159
+END
