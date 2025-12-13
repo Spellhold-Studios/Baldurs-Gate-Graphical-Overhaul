@@ -37,3 +37,126 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 	END
 END
 LPM ~CLEAR_ARRAY~
+
+//////////////////////////////
+// Door0619 from BG0600
+//////////////////////////////
+LPF CreateTriggerScriptBggodest
+STR_VAR
+	script_name = dest0619
+	area_name = BG0619
+RET
+	script_name
+END
+
+LPF Door_trigger_script_patch
+STR_VAR
+	door_name_wed	 	= DOOR01
+	new_trigger_name	= bggo_0619
+	trigger_script   	= EVAL ~%script_name%~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+END
+
+LPF CreateAreaTravelScript
+	INT_VAR
+		bggo_locked	   = 1
+	STR_VAR
+		from_area 	   = EVAL ~%SWBaldursGate%~
+		to_area   	   = EVAL ~%WBaldursGate%~
+		door_name 	   = DOOR0619
+		old_door_name  = EVAL ~%existing_door_name%~
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = 0b01000010 //0b010000000
+		fj_open_box_left       = 3393
+		fj_open_box_top        = 81
+		fj_open_box_right      = 3426
+		fj_open_box_bottom     = 168
+		fj_closed_box_left     = 3390
+		fj_closed_box_top      = 54
+		fj_closed_box_right    = 3428
+		fj_closed_box_bottom   = 152
+		fj_cursor_idx          = 30
+		fj_trap_loc_x		   = 3412
+		fj_trap_loc_y		   = 168
+		fj_open_loc_x          = 3439
+		fj_open_loc_y          = 164
+		fj_closed_loc_x        = 3439
+		fj_closed_loc_y        = 164
+		fj_locked_diff		   = 30
+		fj_door_open_vert_0    = 3426 + (168 << 16)
+		fj_door_open_vert_1    = 3393 + (149 << 16)
+		fj_door_open_vert_2    = 3393 + (84  << 16)
+		fj_door_open_vert_3    = 3396 + (81  << 16)
+		fj_door_open_vert_4    = 3426 + (102 << 16)
+		fj_door_closed_vert_0  = 3428 + (125 << 16)
+		fj_door_closed_vert_1  = 3390 + (152 << 16)
+		fj_door_closed_vert_2  = 3390 + (81  << 16)
+		fj_door_closed_vert_3  = 3428 + (54  << 16)
+
+		fj_cell_open_vert_0    = 213 + (13 << 16)
+		fj_cell_open_vert_1    = 212 + (12 << 16)
+		fj_cell_open_vert_2    = 211 + (11 << 16)
+		fj_cell_closed_vert_0  = 211 + (11 << 16)
+		fj_cell_closed_vert_1  = 213 + (9 << 16)
+		fj_cell_closed_vert_2  = 213 + (10 << 16)
+		fj_cell_closed_vert_3  = 212 + (10 << 16)
+		fj_cell_closed_vert_4  = 212 + (11 << 16)
+		STR_VAR
+		fj_travel_trigger      = bggo_BG0619
+		fj_structure_type      = door
+		fj_name                = Door0619
+		fj_door_wed_id         = Door01
+	END
+END
+
+PATCH_IF travel_trigger_found = 0 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_type         = 2    //travel
+		fj_box_left     = 3391
+		fj_box_top      = 64
+		fj_box_right    = 3425
+		fj_box_bottom   = 143
+		fj_cursor_idx   = 30   //door
+		fj_flags        = 0b000100000000000
+		fj_vertex_0  = 3425 + (121 << 16)
+		fj_vertex_1  = 3391 + (143 << 16)
+		fj_vertex_2  = 3391 + (85  << 16)
+		fj_vertex_3  = 3425 + (64  << 16)
+		STR_VAR
+		fj_structure_type   = region
+		fj_name             = bggo_BG0619
+		fj_destination_area = BG0619
+		fj_destination_name = Exit0600
+		fj_reg_script       = dest0619
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 3456
+		fj_loc_y       = 181
+		fj_orientation = 0
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = Exit0619
+	END
+END
+
+
+
+
+
+
+
+
+
+
+
+

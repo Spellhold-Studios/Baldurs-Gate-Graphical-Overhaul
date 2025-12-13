@@ -1,6 +1,0 @@
-IF
-    True()
-THEN
-    RESPONSE #100
-	SetGlobal("BG0805_entered","MYAREA",1)
-END

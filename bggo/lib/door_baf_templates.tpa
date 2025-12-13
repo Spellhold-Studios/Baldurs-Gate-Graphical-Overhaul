@@ -1,0 +1,62 @@
+<<<<<<<< .../%MOD_FOLDER%/inlined_door_flame.baf
+IF
+  OpenState("%door_name%",TRUE)
+THEN
+  RESPONSE #100
+    AmbientActivate("%animation_name%",FALSE)
+    Continue()
+END
+
+IF
+  OpenState("%door_name%",FALSE)
+THEN
+  RESPONSE #100
+	AmbientActivate("%animation_name%",TRUE)
+	Continue()
+END
+>>>>>>>> 
+
+<<<<<<<< .../%MOD_FOLDER%/inlined_door_open_close.baf
+IF
+	OpenState("%door_name%",TRUE)
+THEN
+	RESPONSE #100
+	SetGlobal("%from_area%_open_%door_name%","%from_area%",1)
+	%set_unlock_door%
+	Continue()
+END
+IF
+	OpenState("%door_name%",FALSE)
+THEN
+	RESPONSE #100
+	SetGlobal("%from_area%_open_%door_name%","%from_area%",0)
+	Continue()
+END
+
+%global_unlock_door%
+
+IF
+	Global("%to_area%_open_%door_name%","%to_area%",0)
+THEN
+	RESPONSE #100
+	CloseDoor("%door_name%")
+	Continue()
+END
+IF
+	Global("%to_area%_open_%door_name%","%to_area%",1)
+THEN
+	RESPONSE #100
+	OpenDoor("%door_name%")
+	Continue()
+END
+
+>>>>>>>> 
+
+<<<<<<<< .../%MOD_FOLDER%/inlined_bggodest.baf
+IF
+    True()
+THEN
+    RESPONSE #100
+	SetGlobal("%area_name%_entered","MYAREA",1)
+END
+>>>>>>>>

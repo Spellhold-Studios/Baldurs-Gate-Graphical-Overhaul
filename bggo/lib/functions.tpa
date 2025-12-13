@@ -1,0 +1,241 @@
+
+DEFINE_PATCH_FUNCTION Door_trigger_script_patch
+	INT_VAR
+		debug = 0
+		bggo_deleted		= 0		
+		travel_trigger_found = 0	
+	STR_VAR
+		door_name_wed		= ""	// doorid from the wed file
+		door_name			= ""
+		new_trigger_name 	= ""    // name of the new travel trigger, does not overwrite existing
+		door_script		 	= ""	// door script file
+		trigger_script   	= ""	// trigger script file
+		existing_door_name  = ""	
+	RET
+		bggo_deleted			//  0: existing door is used; 1: non working or not existing door, new one will be installed
+		travel_trigger_found    // 0: install new one 1: use old one
+		existing_door_name
+BEGIN
+	SET found_door = 0
+	// prepare scripts
+	PATCH_IF ~%door_script%~ STR_CMP ~~ BEGIN
+		PATCH_IF FILE_EXISTS_IN_GAME ~%door_script%.bcs~ BEGIN
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%door_script%.bcs~ ~override~
+			END
+			SPRINT EVAL ~door_script_path~ ~override~
+			SPRINT ext ~bcs~
+		END ELSE BEGIN
+			SPRINT EVAL ~door_script_path~ ~.../%MOD_FOLDER%~
+			SPRINT ext ~baf~
+		END
+//		PATCH_IF debug BEGIN PATCH_PRINT ~door_script: %door_script_path%/%door_script%.%ext%~ END
+	END
+	PATCH_IF ~%trigger_script%~ STR_CMP ~~ BEGIN
+		PATCH_IF FILE_EXISTS_IN_GAME ~%trigger_script%.bcs~ BEGIN
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%trigger_script%.bcs~ ~override~
+			END
+			SPRINT EVAL  ~trigger_script_path~ ~override~
+			SPRINT ext ~bcs~
+		END ELSE BEGIN
+			SPRINT EVAL  ~trigger_script_path~ ~.../%MOD_FOLDER%~
+			SPRINT ext ~baf~
+		END
+//		PATCH_IF debug BEGIN PATCH_PRINT ~trigger_script: %trigger_script_path%/%trigger_script%.%ext%~ END
+	END
+	
+	// trigger and script set for modded doors
+	// door check
+	GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off + 0x20 door_id
+		READ_LONG off + 0x28 flag
+		READ_ASCII off doorname (32) NULL
+		PATCH_IF ~%door_name_wed%~ STR_CMP ~~ BEGIN
+			PATCH_IF ~%door_id%~ STR_EQ ~%door_name_wed%~ BEGIN // found existing door with same doorid (wed file)
+				SET found_door = 1
+				
+				// working and not working door
+				PATCH_IF flag = 0 BEGIN //non working door - delete
+					SET bggo_deleted = 1 // => install new one
+					LPF fj_are_structure
+						INT_VAR fj_delete_mode = i
+						STR_VAR fj_structure_type = door
+					END 
+					PATCH_IF debug BEGIN PATCH_PRINT ~deleted non working %doorname%~ END
+				END ELSE BEGIN // working door
+					READ_ASCII off existing_door_name (32) NULL		// for the scripts
+					SPRINT door_name ~%existing_door_name%~
+					SET bggo_deleted = 0
+					READ_ASCII off + 0x9c travel_trigger_name (32) NULL // this one we have to change
+					
+					// set or rename traveltrigger
+					PATCH_IF ~%travel_trigger_name%~ STR_EQ ~~ BEGIN	// if the travel trigger is missing
+						WRITE_ASCIIE off + 0x9c ~%new_trigger_name%~
+						SPRINT travel_trigger_name ~%new_trigger_name%~
+						PATCH_IF debug BEGIN PATCH_PRINT ~door_wed: %doorname% - new traveltrigger: %new_trigger_name%~ END
+					END ELSE BEGIN
+						// doorname and triggername must have different names for the script triggers
+						PATCH_IF ~%existing_door_name%~ STR_EQ ~%travel_trigger_name%~ BEGIN 
+							SPRINT new_trigger_name ~bggo_%travel_trigger_name%~		// bggo_ to make it unique
+							WRITE_ASCIIE off + 0x9c ~%new_trigger_name%~
+							PATCH_IF debug BEGIN PATCH_PRINT ~door_wed: %doorname% - rename traveltrigger: %new_trigger_name%~ END
+						END ELSE BEGIN 
+							SPRINT new_trigger_name ~%travel_trigger_name%~
+							PATCH_IF debug BEGIN PATCH_PRINT ~door_wed: %doorname% - different traveltrigger: %new_trigger_name%~ END
+						END
+					END
+//					PATCH_IF debug BEGIN PATCH_PRINT ~travel_trigger_name: %new_trigger_name%~ END
+					
+					// set or extend door script for existing doors
+					PATCH_IF ~%door_script%~ STR_CMP ~~ BEGIN
+						READ_ASCII off + 0x80 door_scriptname
+						PATCH_IF ~%door_scriptname%~ STR_EQ ~~ BEGIN
+							WRITE_ASCIIE off + 0x80 ~%door_script%~
+							INNER_ACTION BEGIN
+								ACTION_IF ~%door_script_path%~ STR_CMP ~override~ 
+										AND FILE_EXISTS ~%workspace%/bif/temp/%door_script%.%ext%~ BEGIN
+									COMPILE ~%workspace%/bif/temp/%door_script%.%ext%~ EVAL 
+								END
+							END
+							PATCH_IF debug BEGIN PATCH_PRINT ~%doorname% - new script: %door_script%.%ext%~ END
+						END ELSE BEGIN
+							INNER_ACTION BEGIN
+								EXTEND_BOTTOM ~%door_scriptname%.bcs~ ~%workspace%/bif/temp/%door_script%.%ext%~ EVAL
+							END
+							PATCH_IF debug BEGIN PATCH_PRINT ~%doorname% - extend: %door_scriptname% with %door_script%.%ext% ~ END
+						END
+					END
+				END
+			END
+		END
+		
+		// set or extend door script
+		PATCH_IF ~%door_name_wed%~ STR_EQ ~~ AND ~%door_name%~ STR_CMP ~~ BEGIN
+			PATCH_IF ~%door_name%~ STR_EQ ~%doorname%~ BEGIN
+				found_door = 1
+				SPRINT existing_door_name ~%doorname%~	// for the scripts
+				
+				// set new traveltrigger
+				WRITE_ASCIIE off + 0x9c ~%new_trigger_name%~ #32
+				PATCH_IF debug BEGIN PATCH_PRINT ~door: %doorname% - new traveltrigger: %new_trigger_name%~ END
+				
+				// set or extend door script for existing doors
+				PATCH_IF ~%door_script%~ STR_CMP ~~ BEGIN
+					READ_ASCII off + 0x80 door_scriptname
+					PATCH_IF ~%door_scriptname%~ STR_EQ ~~ BEGIN
+						WRITE_ASCIIE off + 0x80 ~%door_script%~
+						PATCH_IF debug BEGIN PATCH_PRINT ~door_script: %door_script%~ END
+						INNER_ACTION BEGIN
+							ACTION_IF ~%door_script_path%~ STR_CMP ~override~ BEGIN
+								COMPILE ~%workspace%/bif/temp/%door_script%.%ext%~ EVAL 
+							END
+						END
+						PATCH_IF debug BEGIN PATCH_PRINT ~%doorname% - new script: %door_script%.%ext%~ END
+					END ELSE BEGIN
+						INNER_ACTION BEGIN
+							EXTEND_BOTTOM ~%door_scriptname%.bcs~ ~%workspace%/bif/temp/%door_script%.%ext%~ EVAL
+						END
+						PATCH_IF debug BEGIN PATCH_PRINT ~%doorname% - extend: %door_scriptname% with %door_script%.%ext% ~ END
+					END
+				END
+			END
+		END
+	END
+	PATCH_IF found_door = 0 BEGIN // not found an existing door
+		bggo_deleted = 1 		  // => install new one
+	END
+				
+	// rename trigger and set trigger script
+	
+//	PATCH_IF debug BEGIN PATCH_PRINT ~new_trigger_name in triggers: %new_trigger_name%~ END
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		// search for existing travel_trigger
+		PATCH_IF ~%triggername%~ STR_EQ ~%door_name%~ OR ~%triggername%~ STR_EQ ~%new_trigger_name%~ BEGIN
+			SET travel_trigger_found = 1
+			PATCH_IF ~%new_trigger_name%~ STR_CMP ~~ BEGIN
+				WRITE_ASCIIE off ~%new_trigger_name%~ #32
+				PATCH_IF debug BEGIN PATCH_PRINT ~trigger: %triggername% - new traveltrigger: %new_trigger_name%~ END
+			END ELSE BEGIN
+				SPRINT new_trigger_name ~bggo_%triggername%~		// bggo_ to make it unique
+				WRITE_ASCIIE off ~%new_trigger_name%~ #32
+				PATCH_IF debug BEGIN PATCH_PRINT ~trigger: %triggername% - rename traveltrigger: %new_trigger_name%~ END
+			END
+			PATCH_IF ~%trigger_script%~ STR_CMP ~~ BEGIN
+				READ_ASCII off + 0x7c trigger_scriptname
+				PATCH_IF ~%trigger_scriptname%~ STR_EQ ~~ BEGIN
+					WRITE_ASCIIE off + 0x7c ~%trigger_script%~
+					INNER_ACTION BEGIN
+						ACTION_IF ~%trigger_script_path%~ STR_CMP ~override~ BEGIN
+							COMPILE ~%trigger_script_path%/%trigger_script%.%ext%~ EVAL 
+						END
+					END
+					PATCH_IF debug BEGIN PATCH_PRINT ~%triggername% - new script: %trigger_script%.%ext%~ END
+				END ELSE BEGIN
+					INNER_ACTION BEGIN
+						EXTEND_BOTTOM ~%trigger_scriptname%.bcs~ ~%trigger_script_path%/%trigger_script%.%ext%~ EVAL
+					END
+					PATCH_IF debug BEGIN PATCH_PRINT ~%triggername% - extend: %trigger_scriptname% with %trigger_script%.%ext% ~ END
+				END
+			END
+		END
+	END
+END
+
+DEFINE_PATCH_FUNCTION CreateAreaTravelScript 
+	INT_VAR
+		bggo_locked = 0	// is door locked =1 unlocked =0
+	STR_VAR
+		from_area = ~~	// eg. from BG0600 
+		to_area   = ~~	// to BG1100
+		door_name = ~~	// doorname you want to name it
+		old_door_name = ~~ // doorname from an existing door (perhabs from another mod)
+						   // if the variable is empty the door name is used otherwise the old name is used
+BEGIN
+	PATCH_IF ~%old_door_name%~ STR_CMP ~~ BEGIN
+		SPRINT door_name ~%old_door_name%~
+	END
+	PATCH_IF bggo_locked = 1 BEGIN
+		SPRINT set_unlock_door ~SetGlobal("%from_area%_unlocked_%door_name%","%from_area%",1)~
+		SPRINT global_unlock_door 
+		~IF
+			Global("%to_area%_unlocked_%door_name%","%to_area%",1)
+		THEN
+			RESPONSE #100
+			Unlock("%door_name%")
+			Continue()
+		END~
+	END ELSE BEGIN
+		SPRINT set_unlock_door ~~
+		SPRINT global_unlock_door ~~
+	END
+	INNER_ACTION BEGIN
+		EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_door_open_close.baf~ EVAL
+	END
+END
+
+DEFINE_PATCH_FUNCTION CreateDoorScriptPatchAnimation
+	STR_VAR
+		animation_name   = ~~
+		door_name        = ~~
+BEGIN
+	INNER_ACTION BEGIN
+		COPY ~.../%MOD_FOLDER%/inlined_door_flame.baf~ ~%workspace%/bif/temp/%door_name%.baf~ EVAL
+	END
+END
+
+DEFINE_PATCH_FUNCTION CreateTriggerScriptBggodest
+	STR_VAR
+		area_name 	= ~~
+		script_name	= ~~
+	RET
+		script_name
+BEGIN
+	INNER_ACTION BEGIN
+		COPY ~.../%MOD_FOLDER%/inlined_bggodest.baf~ ~%workspace%/bif/temp/%script_name%.baf~
+		COMPILE ~%workspace%/bif/temp/%script_name%.baf~ EVAL
+	END
+END

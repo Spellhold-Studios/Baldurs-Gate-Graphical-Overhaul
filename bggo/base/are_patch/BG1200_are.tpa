@@ -77,6 +77,21 @@ PHP_EACH triggers AS i => off BEGIN
 END
 
 // Add door
+
+LPF Door_trigger_script_patch
+STR_VAR
+	door_name_wed	 	= DOOR01
+RET
+	bggo_deleted
+END
+
+LPF CreateAreaTravelScript
+	STR_VAR
+		from_area 	   = EVAL ~%BaldursGateDocks%~
+		to_area   	   = EVAL ~%SEBaldursGate%~
+		door_name 	   = Door01
+END
+
 LPF fj_are_structure
     INT_VAR
     fj_loc_x       = 4247
@@ -87,54 +102,56 @@ LPF fj_are_structure
     fj_name           = bggo_Door01_exit
  END
 
-GET_OFFSET_ARRAY doors ARE_V10_DOORS
-PHP_EACH doors AS i => off BEGIN
-	READ_ASCII off doorname (32) NULL
-	PATCH_IF ~%doorname%~ STR_EQ ~Door01~ BEGIN
-		LPF fj_are_structure
-			INT_VAR fj_delete_mode = i
-			STR_VAR fj_structure_type = door
-		END 
+PATCH_IF bggo_deleted = 1 BEGIN
+	GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off doorname (32) NULL
+		PATCH_IF ~%doorname%~ STR_EQ ~Door01~ BEGIN
+			LPF fj_are_structure
+				INT_VAR fj_delete_mode = i
+				STR_VAR fj_structure_type = door
+			END 
+		END
 	END
-END
-  
-LPF fj_are_structure
-    INT_VAR
-    fj_flags               = 0b010000000
-    fj_open_box_left       = 4236
-    fj_open_box_top        = 420
-    fj_open_box_right      = 4284
-    fj_open_box_bottom     = 505
-    fj_closed_box_left     = 4279
-    fj_closed_box_top      = 419
-    fj_closed_box_right    = 4314
-    fj_closed_box_bottom   = 506
-    fj_cursor_idx          = 30
-    fj_open_loc_x          = 4247
-    fj_open_loc_y          = 541
-    fj_closed_loc_x        = 4247
-    fj_closed_loc_y        = 541
-	fj_detect_diff 		   = 0xffff
-    fj_door_open_vert_0    = 4236 + (505 << 16)
-    fj_door_open_vert_1    = 4284 + (488 << 16)
-    fj_door_open_vert_2    = 4284 + (420 << 16)
-    fj_door_open_vert_3    = 4236 + (433 << 16)
-    fj_door_closed_vert_0  = 4279 + (479 << 16)
-    fj_door_closed_vert_1  = 4314 + (506 << 16)
-    fj_door_closed_vert_2  = 4314 + (449 << 16)
-    fj_door_closed_vert_3  = 4279 + (419 << 16)
-	fj_cell_open_vert_0    = 265 + (40 << 16)
-    fj_cell_open_vert_1    = 265 + (41 << 16)
-    fj_cell_open_vert_2    = 266 + (40 << 16)
-	fj_cell_open_vert_3    = 266 + (41 << 16)
-	fj_cell_open_vert_4    = 267 + (39 << 16)
-    fj_cell_open_vert_5    = 267 + (40 << 16)
-    fj_cell_closed_vert_0  = 267 + (39 << 16)
-    fj_cell_closed_vert_1  = 268 + (40 << 16)
-    fj_cell_closed_vert_2  = 269 + (40 << 16)
-    fj_cell_closed_vert_3  = 269 + (41 << 16)
-    STR_VAR
-    fj_structure_type      = door
-    fj_name                = bggo_Door01
-    fj_door_wed_id         = DOOR01
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = 0b010000000
+		fj_open_box_left       = 4236
+		fj_open_box_top        = 420
+		fj_open_box_right      = 4284
+		fj_open_box_bottom     = 505
+		fj_closed_box_left     = 4279
+		fj_closed_box_top      = 419
+		fj_closed_box_right    = 4314
+		fj_closed_box_bottom   = 506
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 4247
+		fj_open_loc_y          = 541
+		fj_closed_loc_x        = 4247
+		fj_closed_loc_y        = 541
+		fj_detect_diff 		   = 0xffff
+		fj_door_open_vert_0    = 4236 + (505 << 16)
+		fj_door_open_vert_1    = 4284 + (488 << 16)
+		fj_door_open_vert_2    = 4284 + (420 << 16)
+		fj_door_open_vert_3    = 4236 + (433 << 16)
+		fj_door_closed_vert_0  = 4279 + (479 << 16)
+		fj_door_closed_vert_1  = 4314 + (506 << 16)
+		fj_door_closed_vert_2  = 4314 + (449 << 16)
+		fj_door_closed_vert_3  = 4279 + (419 << 16)
+		fj_cell_open_vert_0    = 265 + (40 << 16)
+		fj_cell_open_vert_1    = 265 + (41 << 16)
+		fj_cell_open_vert_2    = 266 + (40 << 16)
+		fj_cell_open_vert_3    = 266 + (41 << 16)
+		fj_cell_open_vert_4    = 267 + (39 << 16)
+		fj_cell_open_vert_5    = 267 + (40 << 16)
+		fj_cell_closed_vert_0  = 267 + (39 << 16)
+		fj_cell_closed_vert_1  = 268 + (40 << 16)
+		fj_cell_closed_vert_2  = 269 + (40 << 16)
+		fj_cell_closed_vert_3  = 269 + (41 << 16)
+		STR_VAR
+		fj_structure_type      = door
+		fj_name                = Door01
+		fj_door_wed_id         = DOOR01
+	END
 END
