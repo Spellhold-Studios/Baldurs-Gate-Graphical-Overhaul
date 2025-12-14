@@ -8,7 +8,7 @@ THEN
     RESPONSE #100
 	TriggerActivation("Door0100",1)
 	TriggerActivation("bggo_BG0200",0)
-	SetGlobal("BG0159_entered","%EBaldursGate%",0)
+	SetGlobal("BG0159_entered","%NBaldursGate%",0)
 END
 
 IF
@@ -17,7 +17,7 @@ THEN
     RESPONSE #100
 	TriggerActivation("Door0100",0)
 	TriggerActivation("bggo_BG0200",1)
-	SetGlobal("BG0159_entered","%SEBaldursGate%",0)
+	SetGlobal("BG0159_entered","%NWBaldursGate%",0)
 END
 >>>>>>>> 
 

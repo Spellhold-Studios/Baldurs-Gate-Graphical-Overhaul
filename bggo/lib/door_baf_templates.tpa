@@ -18,35 +18,35 @@ END
 
 <<<<<<<< .../%MOD_FOLDER%/inlined_door_open_close.baf
 IF
-	OpenState("%door_name%",TRUE)
+	OpenState("%door_name_from%",TRUE)
 THEN
 	RESPONSE #100
-	SetGlobal("%from_area%_open_%door_name%","%from_area%",1)
+	SetGlobal("%from_area%_open_%door_name_from%","%from_area%",1)
 	%set_unlock_door%
 	Continue()
 END
 IF
-	OpenState("%door_name%",FALSE)
+	OpenState("%door_name_from%",FALSE)
 THEN
 	RESPONSE #100
-	SetGlobal("%from_area%_open_%door_name%","%from_area%",0)
+	SetGlobal("%from_area%_open_%door_name_from%","%from_area%",0)
 	Continue()
 END
 
 %global_unlock_door%
 
 IF
-	Global("%to_area%_open_%door_name%","%to_area%",0)
+	Global("%to_area%_open_%door_name_to%","%to_area%",0)
 THEN
 	RESPONSE #100
-	CloseDoor("%door_name%")
+	CloseDoor("%door_name_from%")
 	Continue()
 END
 IF
-	Global("%to_area%_open_%door_name%","%to_area%",1)
+	Global("%to_area%_open_%door_name_to%","%to_area%",1)
 THEN
 	RESPONSE #100
-	OpenDoor("%door_name%")
+	OpenDoor("%door_name_from%")
 	Continue()
 END
 

@@ -136,5 +136,5 @@ LPF CreateAreaTravelScript
 	STR_VAR
 		from_area 	   = EVAL ~%NWBaldursGate%~
 		to_area   	   = EVAL ~%NBaldursGate%~
-		door_name 	   = Door0159
+		door_name_from = Door0159
 END

@@ -91,7 +91,7 @@ LPF CreateAreaTravelScript
 	STR_VAR
 		from_area 	   = EVAL ~%BaldursGateDocks%~
 		to_area   	   = EVAL ~%SEBaldursGate%~
-		door_name 	   = Door01
+		door_name_from = Door01
 		old_door_name  = EVAL ~%existing_door_name%~
 END
 
@@ -119,7 +119,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 	
 	LPF fj_are_structure
 		INT_VAR
-		fj_flags               = 0b010000000
+		fj_flags               = BIT6 //BIT6 is door
 		fj_open_box_left       = 4236
 		fj_open_box_top        = 420
 		fj_open_box_right      = 4284

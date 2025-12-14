@@ -66,14 +66,14 @@ LPF CreateAreaTravelScript
 	STR_VAR
 		from_area 	   = EVAL ~%SWBaldursGate%~
 		to_area   	   = EVAL ~%WBaldursGate%~
-		door_name 	   = DOOR0619
+		door_name_from = DOOR0619
 		old_door_name  = EVAL ~%existing_door_name%~
 END
 
 PATCH_IF bggo_deleted = 1 BEGIN
 	LPF fj_are_structure
 		INT_VAR
-		fj_flags               = 0b01000010 //0b010000000
+		fj_flags               = BIT1 + BIT6 //BIT1 locked BIT6 is door
 		fj_open_box_left       = 3393
 		fj_open_box_top        = 81
 		fj_open_box_right      = 3426
@@ -125,7 +125,7 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_box_right    = 3425
 		fj_box_bottom   = 143
 		fj_cursor_idx   = 30   //door
-		fj_flags        = 0b000100000000000
+		fj_flags        = BIT11  //BIT11 door connected
 		fj_vertex_0  = 3425 + (121 << 16)
 		fj_vertex_1  = 3391 + (143 << 16)
 		fj_vertex_2  = 3391 + (85  << 16)

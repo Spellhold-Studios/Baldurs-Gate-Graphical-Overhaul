@@ -37,3 +37,148 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 	END
 END
 LPM ~CLEAR_ARRAY~
+
+//////////////////////////////
+// bggo_BG0300 from BG0144
+//////////////////////////////
+LPF CreateTriggerScriptBggodest
+STR_VAR
+	script_name = dest0114
+	area_name = EVAL ~%NEBaldursGate_BlushingMermaid_L1%~
+RET
+	script_name
+END
+
+LPF Door_trigger_script_patch
+STR_VAR
+	door_name_wed	 	= Dr0114b
+	new_trigger_name	= bggo_BG0114b
+	trigger_script   	= EVAL ~%script_name%~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+END
+
+LPF CreateAreaTravelScript
+	INT_VAR
+		bggo_locked	   = 1
+	STR_VAR
+		from_area 	   = EVAL ~%NEBaldursGate%~
+		to_area   	   = EVAL ~%NBaldursGate%~
+		door_name_from = Dr0114b
+		door_name_to   = Door0114
+		old_door_name  = EVAL ~%existing_door_name%~
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT1 + BIT6 //BIT1 locked BIT6 is door
+		fj_open_box_left       = 46
+		fj_open_box_top        = 1379
+		fj_open_box_right      = 79
+		fj_open_box_bottom     = 1456
+		fj_closed_box_left     = 70
+		fj_closed_box_top      = 1379
+		fj_closed_box_right    = 100
+		fj_closed_box_bottom   = 1447
+		fj_cursor_idx          = 30
+		fj_trap_loc_x		   = 75
+		fj_trap_loc_y		   = 1486
+		fj_open_loc_x          = 77
+		fj_open_loc_y          = 1484
+		fj_closed_loc_x        = 77
+		fj_closed_loc_y        = 1484
+		fj_locked_diff		   = 30
+		fj_door_open_vert_0    = 79 + (1429 << 16)
+		fj_door_open_vert_1    = 49 + (1456 << 16)
+		fj_door_open_vert_2    = 46 + (1454 << 16)
+		fj_door_open_vert_3    = 47 + (1404 << 16)
+		fj_door_open_vert_4    = 52 + (1393 << 16)
+		fj_door_open_vert_5    = 59 + (1384 << 16)
+		fj_door_open_vert_6    = 66 + (1379 << 16)
+		fj_door_open_vert_7    = 79 + (1380 << 16)
+		                               
+		fj_door_closed_vert_0  = 70  + (1425 << 16)
+		fj_door_closed_vert_1  = 100 + (1447 << 16)
+		fj_door_closed_vert_2  = 100 + (1401 << 16)
+		fj_door_closed_vert_3  = 95  + (1393 << 16)
+		fj_door_closed_vert_4  = 86  + (1382 << 16)
+		fj_door_closed_vert_5  = 79  + (1379 << 16)
+		fj_door_closed_vert_6  = 70  + (1380 << 16)
+
+		fj_cell_open_vert_0    = 3 + (119 << 16)
+		fj_cell_open_vert_1    = 3 + (120 << 16)
+		fj_cell_open_vert_2    = 6 + (120 << 16)
+
+		fj_cell_closed_vert_0  = 5 + (119 << 16)
+		fj_cell_closed_vert_1  = 6 + (120 << 16)
+		fj_cell_closed_vert_2  = 6 + (119 << 16)
+		fj_cell_closed_vert_3  = 7 + (119 << 16)
+		fj_cell_closed_vert_4  = 6 + (118 << 16)
+		fj_cell_closed_vert_5  = 7 + (118 << 16)
+		fj_cell_closed_vert_6  = 8 + (118 << 16)
+		fj_cell_closed_vert_7  = 7 + (117 << 16)
+		fj_cell_closed_vert_8  = 8 + (117 << 16)
+		fj_cell_closed_vert_9  = 9 + (117 << 16)
+		fj_cell_closed_vert_10 = 8 + (116 << 16)
+		fj_cell_closed_vert_11 = 7 + (116 << 16)
+		fj_cell_closed_vert_12 = 7 + (115 << 16)
+		fj_cell_closed_vert_13 = 8 + (115 << 16)
+		STR_VAR
+		fj_travel_trigger      = bggo_BG0114b
+		fj_structure_type      = door
+		fj_name                = Dr0114b
+		fj_door_wed_id         = Dr0114b
+	END
+END
+
+PATCH_IF travel_trigger_found = 0 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_type         = 2    //travel
+		fj_box_left     = 70
+		fj_box_top      = 1379
+		fj_box_right    = 100
+		fj_box_bottom   = 1447
+		fj_cursor_idx   = 30	 //door
+		fj_alt_x		= 80
+		fj_alt_y		= 1450
+		fj_flags        = BIT10 + BIT11  //BIT10 ativation point BIT11 door connected
+		fj_vertex_0  = 70  + (1425 << 16)
+		fj_vertex_1  = 100 + (1447 << 16)
+		fj_vertex_2  = 100 + (1401 << 16)
+		fj_vertex_3  = 95  + (1393 << 16)
+		fj_vertex_4  = 86  + (1382 << 16)
+		fj_vertex_5  = 79  + (1379 << 16)
+		fj_vertex_6  = 70  + (1380 << 16)
+		STR_VAR
+		fj_structure_type   = region
+		fj_name             = bggo_BG0114b
+		fj_destination_area = BG0114
+		fj_destination_name = bggo_Exit0300
+		fj_reg_script       = dest0114
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 52
+		fj_loc_y       = 1470
+		fj_orientation = 2
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = bggo_Exit0114b
+	END
+END
+
+LPF Door_trigger_script_patch
+STR_VAR
+	door_name_wed	 	= Door0114
+	new_trigger_name	= bggo_BG0114
+//	trigger_script   	= EVAL ~%script_name%~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+END

@@ -19,7 +19,7 @@ LPF fj_are_structure
     fj_box_top      = 338
     fj_box_right    = 535
     fj_box_bottom   = 450
-	fj_flags        = 0b100000000
+	fj_flags        = BIT8 //BIT8 deativated
     fj_cursor_idx   = 30   //door
 	fj_vertex_0  = 489 + (338 << 16)
 	fj_vertex_1  = 414 + (374 << 16)

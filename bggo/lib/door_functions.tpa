@@ -29,7 +29,6 @@ BEGIN
 			SPRINT EVAL ~door_script_path~ ~.../%MOD_FOLDER%~
 			SPRINT ext ~baf~
 		END
-//		PATCH_IF debug BEGIN PATCH_PRINT ~door_script: %door_script_path%/%door_script%.%ext%~ END
 	END
 	PATCH_IF ~%trigger_script%~ STR_CMP ~~ BEGIN
 		PATCH_IF FILE_EXISTS_IN_GAME ~%trigger_script%.bcs~ BEGIN
@@ -42,7 +41,6 @@ BEGIN
 			SPRINT EVAL  ~trigger_script_path~ ~.../%MOD_FOLDER%~
 			SPRINT ext ~baf~
 		END
-//		PATCH_IF debug BEGIN PATCH_PRINT ~trigger_script: %trigger_script_path%/%trigger_script%.%ext%~ END
 	END
 	
 	// trigger and script set for modded doors
@@ -63,7 +61,7 @@ BEGIN
 						INT_VAR fj_delete_mode = i
 						STR_VAR fj_structure_type = door
 					END 
-					PATCH_IF debug BEGIN PATCH_PRINT ~deleted non working %doorname%~ END
+					PATCH_IF debug BEGIN PATCH_PRINT ~deleted non working "%doorname%"~ END
 				END ELSE BEGIN // working door
 					READ_ASCII off existing_door_name (32) NULL		// for the scripts
 					SPRINT door_name ~%existing_door_name%~
@@ -86,7 +84,6 @@ BEGIN
 							PATCH_IF debug BEGIN PATCH_PRINT ~door_wed: %doorname% - different traveltrigger: %new_trigger_name%~ END
 						END
 					END
-//					PATCH_IF debug BEGIN PATCH_PRINT ~travel_trigger_name: %new_trigger_name%~ END
 					
 					// set or extend door script for existing doors
 					PATCH_IF ~%door_script%~ STR_CMP ~~ BEGIN
@@ -149,7 +146,6 @@ BEGIN
 				
 	// rename trigger and set trigger script
 	
-//	PATCH_IF debug BEGIN PATCH_PRINT ~new_trigger_name in triggers: %new_trigger_name%~ END
 	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
 	PHP_EACH triggers AS i => off BEGIN
 		READ_ASCII off triggername (32) NULL
@@ -191,21 +187,28 @@ DEFINE_PATCH_FUNCTION CreateAreaTravelScript
 	STR_VAR
 		from_area = ~~	// eg. from BG0600 
 		to_area   = ~~	// to BG1100
-		door_name = ~~	// doorname you want to name it
+		door_name_from = ~~	// doorname you want to name it
+		door_name_to   = ~~
 		old_door_name = ~~ // doorname from an existing door (perhabs from another mod)
 						   // if the variable is empty the door name is used otherwise the old name is used
 BEGIN
+	PATCH_IF ~%door_name_to%~ STR_EQ ~~ BEGIN
+		SPRINT door_name_to ~%door_name_from%~
+	END
+	PATCH_IF ~%door_name_from%~ STR_EQ ~~ BEGIN
+		SPRINT door_name_from ~%door_name_to%~
+	END
 	PATCH_IF ~%old_door_name%~ STR_CMP ~~ BEGIN
-		SPRINT door_name ~%old_door_name%~
+		SPRINT door_name_from ~%old_door_name%~
 	END
 	PATCH_IF bggo_locked = 1 BEGIN
-		SPRINT set_unlock_door ~SetGlobal("%from_area%_unlocked_%door_name%","%from_area%",1)~
+		SPRINT set_unlock_door ~SetGlobal("%from_area%_unlocked_%door_name_from%","%from_area%",1)~
 		SPRINT global_unlock_door 
 		~IF
-			Global("%to_area%_unlocked_%door_name%","%to_area%",1)
+			Global("%to_area%_unlocked_%door_name_to%","%to_area%",1)
 		THEN
 			RESPONSE #100
-			Unlock("%door_name%")
+			Unlock("%door_name_from%")
 			Continue()
 		END~
 	END ELSE BEGIN

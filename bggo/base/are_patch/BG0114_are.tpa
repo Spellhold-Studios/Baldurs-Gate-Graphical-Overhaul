@@ -36,3 +36,106 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 	END
 END
 LPM ~CLEAR_ARRAY~
+
+//////////////////////////////
+// Door0112
+//////////////////////////////
+
+// delete old one
+GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+PHP_EACH triggers AS i => off BEGIN
+	READ_ASCII off triggername (32) NULL
+	PATCH_IF ~%triggername%~ STR_EQ ~Door0112~ BEGIN
+		LPF fj_are_structure
+			INT_VAR fj_delete_mode = i
+			STR_VAR fj_structure_type = region
+		END 
+	END
+END
+// install new one
+LPF fj_are_structure
+	INT_VAR
+	fj_type         = 2    //travel
+	fj_box_left     = 66
+	fj_box_top      = 298
+	fj_box_right    = 141
+	fj_box_bottom   = 351
+	fj_cursor_idx   = 30   //door
+	fj_flags        = 0b000010000000100
+	fj_alt_x		= 136
+	fj_alt_y		= 300
+	fj_vertex_0  = 102 + (298 << 16)
+	fj_vertex_1  = 141 + (319 << 16)
+	fj_vertex_2  = 102 + (351 << 16)
+	fj_vertex_3  = 66  + (331 << 16)
+	STR_VAR
+	fj_structure_type   = region
+	fj_name             = Door0112
+	fj_destination_area = BG0112
+	fj_destination_name = Exit0114
+END
+
+GET_OFFSET_ARRAY entrances ARE_V10_ENTRANCES
+PHP_EACH entrances AS i => off BEGIN
+	READ_ASCII off entrancename (32) NULL
+	PATCH_IF ~%entrancename%~ STR_EQ ~EXIT0112~ BEGIN
+		WRITE_SHORT off + 0x20 179
+		WRITE_SHORT off + 0x22 261
+	END
+END
+
+//////////////////////////////
+// bggo_BG0300
+//////////////////////////////
+LPF fj_are_structure
+	INT_VAR
+	fj_type         = 2    //travel
+	fj_box_left     = 265
+	fj_box_top      = 436
+	fj_box_right    = 342
+	fj_box_bottom   = 544
+	fj_cursor_idx   = 30   //door
+	fj_flags        = BIT11  //BIT11 door connected
+	fj_alt_x		= 338
+	fj_alt_y		= 460
+	fj_vertex_0  = 265 + (498 << 16)
+	fj_vertex_1  = 342 + (544 << 16)
+	fj_vertex_2  = 342 + (477 << 16)
+	fj_vertex_3  = 265 + (436 << 16)
+	STR_VAR
+	fj_structure_type   = region
+	fj_name             = bggo_BG0300
+	fj_destination_area = BG0300
+	fj_destination_name = bggo_Exit0114b
+END
+LPF fj_are_structure
+	INT_VAR
+	fj_type         = 2    //travel
+	fj_box_left     = 265
+	fj_box_top      = 436
+	fj_box_right    = 342
+	fj_box_bottom   = 544
+	fj_cursor_idx   = 30   //door
+	fj_flags        = BIT10 + BIT8  //BIT10 ativation point BIT8 deativated
+	fj_alt_x		= 338
+	fj_alt_y		= 460
+	fj_vertex_0  = 265 + (498 << 16)
+	fj_vertex_1  = 342 + (544 << 16)
+	fj_vertex_2  = 342 + (477 << 16)
+	fj_vertex_3  = 265 + (436 << 16)
+	STR_VAR
+	fj_structure_type   = region
+	fj_name             = bggo_BG0200
+	fj_destination_area = BG0200
+	fj_destination_name = bggo_Exit0114b
+END
+
+LPF fj_are_structure
+	INT_VAR
+	fj_loc_x       = 344
+	fj_loc_y       = 439
+	fj_orientation = 10
+	STR_VAR
+	fj_structure_type = entrance
+	fj_name           = bggo_Exit0300
+END

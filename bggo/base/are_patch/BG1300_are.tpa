@@ -77,7 +77,7 @@ LPF CreateAreaTravelScript
 	STR_VAR
 		from_area 	   = EVAL ~%SEBaldursGate%~
 		to_area   	   = EVAL ~%EBaldursGate%~
-		door_name 	   = Door0805
+		door_name_from = Door0805
 		old_door_name  = EVAL ~%existing_door_name%~
 END
 
@@ -85,7 +85,7 @@ END
 PATCH_IF bggo_deleted = 1 BEGIN
 	LPF fj_are_structure
 		INT_VAR
-		fj_flags               = 0b01000010 //0b010000000
+		fj_flags               = BIT1 + BIT6 //BIT1 locked BIT6 is door
 		fj_open_box_left       = 1527
 		fj_open_box_top        = 75
 		fj_open_box_right      = 1573
@@ -144,7 +144,7 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_box_right    = 1607
 		fj_box_bottom   = 156
 		fj_cursor_idx   = 30   //door
-		fj_flags        = 0b000100000000000
+		fj_flags        = BIT11  //BIT11 door connected
 		fj_vertex_0  = 1566 + (135 << 16)
 		fj_vertex_1  = 1607 + (156 << 16)
 		fj_vertex_2  = 1607 + (104 << 16)
@@ -200,7 +200,7 @@ LPF CreateAreaTravelScript
 	STR_VAR
 		from_area 	   = EVAL ~%SEBaldursGate%~
 		to_area   	   = EVAL ~%BaldursGateDocks%~
-		door_name 	   = bggo_Door01
+		door_name_from = bggo_Door01
 END
 
 LPF fj_are_structure
@@ -215,7 +215,7 @@ LPF fj_are_structure
   
 LPF fj_are_structure
     INT_VAR
-    fj_flags               = 0b010000000
+    fj_flags               = BIT6 //BIT6 is door
     fj_open_box_left       = 0
     fj_open_box_top        = 405
     fj_open_box_right      = 5

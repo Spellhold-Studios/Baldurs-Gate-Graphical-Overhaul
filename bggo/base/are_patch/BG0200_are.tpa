@@ -110,6 +110,8 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 END
 LPM ~CLEAR_ARRAY~
 
+
+
 //////////////////////////////
 // Door0159 from BG0100
 //////////////////////////////
@@ -138,14 +140,14 @@ LPF CreateAreaTravelScript
 	STR_VAR
 		from_area 	   = EVAL ~%NBaldursGate%~
 		to_area   	   = EVAL ~%NWBaldursGate%~
-		door_name 	   = DOOR0159
+		door_name_from = DOOR0159
 		old_door_name  = EVAL ~%existing_door_name%~
 END
 
 PATCH_IF bggo_deleted = 1 BEGIN
 	LPF fj_are_structure
 		INT_VAR
-		fj_flags               = 0b01000010 //0b010000000
+		fj_flags               = BIT1 + BIT6 //BIT1 locked BIT6 is door
 		fj_open_box_left       = 7
 		fj_open_box_top        = 2347
 		fj_open_box_right      = 29
@@ -210,7 +212,7 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_box_right    = 38
 		fj_box_bottom   = 2399
 		fj_cursor_idx   = 30   //door
-		fj_flags        = 0b000100000000000
+		fj_flags        = BIT11  //BIT11 door connected
 		fj_vertex_0  = 9  + (2399 << 16)
 		fj_vertex_1  = 38 + (2377 << 16)
 		fj_vertex_2  = 38 + (2330 << 16)
@@ -236,5 +238,140 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		STR_VAR
 		fj_structure_type = entrance
 		fj_name           = Exit0159
+	END
+END
+
+
+//////////////////////////////
+// Door0114 from BG0300
+//////////////////////////////
+LPF CreateTriggerScriptBggodest
+STR_VAR
+	script_name = dest0114
+	area_name = EVAL ~%NEBaldursGate_BlushingMermaid_L1%~
+RET
+	script_name
+END
+
+LPF Door_trigger_script_patch
+STR_VAR
+	door_name_wed	 	= DOOR05
+	new_trigger_name	= bggo_BG0114
+	trigger_script   	= EVAL ~%script_name%~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+END
+
+LPF CreateAreaTravelScript
+	INT_VAR
+		bggo_locked	   = 1
+	STR_VAR
+		from_area 	   = EVAL ~%NBaldursGate%~
+		to_area   	   = EVAL ~%NEBaldursGate%~
+		door_name_from = Door0114
+		door_name_to   = Dr0114b
+		old_door_name  = EVAL ~%existing_door_name%~
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT1 + BIT6 //BIT1 locked BIT6 is door
+		fj_open_box_left       = 4334
+		fj_open_box_top        = 1376
+		fj_open_box_right      = 4367
+		fj_open_box_bottom     = 1453
+		fj_closed_box_left     = 4358
+		fj_closed_box_top      = 1376
+		fj_closed_box_right    = 4388
+		fj_closed_box_bottom   = 1444
+		fj_cursor_idx          = 30
+		fj_trap_loc_x		   = 4363
+		fj_trap_loc_y		   = 1483
+		fj_open_loc_x          = 4365
+		fj_open_loc_y          = 1481
+		fj_closed_loc_x        = 4365
+		fj_closed_loc_y        = 1481
+		fj_locked_diff		   = 30
+		fj_door_open_vert_0    = 4367 + (1426 << 16)
+		fj_door_open_vert_1    = 4337 + (1453 << 16)
+		fj_door_open_vert_2    = 4334 + (1451 << 16)
+		fj_door_open_vert_3    = 4335 + (1401 << 16)
+		fj_door_open_vert_4    = 4340 + (1390 << 16)
+		fj_door_open_vert_5    = 4347 + (1381 << 16)
+		fj_door_open_vert_6    = 4354 + (1376 << 16)
+		fj_door_open_vert_7    = 4367 + (1377 << 16)
+		                                 
+		fj_door_closed_vert_0  = 4358 + (1422 << 16)
+		fj_door_closed_vert_1  = 4388 + (1444 << 16)
+		fj_door_closed_vert_2  = 4388 + (1398 << 16)
+		fj_door_closed_vert_3  = 4383 + (1390 << 16)
+		fj_door_closed_vert_4  = 4374 + (1379 << 16)
+		fj_door_closed_vert_5  = 4367 + (1376 << 16)
+		fj_door_closed_vert_6  = 4358 + (1377 << 16)
+
+		fj_cell_open_vert_0    = 3 + (119 << 16)
+		fj_cell_open_vert_1    = 3 + (120 << 16)
+		fj_cell_open_vert_2    = 6 + (120 << 16)
+
+		fj_cell_closed_vert_0  = 5 + (119 << 16)
+		fj_cell_closed_vert_1  = 6 + (120 << 16)
+		fj_cell_closed_vert_2  = 6 + (119 << 16)
+		fj_cell_closed_vert_3  = 7 + (119 << 16)
+		fj_cell_closed_vert_4  = 6 + (118 << 16)
+		fj_cell_closed_vert_5  = 7 + (118 << 16)
+		fj_cell_closed_vert_6  = 8 + (118 << 16)
+		fj_cell_closed_vert_7  = 7 + (117 << 16)
+		fj_cell_closed_vert_8  = 8 + (117 << 16)
+		fj_cell_closed_vert_9  = 9 + (117 << 16)
+		fj_cell_closed_vert_10 = 8 + (116 << 16)
+		fj_cell_closed_vert_11 = 7 + (116 << 16)
+		fj_cell_closed_vert_12 = 7 + (115 << 16)
+		fj_cell_closed_vert_13 = 8 + (115 << 16)
+		STR_VAR
+		fj_travel_trigger      = bggo_BG0114
+		fj_structure_type      = door
+		fj_name                = Door0114
+		fj_door_wed_id         = DOOR05
+	END
+END
+
+PATCH_IF travel_trigger_found = 0 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_type         = 2    //travel
+		fj_box_left     = 4358
+		fj_box_top      = 1376
+		fj_box_right    = 4388
+		fj_box_bottom   = 1444
+		fj_cursor_idx   = 30
+		fj_alt_x		= 4368
+		fj_alt_y		= 1447
+		fj_flags        = BIT10 + BIT11  //BIT10 ativation point BIT11 door connected
+		fj_vertex_0  = 4358 + (1422 << 16)
+		fj_vertex_1  = 4388 + (1444 << 16)
+		fj_vertex_2  = 4388 + (1398 << 16)
+		fj_vertex_3  = 4383 + (1390 << 16)
+		fj_vertex_4  = 4374 + (1379 << 16)
+		fj_vertex_5  = 4367 + (1376 << 16)
+		fj_vertex_6  = 4358 + (1377 << 16)
+		STR_VAR
+		fj_structure_type   = region
+		fj_name             = bggo_BG0114
+		fj_destination_area = BG0114
+		fj_destination_name = bggo_Exit0300
+		fj_reg_script       = dest0114
+	END
+
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 4340
+		fj_loc_y       = 1467
+		fj_orientation = 2
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = bggo_Exit0114b
 	END
 END
