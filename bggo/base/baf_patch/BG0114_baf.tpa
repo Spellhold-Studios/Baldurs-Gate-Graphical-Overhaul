@@ -28,4 +28,15 @@ END ELSE BEGIN
 	COPY ~.../%MOD_FOLDER%/inlined_BG0114.baf~ ~%workspace%/bif/temp/%are2%.baf~
 	COMPILE EVAL ~%workspace%/bif/temp/%are2%.baf~
 END
-	
+
+<<<<<<<< .../%MOD_FOLDER%/inlined_bggodest_locked.baf
+IF
+    True()
+THEN
+    RESPONSE #100
+	SetGlobal("BG0114_unlocked","%NEBaldursGate%",0)
+END
+>>>>>>>>
+
+COPY ~.../%MOD_FOLDER%/inlined_bggodest_locked.baf~ ~%workspace%/bif/temp/bggolock.baf~
+COMPILE EVAL ~%workspace%/bif/temp/bggolock.baf~

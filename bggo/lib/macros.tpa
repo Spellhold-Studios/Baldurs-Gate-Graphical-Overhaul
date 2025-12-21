@@ -634,7 +634,7 @@ BEGIN
 	END
 	
 	// scripts
-	COMPILE ~%MOD_FOLDER%/base/baf~
+	COMPILE ~%MOD_FOLDER%/base/baf~ EVAL
 
 	ACTION_IF ~%base%~ STR_EQ ~base~ BEGIN
 		//	BG1 Areas

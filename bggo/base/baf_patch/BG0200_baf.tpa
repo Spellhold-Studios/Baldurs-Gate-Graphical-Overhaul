@@ -1,0 +1,152 @@
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0300_top.baf
+IF
+	Global("Trigger_deactivate","%NBaldursGate%",0)
+THEN
+	RESPONSE #100
+		TriggerActivation("Trigger Point 31",FALSE)
+		SetGlobal("Trigger_deactivate","%NBaldursGate%",1)
+		SetGlobal("BG0200_Closed_Dr0114b","BG0200",1)
+		SetGlobal("BG0200_opened_Dr0114b","BG0200",0)
+		SetGlobal("BG0200_unlocked_Dr0114b","BG0200",0)
+		SetGlobal("BG0200_text_Dr0114b","BG0200",1)
+		SetGlobal("BG0200_change_state_Dr0114b","BG0200",0)
+		Continue()
+END
+>>>>>>>>
+EXTEND_TOP ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_top.baf~ EVAL
+
+
+<<<<<<<< .../%MOD_FOLDER%/inlined_dr0114b2_script.baf
+IF
+    Unlocked([ANYONE])
+	Global("BG0200_unlocked_Dr0114b","BG0200",0)
+THEN
+    RESPONSE #100
+		SetGlobal("BG0200_unlocked_Dr0114b","BG0200",1)
+		SetGlobal("BG0200_text_Dr0114b","BG0200",0)
+END
+
+IF
+	Clicked([ANYONE])
+    OpenState("Dr0114b",TRUE)
+	Global("BG0200_unlocked_Dr0114b","BG0200",1)
+//   Opened([ANYONE])
+THEN
+    RESPONSE #100
+		SetGlobal("BG0200_Closed_Dr0114b","BG0200",0)
+		SetGlobal("BG0200_opened_Dr0114b","BG0200",1)
+		SetGlobal("BG0200_change_state_Dr0114b","BG0200",1)
+END
+
+IF
+	Clicked([ANYONE])
+    OpenState("Dr0114b",FALSE)
+	Global("BG0200_unlocked_Dr0114b","BG0200",1)
+//	Closed([ANYONE])
+THEN
+    RESPONSE #100
+		SetGlobal("BG0200_Closed_Dr0114b","BG0200",1)
+		SetGlobal("BG0200_opened_Dr0114b","BG0200",0)
+		SetGlobal("BG0200_change_state_Dr0114b","BG0200",1)
+END
+
+IF
+	Clicked([ANYONE])
+	OpenState("Dr0114b",FALSE)
+	Global("BG0200_text_Dr0114b","BG0200",1)
+	Global("BG0200_unlocked_Dr0114b","BG0200",0)
+THEN
+	RESPONSE #100
+		DisplayString("Dr0114b",211022)
+END
+>>>>>>>>
+COPY ~.../%MOD_FOLDER%/inlined_dr0114b2_script.baf~ ~%workspace%/bif/temp/dr0114b2.baf~
+COMPILE ~%workspace%/bif/temp/dr0114b2.baf~ EVAL
+
+
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0200.baf
+IF
+	Global("BG0300_unlocked_Dr0114b","BG0300",1)
+THEN
+    RESPONSE #100
+		Unlock("Dr0114b")
+		SetGlobal("BG0200_unlocked_Dr0114b","BG0200",1)
+		SetGlobal("BG0200_text_Dr0114b","BG0200",0)
+		Continue()
+END
+IF
+	Global("BG0300_Closed_Dr0114b","BG0300",1)
+	Global("BG0300_opened_Dr0114b","BG0300",0)
+THEN
+	RESPONSE #100
+	CloseDoor("dr0114b")
+	SetGlobal("BG0200_Closed_Dr0114b","BG0200",1)
+	SetGlobal("BG0200_opened_Dr0114b","BG0200",0)
+	Continue()
+END
+IF
+	Global("BG0300_Closed_Dr0114b","BG0300",0)
+	Global("BG0300_opened_Dr0114b","BG0300",1)
+THEN
+	RESPONSE #100
+	OpenDoor("dr0114b")
+	SetGlobal("BG0200_Closed_Dr0114b","BG0200",0)
+	SetGlobal("BG0200_opened_Dr0114b","BG0200",1)
+	Continue()
+END
+
+IF
+	Global("BG0200_Closed_Dr0114b","BG0200",1)
+	Global("BG0200_opened_Dr0114b","BG0200",0)
+	Global("BG0200_change_state_Dr0114b","BG0200",1)
+THEN
+	RESPONSE #100
+	CloseDoor("dr0114b")
+	SetGlobal("BG0300_Closed_Dr0114b","BG0300",1)
+	SetGlobal("BG0300_opened_Dr0114b","BG0300",0)
+	SetGlobal("BG0200_change_state_Dr0114b","BG0200",0)
+	Continue()
+END
+IF
+	Global("BG0200_Closed_Dr0114b","BG0200",0)
+	Global("BG0200_opened_Dr0114b","BG0200",1)
+	Global("BG0200_change_state_Dr0114b","BG0200",1)
+THEN
+	RESPONSE #100
+	OpenDoor("dr0114b")
+	SetGlobal("BG0300_Closed_Dr0114b","BG0300",0)
+	SetGlobal("BG0300_opened_Dr0114b","BG0300",1)
+	SetGlobal("BG0200_change_state_Dr0114b","BG0200",0)
+	Continue()
+END
+>>>>>>>>
+EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0200.baf~ EVAL
+
+
+/*
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0300.baf
+IF
+	Global("BG0114_unlocked","%NEBaldursGate%",0)
+THEN
+	RESPONSE #100
+	Unlock("%BG0200_baf_door114%")
+	OpenDoor("%BG0200_baf_door114%")
+	SetGlobalTimer("Door0114_close","%NBaldursGate%","TEN_ROUNDS")
+	Continue()
+END
+IF 
+	Global("BG0114_unlocked","%NEBaldursGate%",0)
+	GlobalTimerExpired("Door0114_close","%NBaldursGate%")
+THEN
+	RESPONSE #100
+	CloseDoor("%BG0200_baf_door114%")
+	Lock("%BG0200_baf_door114%")
+	SetGlobal("BG0114_unlocked","%NEBaldursGate%",1)
+	Continue()
+END
+
+>>>>>>>>
+//EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300.baf~ EVAL
+
+
+*/

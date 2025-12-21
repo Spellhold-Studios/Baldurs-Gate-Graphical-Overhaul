@@ -1,7 +1,7 @@
 
 DEFINE_PATCH_FUNCTION Door_trigger_script_patch
 	INT_VAR
-		debug = 0
+		debug = 1
 		bggo_deleted		= 0		
 		travel_trigger_found = 0	
 	STR_VAR
@@ -15,6 +15,8 @@ DEFINE_PATCH_FUNCTION Door_trigger_script_patch
 		bggo_deleted			//  0: existing door is used; 1: non working or not existing door, new one will be installed
 		travel_trigger_found    // 0: install new one 1: use old one
 		existing_door_name
+		door_script
+		trigger_script
 BEGIN
 	SET found_door = 0
 	// prepare scripts
@@ -181,10 +183,23 @@ BEGIN
 	END
 END
 
+DEFINE_PATCH_FUNCTION CreateDoorScriptPatchAnimation
+	STR_VAR
+		animation_name   = ~~
+		door_name        = ~~
+BEGIN
+	INNER_ACTION BEGIN
+		COPY ~.../%MOD_FOLDER%/inlined_door_flame.baf~ ~%workspace%/bif/temp/%door_name%.baf~ EVAL
+	END
+END
+
+/*
 DEFINE_PATCH_FUNCTION CreateAreaTravelScript 
 	INT_VAR
 		bggo_locked = 0	// is door locked =1 unlocked =0
+		bggo_display_string = 0
 	STR_VAR
+		door_Script_name = ~~
 		from_area = ~~	// eg. from BG0600 
 		to_area   = ~~	// to BG1100
 		door_name_from = ~~	// doorname you want to name it
@@ -219,17 +234,9 @@ BEGIN
 		EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_door_open_close.baf~ EVAL
 	END
 END
+*/
 
-DEFINE_PATCH_FUNCTION CreateDoorScriptPatchAnimation
-	STR_VAR
-		animation_name   = ~~
-		door_name        = ~~
-BEGIN
-	INNER_ACTION BEGIN
-		COPY ~.../%MOD_FOLDER%/inlined_door_flame.baf~ ~%workspace%/bif/temp/%door_name%.baf~ EVAL
-	END
-END
-
+/*
 DEFINE_PATCH_FUNCTION CreateTriggerScriptBggodest
 	STR_VAR
 		area_name 	= ~~
@@ -242,3 +249,30 @@ BEGIN
 		COMPILE ~%workspace%/bif/temp/%script_name%.baf~ EVAL
 	END
 END
+*/
+/*
+DEFINE_PATCH_FUNCTION CreateDoorScriptBG0114
+	INT_VAR
+		dialog_string = 0
+	STR_VAR
+		area_name 	= ~~
+		door_name	= ~~
+		door_script	= ~~
+		trigger_name_dialog = ~~
+	RET
+		door_script
+BEGIN
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		PATCH_IF ~%triggername%~ STR_EQ ~%trigger_name_dialog%~ BEGIN
+			READ_LONG off + 0x64 dialog_string
+			PATCH_PRINT ~%dialog_string%~
+		END
+	END
+	INNER_ACTION BEGIN
+		COPY ~.../%MOD_FOLDER%/inlined_bg0200bg0300_door_script.baf~ ~%workspace%/bif/temp/%door_script%.baf~
+		COMPILE ~%workspace%/bif/temp/%door_script%.baf~ EVAL
+	END
+END
+*/

@@ -16,6 +16,7 @@ THEN
 END
 >>>>>>>> 
 
+/*
 <<<<<<<< .../%MOD_FOLDER%/inlined_door_open_close.baf
 IF
 	OpenState("%door_name_from%",TRUE)
@@ -51,7 +52,8 @@ THEN
 END
 
 >>>>>>>> 
-
+*/
+/*
 <<<<<<<< .../%MOD_FOLDER%/inlined_bggodest.baf
 IF
     True()
@@ -60,3 +62,25 @@ THEN
 	SetGlobal("%area_name%_entered","MYAREA",1)
 END
 >>>>>>>>
+*/
+/*
+<<<<<<<< .../%MOD_FOLDER%/inlined_door_script.baf
+
+IF
+    Unlocked([ANYONE])
+THEN
+    RESPONSE #100
+		SetGlobal("%are%_unlocked_Dr0114b","%area_name%",1)
+END
+/*
+IF
+	OpenState("%door_name%",FALSE)
+	Clicked([ANYONE])
+	Global("%are%_unlocked_Dr0114b","%area_name%",0)
+THEN
+	RESPONSE #100
+	DisplayString("%door_name%",%dialog_string%)
+END
+*/
+>>>>>>>>
+*/

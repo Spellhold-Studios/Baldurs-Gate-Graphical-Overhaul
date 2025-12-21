@@ -41,34 +41,27 @@ LPM ~CLEAR_ARRAY~
 //////////////////////////////
 // bggo_BG0300 from BG0144
 //////////////////////////////
-LPF CreateTriggerScriptBggodest
-STR_VAR
-	script_name = dest0114
-	area_name = EVAL ~%NEBaldursGate_BlushingMermaid_L1%~
-RET
-	script_name
-END
+
+//Dr0114 Second door from Blushing Mermaid
+//LPF CreateTriggerScriptBggodest
+//STR_VAR
+//	script_name = dest0114
+//	area_name = EVAL ~%NEBaldursGate_BlushingMermaid_L1%~
+//RET
+//	script_name
+//END
 
 LPF Door_trigger_script_patch
 STR_VAR
 	door_name_wed	 	= Dr0114b
 	new_trigger_name	= bggo_BG0114b
-	trigger_script   	= EVAL ~%script_name%~
+//	trigger_script   	= EVAL ~%script_name%~
+	door_script			= dr0114b3
 RET
 	travel_trigger_found
 	bggo_deleted
 	existing_door_name
-END
-
-LPF CreateAreaTravelScript
-	INT_VAR
-		bggo_locked	   = 1
-	STR_VAR
-		from_area 	   = EVAL ~%NEBaldursGate%~
-		to_area   	   = EVAL ~%NBaldursGate%~
-		door_name_from = Dr0114b
-		door_name_to   = Door0114
-		old_door_name  = EVAL ~%existing_door_name%~
+	door_script
 END
 
 PATCH_IF bggo_deleted = 1 BEGIN
@@ -91,6 +84,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_closed_loc_x        = 77
 		fj_closed_loc_y        = 1484
 		fj_locked_diff		   = 30
+//		fj_detect_diff 		   = 0xffff
 		fj_door_open_vert_0    = 79 + (1429 << 16)
 		fj_door_open_vert_1    = 49 + (1456 << 16)
 		fj_door_open_vert_2    = 46 + (1454 << 16)
@@ -131,6 +125,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_structure_type      = door
 		fj_name                = Dr0114b
 		fj_door_wed_id         = Dr0114b
+		fj_door_script		   = EVAL ~%door_script%~
 	END
 END
 
@@ -145,7 +140,7 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_cursor_idx   = 30	 //door
 		fj_alt_x		= 80
 		fj_alt_y		= 1450
-		fj_flags        = BIT10 + BIT11  //BIT10 ativation point BIT11 door connected
+		fj_flags        = BIT10 + BIT11  //BIT10 activation point BIT11 door connected
 		fj_vertex_0  = 70  + (1425 << 16)
 		fj_vertex_1  = 100 + (1447 << 16)
 		fj_vertex_2  = 100 + (1401 << 16)
@@ -158,7 +153,7 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_name             = bggo_BG0114b
 		fj_destination_area = BG0114
 		fj_destination_name = bggo_Exit0300
-		fj_reg_script       = dest0114
+//		fj_reg_script       = dest0114
 	END
 	
 	LPF fj_are_structure
@@ -172,11 +167,12 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 	END
 END
 
+// Main door Blushing Mermaid
 LPF Door_trigger_script_patch
 STR_VAR
 	door_name_wed	 	= Door0114
 	new_trigger_name	= bggo_BG0114
-//	trigger_script   	= EVAL ~%script_name%~
+//	trigger_script   	= EVAL ~%script_name%~ //dest0114
 RET
 	travel_trigger_found
 	bggo_deleted
