@@ -68,24 +68,19 @@ LPM ~CLEAR_ARRAY~
 //////////////////////////////
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	script_name = dest0619
-	area_name = EVAL ~%WBaldursGate_FentensHouse_L1%~
+	trigger_script = dest0619
+	area_name = BG0619 // used vor variable name, so we don't need cmpvars
 RET
-	script_name
+	trigger_script
 END
 
 LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
 STR_VAR
-	door_name	 		= DOOR0619
-	new_trigger_name	= bggo_0619
-	trigger_script   	= EVAL ~%script_name%~
-END
-
-LPF CreateAreaTravelScript
-	INT_VAR
-		bggo_locked	   = 1
-	STR_VAR
-		from_area 	   = EVAL ~%WBaldursGate%~
-		to_area   	   = EVAL ~%SWBaldursGate%~
-		door_name_from = DOOR0619
+	door_name			= DOOR0619
+	area_name			= EVAL ~%WBaldursGate%~
+	new_trigger_name	= bggo_BG0619
+	trigger_script   	= EVAL ~%trigger_script%~
+	door_script			= dr061906
 END

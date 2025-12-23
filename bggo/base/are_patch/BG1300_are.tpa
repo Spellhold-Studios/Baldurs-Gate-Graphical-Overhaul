@@ -54,31 +54,27 @@ END
 
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	script_name = dest0805
-	area_name = EVAL ~%EBaldursGate_ArkionsHouse_L1%~
+	trigger_script = dest0805
+	area_name = BG0805 
 RET
-	script_name
+	trigger_script
 END
 
 LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
 STR_VAR
 	door_name_wed	 	= DOOR0805
+	door_name			= Door0805
+	area_name			= EVAL ~%SEBaldursGate%~
 	new_trigger_name	= bggo_BG0805
-	trigger_script   	= EVAL ~%script_name%~
+	trigger_script   	= EVAL ~%trigger_script%~
+	door_script			= dr080513
 RET
 	travel_trigger_found
 	bggo_deleted
 	existing_door_name
-END
-
-LPF CreateAreaTravelScript
-	INT_VAR
-		bggo_locked	   = 1
-	STR_VAR
-		from_area 	   = EVAL ~%SEBaldursGate%~
-		to_area   	   = EVAL ~%EBaldursGate%~
-		door_name_from = Door0805
-		old_door_name  = EVAL ~%existing_door_name%~
+	door_script
 END
 
 // Install only, if the door is not working or found
@@ -130,8 +126,9 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		STR_VAR
 		fj_travel_trigger      = bggo_BG0805
 		fj_structure_type      = door
-		fj_name                = Door0805
+		fj_name                = EVAL ~%existing_door_name%~
 		fj_door_wed_id         = DOOR0805
+		fj_door_script		   = EVAL ~%door_script%~
 	END
 END
 
@@ -158,9 +155,9 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		STR_VAR
 		fj_structure_type   = region
 		fj_name             = bggo_BG0805
-		fj_destination_area = BG0805
+		fj_destination_area = EVAL ~%EBaldursGate_ArkionsHouse_L1%~
 		fj_destination_name = Exit0800
-		fj_reg_script       = dest0805
+		fj_reg_script       = EVAL ~%trigger_script%~
 	END
 	
 	LPF fj_are_structure
@@ -196,11 +193,17 @@ PHP_EACH triggers AS i => off BEGIN
 	END
 END
 
-LPF CreateAreaTravelScript
-	STR_VAR
-		from_area 	   = EVAL ~%SEBaldursGate%~
-		to_area   	   = EVAL ~%BaldursGateDocks%~
-		door_name_from = bggo_Door01
+LPF Door_trigger_script_patch
+STR_VAR
+	door_name_wed	 	= DOOR01
+	door_name			= bggo_Door01
+	area_name			= EVAL ~%BaldursGateDocks%~
+	door_script			= dr01xx13
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
 END
 
 LPF fj_are_structure
@@ -240,6 +243,7 @@ LPF fj_are_structure
     fj_door_closed_vert_3  = 4  + (405 << 16)
     STR_VAR
     fj_structure_type      = door
-    fj_name                = bggo_Door01
+    fj_name                = EVAL ~%existing_door_name%~
     fj_door_wed_id         = DOOR1300
+	fj_door_script		   = EVAL ~%door_script%~
 END

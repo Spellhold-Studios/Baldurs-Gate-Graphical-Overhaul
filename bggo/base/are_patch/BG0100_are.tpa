@@ -102,6 +102,9 @@ LPF CreateDoorScriptPatchAnimation
 STR_VAR
 	animation_name   = FlmDoor0157
 	door_name   	 = Door0157
+	door_script		 = Door0157
+RET
+	door_script
 END
 
 // Rename the triggers to avoid confusion add door script
@@ -109,7 +112,7 @@ LPF Door_trigger_script_patch
 STR_VAR
 	door_name		 = Door0157
 	new_trigger_name = bggo_BG0157
-	door_script		 = Door0157
+	door_script		 = EVAL ~%door_script%~
 END
 
 //////////////////////////////
@@ -117,24 +120,17 @@ END
 //////////////////////////////
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	script_name = dest0159
-	area_name = EVAL ~%NWBaldursGate_House1_L1%~
+	trigger_script = dest0159
+	area_name = BG0159	// used vor variable name, so we don't need cmpvars
 RET
-	script_name
+	trigger_script
 END
 
 LPF Door_trigger_script_patch
 STR_VAR
-	door_name	 		= Door0159
+	door_name			= DOOR0159
+	area_name			= EVAL ~%NWBaldursGate%~
 	new_trigger_name	= bggo_BG0159
-	trigger_script   	= EVAL ~%script_name%~
-END
-
-LPF CreateAreaTravelScript
-	INT_VAR
-		bggo_locked	   = 1
-	STR_VAR
-		from_area 	   = EVAL ~%NWBaldursGate%~
-		to_area   	   = EVAL ~%NBaldursGate%~
-		door_name_from = Door0159
+	trigger_script   	= EVAL ~%trigger_script%~
+	door_script			= dr015901
 END

@@ -16,44 +16,7 @@ THEN
 END
 >>>>>>>> 
 
-/*
-<<<<<<<< .../%MOD_FOLDER%/inlined_door_open_close.baf
-IF
-	OpenState("%door_name_from%",TRUE)
-THEN
-	RESPONSE #100
-	SetGlobal("%from_area%_open_%door_name_from%","%from_area%",1)
-	%set_unlock_door%
-	Continue()
-END
-IF
-	OpenState("%door_name_from%",FALSE)
-THEN
-	RESPONSE #100
-	SetGlobal("%from_area%_open_%door_name_from%","%from_area%",0)
-	Continue()
-END
 
-%global_unlock_door%
-
-IF
-	Global("%to_area%_open_%door_name_to%","%to_area%",0)
-THEN
-	RESPONSE #100
-	CloseDoor("%door_name_from%")
-	Continue()
-END
-IF
-	Global("%to_area%_open_%door_name_to%","%to_area%",1)
-THEN
-	RESPONSE #100
-	OpenDoor("%door_name_from%")
-	Continue()
-END
-
->>>>>>>> 
-*/
-/*
 <<<<<<<< .../%MOD_FOLDER%/inlined_bggodest.baf
 IF
     True()
@@ -62,25 +25,54 @@ THEN
 	SetGlobal("%area_name%_entered","MYAREA",1)
 END
 >>>>>>>>
-*/
-/*
-<<<<<<<< .../%MOD_FOLDER%/inlined_door_script.baf
+
+
+<<<<<<<< .../%MOD_FOLDER%/inlined_door_open_close.baf
+
+%global_unlock_door%
 
 IF
-    Unlocked([ANYONE])
-THEN
-    RESPONSE #100
-		SetGlobal("%are%_unlocked_Dr0114b","%area_name%",1)
-END
-/*
-IF
-	OpenState("%door_name%",FALSE)
-	Clicked([ANYONE])
-	Global("%are%_unlocked_Dr0114b","%area_name%",0)
+	Global("BGGO_opened_%door_name%","GLOBAL",0)
 THEN
 	RESPONSE #100
-	DisplayString("%door_name%",%dialog_string%)
+	CloseDoor("%door_name%")
+	Continue()
 END
-*/
+IF
+	Global("BGGO_opened_%door_name%","GLOBAL",1)
+THEN
+	RESPONSE #100
+	OpenDoor("%door_name%")
+	Continue()
+END
+
+>>>>>>>> 
+
+
+<<<<<<<< .../%MOD_FOLDER%/inlined_door_script.baf
+
+%set_unlock_door%
+
+IF
+	Clicked([ANYONE])
+    OpenState("%door_name%",TRUE)
+	Global("BGGO_unlocked_%door_name%","GLOBAL",1)
+//    Opened([ANYONE])
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_%door_name%","GLOBAL",1)
+END
+
+IF
+	Clicked([ANYONE])
+    OpenState("%door_name%",FALSE)
+	Global("BGGO_unlocked_%door_name%","GLOBAL",1)
+//	Closed([ANYONE])
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_%door_name%","GLOBAL",0)
+END
+
+%door_click%
+
 >>>>>>>>
-*/

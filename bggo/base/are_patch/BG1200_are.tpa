@@ -81,18 +81,14 @@ END
 LPF Door_trigger_script_patch
 STR_VAR
 	door_name_wed	 	= DOOR01
+	door_name			= Door01
+	area_name			= EVAL ~%BaldursGateDocks%~
+	door_script			= dr01xx12
 RET
 	travel_trigger_found
 	bggo_deleted
 	existing_door_name
-END
-
-LPF CreateAreaTravelScript
-	STR_VAR
-		from_area 	   = EVAL ~%BaldursGateDocks%~
-		to_area   	   = EVAL ~%SEBaldursGate%~
-		door_name_from = Door01
-		old_door_name  = EVAL ~%existing_door_name%~
+	door_script
 END
 
 LPF fj_are_structure
@@ -106,17 +102,6 @@ LPF fj_are_structure
  END
 
 PATCH_IF bggo_deleted = 1 BEGIN
-	GET_OFFSET_ARRAY doors ARE_V10_DOORS
-	PHP_EACH doors AS i => off BEGIN
-		READ_ASCII off doorname (32) NULL
-		PATCH_IF ~%doorname%~ STR_EQ ~Door01~ BEGIN
-			LPF fj_are_structure
-				INT_VAR fj_delete_mode = i
-				STR_VAR fj_structure_type = door
-			END 
-		END
-	END
-	
 	LPF fj_are_structure
 		INT_VAR
 		fj_flags               = BIT6 //BIT6 is door
@@ -154,7 +139,8 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_cell_closed_vert_3  = 269 + (41 << 16)
 		STR_VAR
 		fj_structure_type      = door
-		fj_name                = Door01
+		fj_name                = EVAL ~%existing_door_name%~
 		fj_door_wed_id         = DOOR01
+		fj_door_script		   = EVAL ~%door_script%~
 	END
 END

@@ -71,7 +71,7 @@ LPF fj_are_structure
 	STR_VAR
 	fj_structure_type   = region
 	fj_name             = Door0112
-	fj_destination_area = BG0112
+	fj_destination_area = EVAL ~%BaldursGate_Undercellars%~
 	fj_destination_name = Exit0114
 END
 
@@ -105,7 +105,7 @@ LPF fj_are_structure
 	STR_VAR
 	fj_structure_type   = region
 	fj_name             = bggo_BG0300
-	fj_destination_area = BG0300
+	fj_destination_area = EVAL ~%NEBaldursGate%~
 	fj_destination_name = bggo_Exit0114b
 //	fj_reg_script 		= bggolock
 END
@@ -127,7 +127,7 @@ LPF fj_are_structure
 	STR_VAR
 	fj_structure_type   = region
 	fj_name             = bggo_BG0200
-	fj_destination_area = BG0200
+	fj_destination_area = EVAL ~%NBaldursGate%~
 	fj_destination_name = bggo_Exit0114b
 //	fj_reg_script 		= bggolock
 END

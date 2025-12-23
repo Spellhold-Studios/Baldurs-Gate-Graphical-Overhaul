@@ -82,28 +82,27 @@ LPM ~CLEAR_ARRAY~
 // Rename the triggers to avoid confusion
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	script_name = dest0805
-	area_name = EVAL ~%EBaldursGate_ArkionsHouse_L1%~
+	trigger_script = dest0805
+	area_name = BG0805
 RET
-	script_name
+	trigger_script
 END
 
 LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
 STR_VAR
-	door_name		 = Door0805
-	new_trigger_name = bggo_BG0805
-	trigger_script	 = EVAL ~%script_name%~
+	door_name			= Door0805
+	area_name			= EVAL ~%EBaldursGate%~
+	new_trigger_name	= bggo_BG0805
+	trigger_script   	= EVAL ~%trigger_script%~
+	door_script			= dr080508
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
 END
-
-LPF CreateAreaTravelScript
-	INT_VAR
-		bggo_locked	   = 1
-	STR_VAR
-		from_area 	   = EVAL ~%EBaldursGate%~
-		to_area   	   = EVAL ~%SEBaldursGate%~
-		door_name_from = Door0805
-END
-
 
 //////////////////////////////
 // Door0813 from BG1300
@@ -118,15 +117,12 @@ PHP_EACH doors AS i => off BEGIN
 	END
 END
 
-LPF CreateAreaTravelScript
-	INT_VAR
-		bggo_locked	   = 0
-	STR_VAR
-		from_area 	   = EVAL ~%EBaldursGate%~
-		to_area   	   = EVAL ~%SEBaldursGate%~
-		door_name_from = Door0813
+LPF Door_trigger_script_patch
+STR_VAR
+	door_name	     = Door0813
+	area_name		 = EVAL ~%EBaldursGate%~
+	door_script		 = dr081308
 END
-
 
 ////////////////////////////////////////////////////////////
 //  Door0705  The flame to the left of the double door is hidden by the open door.
@@ -156,6 +152,9 @@ LPF CreateDoorScriptPatchAnimation
 STR_VAR
 	animation_name   = FlmDoor0705
 	door_name   	 = Door0705
+	door_script		 = Door0705
+RET
+	door_script
 END
 
 // Rename the triggers to avoid confusion add door script
@@ -163,6 +162,5 @@ LPF Door_trigger_script_patch
 STR_VAR
 	door_name		 = Door0705
 	new_trigger_name = bggo_BG0705
-	door_script		 = Door0705
+	door_script		 = EVAL ~%door_script%~
 END
-
