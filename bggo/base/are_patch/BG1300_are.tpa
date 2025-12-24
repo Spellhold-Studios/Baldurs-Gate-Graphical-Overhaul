@@ -46,6 +46,7 @@ LPF Door_trigger_script_patch
 STR_VAR
 	door_name		 = Door0813
 	new_trigger_name = bggo_BG0813
+	door_script		 = dr081313
 END
 
 //////////////////////////////

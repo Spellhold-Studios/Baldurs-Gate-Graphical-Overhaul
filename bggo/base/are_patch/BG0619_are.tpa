@@ -28,6 +28,13 @@ LPF fj_are_structure
     STR_VAR
     fj_structure_type   = region
     fj_name             = bggo_BG1100
-    fj_destination_area = BG1100
+    fj_destination_area = EVAL ~%SWBaldursGate%~
     fj_destination_name = Exit0619
+END
+
+LPF CreateHouseAreaScript
+	STR_VAR
+		area_name_house 	= EVAL ~%WBaldursGate_FentensHouse_L1%~
+		area_name_1 		= EVAL ~%WBaldursGate%~
+		area_name_2 		= EVAL ~%SWBaldursGate%~
 END

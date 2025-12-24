@@ -141,3 +141,10 @@ LPF fj_are_structure
 	fj_structure_type = entrance
 	fj_name           = bggo_Exit0300
 END
+
+LPF CreateHouseAreaScript
+	STR_VAR
+		area_name_house 	= EVAL ~%NEBaldursGate_BlushingMermaid_L1%~
+		area_name_1 		= EVAL ~%NBaldursGate%~
+		area_name_2 		= EVAL ~%NEBaldursGate%~
+END
