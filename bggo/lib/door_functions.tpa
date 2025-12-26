@@ -15,6 +15,7 @@ DEFINE_PATCH_FUNCTION Door_trigger_script_patch
 		trigger_script   	= ""	// trigger script file
 		existing_door_name  = ""	
 		trigger_name_dialog = ""
+		area_name_dest		= ""
 	RET
 		bggo_deleted			//  0: existing door is used; 1: non working or not existing door, new one will be installed
 		travel_trigger_found    // 0: install new one 1: use old one
@@ -199,6 +200,7 @@ DEFINE_PATCH_FUNCTION CreateAreaTravelScript
 		area_name        	  = ~~
 		door_name		 	  = ~~
 		trigger_name_dialog   = ~~
+		area_name_dest		  = ~~
 		old_door_name 		  = ~~ // doorname from an existing door (perhabs from another mod)
 				// if the variable is empty the door name is used otherwise the old name is used
 		RET
@@ -221,7 +223,7 @@ BEGIN
 			Clicked([ANYONE])
 			OpenState("%door_name%",FALSE)
 			Global("%area_name%_text_%door_name%","%area_name%",0)
-			Global("BGGO_unlocked_%door_name%","GLOBAL",0)
+			Global("BGGO_unlocked_door_%area_name_dest%","GLOBAL",0)
 		THEN
 			RESPONSE #100
 				DisplayString("%door_name%",%dialog_string%)
@@ -237,26 +239,27 @@ BEGIN
 		SPRINT set_unlock_door 
 		~IF
 			Unlocked([ANYONE])
-			Global("BGGO_unlocked_%door_name%","GLOBAL",0)
+			Global("BGGO_unlocked_door_%area_name_dest%","GLOBAL",0)
 		THEN
 			RESPONSE #100
-				SetGlobal("BGGO_unlocked_%door_name%","GLOBAL",1)
+				SetGlobal("BGGO_unlocked_door_%area_name_dest%","GLOBAL",1)
 				%door_click_unlock%
 		END~
 		SPRINT global_unlock_door 
 		~IF
-			Global("BGGO_unlocked_%door_name%","GLOBAL",1)
+			Global("BGGO_unlocked_door_%area_name_dest%","GLOBAL",1)
 		THEN
 			RESPONSE #100
 				Unlock("%door_name%")
 				%door_click_unlock%
 				Continue()
 		END~
+		SPRINT global_unlock_door_trigger ~Global("BGGO_unlocked_door_%area_name_dest%","GLOBAL",1)~
 	END ELSE BEGIN
 		SPRINT set_unlock_door ~~
 		SPRINT global_unlock_door ~~
+		SPRINT global_unlock_door_trigger ~~
 	END
-
 	
 	INNER_ACTION BEGIN
 		EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_door_open_close.baf~ EVAL
@@ -276,6 +279,7 @@ BEGIN
 		door_name		 	  = EVAL ~%door_name%~	 	
 		trigger_name_dialog   = EVAL ~%trigger_name_dialog%~
 		old_door_name 		  = EVAL ~%existing_door_name%~ 
+		area_name_dest		  = EVAL ~%area_name_dest%~
 		// doorname from an existing door (perhabs from another mod)
 		// if the variable is empty the door name is used otherwise the old name is used
 	END
@@ -296,10 +300,11 @@ END
 
 DEFINE_PATCH_FUNCTION CreateTriggerScriptBggodest
 	STR_VAR
-		area_name 	= ~~
+		area_name_dest 	= ~~
 		trigger_script	= ~~
 	RET
 		trigger_script
+		area_name_dest
 BEGIN
 	INNER_ACTION BEGIN
 		COPY ~.../%MOD_FOLDER%/inlined_bggodest.baf~ ~%workspace%/bif/temp/%trigger_script%.baf~ EVAL

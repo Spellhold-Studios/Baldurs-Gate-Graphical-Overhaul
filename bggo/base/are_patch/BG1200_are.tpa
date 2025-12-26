@@ -84,6 +84,7 @@ STR_VAR
 	door_name			= Door01
 	area_name			= EVAL ~%BaldursGateDocks%~
 	door_script			= dr01xx12
+	area_name_dest		= 01xx
 RET
 	travel_trigger_found
 	bggo_deleted

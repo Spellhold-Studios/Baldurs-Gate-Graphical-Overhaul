@@ -118,19 +118,21 @@ LPM ~CLEAR_ARRAY~
 LPF CreateTriggerScriptBggodest
 STR_VAR
 	trigger_script = dest0159
-	area_name = BG0159 // used vor variable name, so we don't need cmpvars
+	area_name_dest = BG0159 // used vor variable name, so we don't need cmpvars
 RET
 	trigger_script
+	area_name_dest
 END
 
 LPF Door_trigger_script_patch
 STR_VAR
 	door_name_wed	 	= DOOR03
-	door_name			= DOOR0159
+	door_name			= Door0159
 	area_name			= EVAL ~%NBaldursGate%~
 	new_trigger_name	= bggo_BG0159
 	trigger_script   	= EVAL ~%trigger_script%~
 	door_script			= dr015902
+	area_name_dest		= EVAL ~%area_name_dest%~
 RET
 	travel_trigger_found
 	bggo_deleted
@@ -141,7 +143,7 @@ END
 PATCH_IF bggo_deleted = 1 BEGIN
 	LPF fj_are_structure
 		INT_VAR
-		fj_flags               = BIT1 + BIT6 //BIT1 locked BIT6 is door
+		fj_flags               = BIT6 //BIT1 locked BIT6 is door
 		fj_open_box_left       = 7
 		fj_open_box_top        = 2347
 		fj_open_box_right      = 29
@@ -194,6 +196,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_structure_type      = door
 		fj_name                = EVAL ~%existing_door_name%~
 		fj_door_wed_id         = Door03
+		fj_door_script		   = EVAL ~%door_script%~
 	END
 END
 
@@ -219,7 +222,7 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		STR_VAR
 		fj_structure_type   = region
 		fj_name             = bggo_BG0159
-		fj_destination_area = BG0159
+		fj_destination_area = EVAL ~%NWBaldursGate_House1_L1%~
 		fj_destination_name = Exit0100
 		fj_reg_script       = EVAL ~%trigger_script%~
 	END
@@ -243,9 +246,10 @@ END
 LPF CreateTriggerScriptBggodest
 STR_VAR
 	trigger_script = dest0114
-	area_name = BG0114	// used vor variable name, so we don't need cmpvars
+	area_name_dest = BG0114	// used vor variable name, so we don't need cmpvars
 RET
 	trigger_script
+	area_name_dest
 END
 
 LPF Door_trigger_script_patch
@@ -258,6 +262,7 @@ STR_VAR
 	new_trigger_name	= bggo_BG0114b
 	trigger_script   	= EVAL ~%trigger_script%~
 	door_script			= dr0114b2
+	area_name_dest		= EVAL ~%area_name_dest%~
 	trigger_name_dialog = "Trigger Point 31"
 RET
 	travel_trigger_found

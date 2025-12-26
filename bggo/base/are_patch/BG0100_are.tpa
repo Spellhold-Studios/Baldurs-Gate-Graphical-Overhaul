@@ -121,9 +121,10 @@ END
 LPF CreateTriggerScriptBggodest
 STR_VAR
 	trigger_script = dest0159
-	area_name = BG0159	// used vor variable name, so we don't need cmpvars
+	area_name_dest = BG0159	// used vor variable name, so we don't need cmpvars
 RET
 	trigger_script
+	area_name_dest
 END
 
 LPF Door_trigger_script_patch
@@ -133,4 +134,5 @@ STR_VAR
 	new_trigger_name	= bggo_BG0159
 	trigger_script   	= EVAL ~%trigger_script%~
 	door_script			= dr015901
+	area_name_dest		= EVAL ~%area_name_dest%~
 END

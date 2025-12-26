@@ -47,6 +47,7 @@ STR_VAR
 	door_name		 = Door0813
 	new_trigger_name = bggo_BG0813
 	door_script		 = dr081313
+	area_name_dest   = BG0813
 END
 
 //////////////////////////////
@@ -56,9 +57,10 @@ END
 LPF CreateTriggerScriptBggodest
 STR_VAR
 	trigger_script = dest0805
-	area_name = BG0805 
+	area_name_dest = BG0805 
 RET
 	trigger_script
+	area_name_dest
 END
 
 LPF Door_trigger_script_patch
@@ -71,6 +73,7 @@ STR_VAR
 	new_trigger_name	= bggo_BG0805
 	trigger_script   	= EVAL ~%trigger_script%~
 	door_script			= dr080513
+	area_name_dest		= EVAL ~%area_name_dest%~
 RET
 	travel_trigger_found
 	bggo_deleted
@@ -200,6 +203,7 @@ STR_VAR
 	door_name			= bggo_Door01
 	area_name			= EVAL ~%BaldursGateDocks%~
 	door_script			= dr01xx13
+	area_name_dest		= 01xx
 RET
 	travel_trigger_found
 	bggo_deleted

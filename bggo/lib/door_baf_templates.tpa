@@ -22,15 +22,55 @@ IF
     True()
 THEN
     RESPONSE #100
-	SetGlobal("%area_name%_entered","MYAREA",1)
+	SetGlobal("%area_name_dest%_entered","MYAREA",1)
 END
 >>>>>>>>
 
-
+// area.bcs script
 <<<<<<<< .../%MOD_FOLDER%/inlined_door_open_close.baf
 
 %global_unlock_door%
 
+IF
+	Global("BGGO_opened_%area_name_dest%","GLOBAL",0)
+	Global("BGGO_opened_%door_name%","%are2%",1)
+THEN
+	RESPONSE #100
+	CloseDoor("%door_name%")
+	SetGlobal("BGGO_opened_%door_name%","%are2%",0)
+	Continue()
+END
+IF
+	Global("BGGO_opened_%area_name_dest%","GLOBAL",1)
+	Global("BGGO_opened_%door_name%","%are2%",0)
+THEN
+	RESPONSE #100
+	OpenDoor("%door_name%")
+	SetGlobal("BGGO_opened_%door_name%","%are2%",1)
+	Continue()
+END
+
+IF
+    OpenState("%door_name%",TRUE)
+//    Opened([ANYONE])
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_%area_name_dest%","GLOBAL",1)
+		SetGlobal("BGGO_opened_%door_name%","%are2%",1)
+		Continue()
+END
+
+IF
+    OpenState("%door_name%",FALSE)
+//    Opened([ANYONE])
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_%area_name_dest%","GLOBAL",0)
+		SetGlobal("BGGO_opened_%door_name%","%are2%",0)
+		Continue()
+END
+
+/*
 IF
 	Global("BGGO_opened_%door_name%","GLOBAL",0)
 THEN
@@ -45,18 +85,18 @@ THEN
 	OpenDoor("%door_name%")
 	Continue()
 END
-
+*/
 >>>>>>>> 
 
-
+// door script
 <<<<<<<< .../%MOD_FOLDER%/inlined_door_script.baf
 
 %set_unlock_door%
-
+/*
 IF
 	Clicked([ANYONE])
     OpenState("%door_name%",TRUE)
-	Global("BGGO_unlocked_%door_name%","GLOBAL",1)
+	%global_unlock_door_trigger%
 //    Opened([ANYONE])
 THEN
     RESPONSE #100
@@ -66,16 +106,18 @@ END
 IF
 	Clicked([ANYONE])
     OpenState("%door_name%",FALSE)
-	Global("BGGO_unlocked_%door_name%","GLOBAL",1)
+	%global_unlock_door_trigger%
 //	Closed([ANYONE])
 THEN
     RESPONSE #100
 		SetGlobal("BGGO_opened_%door_name%","GLOBAL",0)
 END
-
+*/
 %door_click%
 
 >>>>>>>>
+
+
 
 
 <<<<<<<< .../%MOD_FOLDER%/inlinedAreaScriptTriggerActivation.baf
