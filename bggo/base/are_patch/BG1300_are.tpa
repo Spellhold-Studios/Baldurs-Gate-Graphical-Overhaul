@@ -25,10 +25,10 @@ LPM ~CLEAR_ARRAY~
 //////////////////////////////
 LPF fj_are_structure
     INT_VAR
-    fj_loc_x          = 33
-    fj_loc_y          = 598
-    fj_dest_x         = 33
-    fj_dest_y         = 598
+    fj_loc_x          = 59
+    fj_loc_y          = 608
+    fj_dest_x         = 59
+    fj_dest_y         = 608
     fj_animation      = 0x4100
     fj_orientation    = 2     //SW
 	fj_schedule       = 0b000111111111111111110000
@@ -177,10 +177,10 @@ END
 
 
 //////////////////////////////////////////////////////////////
+// Compatibility with Baldurans Sea Tower Mod Door01 is now used
+// 
 // Door01 is visible in both BG1200 and BG1300.
-// For this reason, the shared trigger and door are renamed BG1200BG1300.
-// The door is now functional for future projects, but it can only be opened once 
-// the door flag has been changed from secret door to normal and a destination area has been specified.
+// 
 // The trigger can then be deactivated (via script or installation).
 // The door will function via a script so that when it is opened in BG1200, 
 // it is also open in BG1300 and the other way around. 
@@ -193,17 +193,30 @@ PHP_EACH triggers AS i => off BEGIN
 	READ_ASCII off triggername (32) NULL
 	READ_SHORT off + 0x22 bound_left
 	PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND bound_left = 0 BEGIN
-		WRITE_ASCII off ~bggo_door01_trigger~ #32
+		WRITE_ASCII off ~bggo_InfoHouse~ #32
 	END
+END
+
+
+// Add door
+LPF CreateTriggerScriptBggodest
+STR_VAR
+	trigger_script = dest01xx
+	area_name_dest = BG01xx // used vor variable name, so we don't need cmpvars
+RET
+	trigger_script
+	area_name_dest
 END
 
 LPF Door_trigger_script_patch
 STR_VAR
 	door_name_wed	 	= DOOR01
-	door_name			= bggo_Door01
+	door_name			= Door01
 	area_name			= EVAL ~%BaldursGateDocks%~
+	new_trigger_name	= bggo_door01
+	trigger_script   	= EVAL ~%trigger_script%~
 	door_script			= dr01xx13
-	area_name_dest		= 01xx
+	area_name_dest		= EVAL ~%area_name_dest%~
 RET
 	travel_trigger_found
 	bggo_deleted
@@ -211,44 +224,74 @@ RET
 	door_script
 END
 
-LPF fj_are_structure
-    INT_VAR
-    fj_loc_x       = 11
-    fj_loc_y       = 495
-    fj_orientation = 0
-    STR_VAR
-    fj_structure_type = entrance
-    fj_name           = bggo_Door01_exit
- END
-  
-LPF fj_are_structure
-    INT_VAR
-    fj_flags               = BIT6 //BIT6 is door
-    fj_open_box_left       = 0
-    fj_open_box_top        = 405
-    fj_open_box_right      = 5
-    fj_open_box_bottom     = 465
-    fj_closed_box_left     = 4
-    fj_closed_box_top      = 405
-    fj_closed_box_right    = 36
-    fj_closed_box_bottom   = 492
-    fj_cursor_idx          = 30
-    fj_open_loc_x          = 11
-    fj_open_loc_y          = 495
-    fj_closed_loc_x        = 11
-    fj_closed_loc_y        = 495
-	fj_detect_diff 		   = 0xffff
-    fj_door_open_vert_0    = 0 + (465 << 16)
-    fj_door_open_vert_1    = 5 + (465 << 16)
-    fj_door_open_vert_2    = 5 + (405 << 16)
-    fj_door_open_vert_3    = 0 + (405 << 16)
-    fj_door_closed_vert_0  = 4  + (468 << 16)
-    fj_door_closed_vert_1  = 36 + (492 << 16)
-    fj_door_closed_vert_2  = 36 + (429 << 16)
-    fj_door_closed_vert_3  = 4  + (405 << 16)
-    STR_VAR
-    fj_structure_type      = door
-    fj_name                = EVAL ~%existing_door_name%~
-    fj_door_wed_id         = DOOR1300
-	fj_door_script		   = EVAL ~%door_script%~
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT6 + BIT7 //BIT7 secret door BIT6 is door
+		fj_open_box_left       = 0
+		fj_open_box_top        = 405
+		fj_open_box_right      = 5
+		fj_open_box_bottom     = 465
+		fj_closed_box_left     = 4
+		fj_closed_box_top      = 405
+		fj_closed_box_right    = 36
+		fj_closed_box_bottom   = 492
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 25
+		fj_open_loc_y          = 505
+		fj_closed_loc_x        = 25
+		fj_closed_loc_y        = 505
+		fj_detect_diff 		   = 0xffff
+		fj_door_open_vert_0    = 0 + (465 << 16)
+		fj_door_open_vert_1    = 5 + (465 << 16)
+		fj_door_open_vert_2    = 5 + (405 << 16)
+		fj_door_open_vert_3    = 0 + (405 << 16)
+		fj_door_closed_vert_0  = 4  + (468 << 16)
+		fj_door_closed_vert_1  = 36 + (492 << 16)
+		fj_door_closed_vert_2  = 36 + (429 << 16)
+		fj_door_closed_vert_3  = 4  + (405 << 16)
+		STR_VAR
+		fj_travel_trigger      = bggo_Door01
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR1300
+		fj_door_script		   = EVAL ~%door_script%~
+	END
+	
 END
+
+PATCH_IF travel_trigger_found = 0 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_type         = 2    //travel
+		fj_box_left     = 4
+		fj_box_top      = 405
+		fj_box_right    = 36
+		fj_box_bottom   = 492
+		fj_cursor_idx   = 30   //door
+		fj_alt_x		= 22
+		fj_alt_y		= 508
+		fj_flags        = BIT8 + BIT10 + BIT11  //BIT8 deactivated BIT10 activation point BIT11 door connected
+		fj_vertex_0     = 4  + (468 << 16)
+		fj_vertex_1     = 36 + (492 << 16)
+		fj_vertex_2     = 36 + (429 << 16)
+		fj_vertex_3     = 4  + (405 << 16)
+		STR_VAR
+		fj_structure_type   = region
+		fj_name             = bggo_Door01
+		fj_destination_area = EVAL ~%area_name_dest%~
+		fj_destination_name = exit_bg01xx
+		fj_reg_script       = EVAL ~%trigger_script%~
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 11
+		fj_loc_y       = 495
+		fj_orientation = 0
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = bggo_Door01_exit
+	END
+END
+
