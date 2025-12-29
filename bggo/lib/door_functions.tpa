@@ -84,12 +84,12 @@ BEGIN
 							INNER_ACTION BEGIN
 								COMPILE ~%workspace%/bif/temp/%door_script%.baf~ EVAL
 							END
-							PATCH_IF debug BEGIN PATCH_PRINT ~%TAB%door_script working %doorname% - new script: %door_script%.%ext%~ END
+							PATCH_IF debug BEGIN PATCH_PRINT ~%TAB%door_script working %doorname% - new script: %door_script%.baf~ END
 						END ELSE BEGIN
 							INNER_ACTION BEGIN
 								EXTEND_BOTTOM ~%door_scriptname%.bcs~ ~%workspace%/bif/temp/%door_script%.baf~ EVAL
 							END
-							PATCH_IF debug BEGIN PATCH_PRINT ~%TAB%door_script working %doorname% - extend: %door_scriptname% with %door_script%.%ext% ~ END
+							PATCH_IF debug BEGIN PATCH_PRINT ~%TAB%door_script working %doorname% - extend: %door_scriptname% with %door_script%.baf ~ END
 						END
 					END
 				END
@@ -184,7 +184,18 @@ BEGIN
 			END
 		END
 	END
-	
+	// if there is no existing trigger, we have to compile the trigger script
+	PATCH_IF ~%trigger_script%~ STR_CMP ~~ BEGIN
+		PATCH_IF !FILE_EXISTS_IN_GAME ~%trigger_script%.bcs~ BEGIN
+			INNER_ACTION BEGIN
+				COMPILE ~%workspace%/bif/temp/%trigger_script%.baf~ EVAL 
+			END
+		END ELSE BEGIN
+			INNER_ACTION BEGIN
+				EXTEND_BOTTOM ~%trigger_script%.bcs~ ~%workspace%/bif/temp/%trigger_script%.baf~ EVAL
+			END
+		END
+	END
 	PATCH_IF ~%existing_door_name%~ STR_EQ ~~ BEGIN
 		SPRINT existing_door_name ~%door_name%~
 	END
@@ -333,7 +344,7 @@ BEGIN
 	PATCH_IF debug = 1 BEGIN	
 		PATCH_PRINT ~trigger_name_1: %trigger_name_1%~
 		PATCH_PRINT ~trigger_name_2: %trigger_name_2%~
-		PATCH_PRINT ~%are%: %area_name_1% : %area_name_2%~
+		PATCH_PRINT ~%area_name_house%: %area_name_1% : %area_name_2%~
 	END
 	INNER_ACTION BEGIN
 		ACTION_IF FILE_EXISTS_IN_GAME ~%are2%.bcs~ BEGIN

@@ -708,6 +708,11 @@ BEGIN
 		END
 	END
 	
+	ACTION_BASH_FOR ~%MOD_FOLDER%/base/mod_compat~ ~^.*\.tpa$~ BEGIN
+		PRINT ~%BASH_FOR_FILESPEC%~
+		INCLUDE ~%BASH_FOR_FILESPEC%~
+	END
+	
 	MAKE_BIFF ~goMAIN~ BEGIN ~%workspace%/bif/goMAIN~ ~^.*$~ END
 	ACTION_BASH_FOR ~%workspace%/bif/goMAIN~ ~^.*$~ BEGIN
 		DELETE +  ~%BASH_FOR_FILESPEC%~

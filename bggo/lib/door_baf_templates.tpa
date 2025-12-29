@@ -125,20 +125,20 @@ END
 // Door0805 trigger destination script
 ////////////////////////////////////////////////////////////
 IF
-    Global("%are%_entered","%area_name_1%",1)
+    Global("%area_name_house%_entered","%area_name_1%",1)
 THEN
     RESPONSE #100
 	TriggerActivation("%trigger_name_1%",1)
 	TriggerActivation("%trigger_name_2%",0)
-	SetGlobal("%are%_entered","%area_name_2%",0)
+	SetGlobal("%area_name_house%_entered","%area_name_2%",0)
 END
 
 IF
-    Global("%are%_entered","%area_name_2%",1)
+    Global("%area_name_house%_entered","%area_name_2%",1)
 THEN
     RESPONSE #100
 	TriggerActivation("%trigger_name_1%",0)
 	TriggerActivation("%trigger_name_2%",1)
-	SetGlobal("%are%_entered","%area_name_1%",0)
+	SetGlobal("%area_name_house%_entered","%area_name_1%",0)
 END
 >>>>>>>> 
