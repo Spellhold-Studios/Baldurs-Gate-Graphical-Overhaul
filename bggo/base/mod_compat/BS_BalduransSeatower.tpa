@@ -75,6 +75,13 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 				END
 			END
 		END
+		GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+		PHP_EACH triggers AS i => off BEGIN
+			READ_ASCII off triggername (32) NULL
+			PATCH_IF ~%triggername%~ STR_EQ ~bsar1200t1~ BEGIN
+				READ_LONG off + 0x64 dialog_string
+			END
+		END
 	
 	////////////////////////////////////////////
 	// BG1300.are SEBaldursGate
@@ -90,7 +97,7 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 		PHP_EACH doors AS i => off BEGIN
 			READ_ASCII off + 0x20 door_id
 			PATCH_IF ~%door_id%~ STR_EQ ~door1300~ BEGIN
-				WRITE_LONG off + 0x28 BIT6	// is door
+				WRITE_LONG off + 0x28 BIT1 + BIT6	//BIT1 locked BIT6 is door
 				WRITE_LONG off + 0x88 0		// detection difficulty
 			END
 		END
@@ -107,4 +114,35 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 				WRITE_LONG off + 0x60 (THIS | BIT8) //deactivates
 			END
 		END
+				
+		LPF fj_are_structure
+		INT_VAR
+			fj_loc_x = 36
+			fj_loc_y = 390
+			fj_note_strref = ~%dialog_string%~
+		STR_VAR
+			fj_structure_type   = note
+		END
+		
+		<<<<<<<< .../%MOD_FOLDER%/inlined_door_script.baf
+		IF
+			Global("BGGO_opened_BG01XX","GLOBAL",1)
+		THEN
+			RESPONSE #100
+				SetGlobal("BGGO_trigger_text","MYAREA",1)
+				Unlock("door01")
+		END
+		IF
+			Global("BGGO_trigger_text","MYAREA",0)
+			Clicked([ANYONE])
+			OpenState("door01",FALSE)
+		THEN
+			RESPONSE #100
+				DisplayString("door01",%dialog_string%)
+				SetGlobal("BGGO_trigger_text","MYAREA",1)
+				Unlock("door01")
+		END
+		>>>>>>>>
+	
+	EXTEND_BOTTOM ~dr01XX13.bcs~ ~.../%MOD_FOLDER%/inlined_door_script.baf~ EVAL
 END
