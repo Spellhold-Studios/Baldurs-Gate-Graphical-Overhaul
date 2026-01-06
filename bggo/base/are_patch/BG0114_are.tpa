@@ -45,7 +45,7 @@ LPM ~CLEAR_ARRAY~
 GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
 PHP_EACH triggers AS i => off BEGIN
 	READ_ASCII off triggername (32) NULL
-	PATCH_IF ~%triggername%~ STR_EQ ~Door0112~ BEGIN
+	PATCH_IF ~%triggername%~ STR_EQ ~Door0112~ OR ~%triggername%~ STR_EQ ~Door0300~  BEGIN
 		LPF fj_are_structure
 			INT_VAR fj_delete_mode = i
 			STR_VAR fj_structure_type = region
@@ -90,46 +90,72 @@ END
 LPF fj_are_structure
 	INT_VAR
 	fj_type         = 2    //travel
-	fj_box_left     = 265
-	fj_box_top      = 436
-	fj_box_right    = 342
-	fj_box_bottom   = 544
+	fj_box_left     = 541
+	fj_box_top      = 810
+	fj_box_right    = 662
+	fj_box_bottom   = 949
 	fj_cursor_idx   = 30   //door
 	fj_flags        = BIT10  //BIT10 ativation point
-	fj_alt_x		= 338
-	fj_alt_y		= 460
-	fj_vertex_0  = 265 + (498 << 16)
-	fj_vertex_1  = 342 + (544 << 16)
-	fj_vertex_2  = 342 + (477 << 16)
-	fj_vertex_3  = 265 + (436 << 16)
+	fj_alt_x		= 621
+	fj_alt_y		= 927
+	fj_vertex_0  = 584 + (810 << 16)
+	fj_vertex_1  = 541 + (916 << 16)
+	fj_vertex_2  = 634 + (949 << 16)
+	fj_vertex_3  = 661 + (922 << 16)
+	fj_vertex_4  = 662 + (851 << 16)
+	STR_VAR
+	fj_structure_type   = region
+	fj_name             = Door0300
+	fj_destination_area = EVAL ~%NEBaldursGate%~
+	fj_destination_name = Exit0114
+	fj_reg_script 		= Dr0300o
+END
+
+LPF fj_are_structure
+	INT_VAR
+	fj_type         = 2    //travel
+	fj_box_left     = 219
+	fj_box_top      = 435
+	fj_box_right    = 340
+	fj_box_bottom   = 574
+	fj_cursor_idx   = 30   //door
+	fj_flags        = BIT10  //BIT10 ativation point
+	fj_alt_x		= 299
+	fj_alt_y		= 552
+	fj_vertex_1  = 262 + (435 << 16)
+	fj_vertex_2  = 219 + (541 << 16)
+	fj_vertex_3  = 312 + (574 << 16)
+	fj_vertex_4  = 339 + (547 << 16)
+	fj_vertex_0  = 340 + (476 << 16)
 	STR_VAR
 	fj_structure_type   = region
 	fj_name             = bggo_BG0300
 	fj_destination_area = EVAL ~%NEBaldursGate%~
 	fj_destination_name = bggo_Exit0114b
-//	fj_reg_script 		= bggolock
+	fj_reg_script 		= dr0114uo
 END
 LPF fj_are_structure
 	INT_VAR
 	fj_type         = 2    //travel
-	fj_box_left     = 265
-	fj_box_top      = 436
-	fj_box_right    = 342
-	fj_box_bottom   = 544
+	fj_box_left     = 219
+	fj_box_top      = 435
+	fj_box_right    = 340
+	fj_box_bottom   = 574
 	fj_cursor_idx   = 30   //door
-	fj_flags        = BIT10 + BIT8  //BIT10 ativation point BIT8 deativated
-	fj_alt_x		= 338
-	fj_alt_y		= 460
-	fj_vertex_0  = 265 + (498 << 16)
-	fj_vertex_1  = 342 + (544 << 16)
-	fj_vertex_2  = 342 + (477 << 16)
-	fj_vertex_3  = 265 + (436 << 16)
+	fj_flags        = BIT10 + BIT8  //BIT10 ativation point BIT8 deactivated
+	fj_alt_x		= 299
+	fj_alt_y		= 552
+	fj_vertex_1  = 262 + (435 << 16)
+	fj_vertex_2  = 219 + (541 << 16)
+	fj_vertex_3  = 312 + (574 << 16)
+	fj_vertex_4  = 339 + (547 << 16)
+	fj_vertex_0  = 340 + (476 << 16)
 	STR_VAR
 	fj_structure_type   = region
 	fj_name             = bggo_BG0200
 	fj_destination_area = EVAL ~%NBaldursGate%~
 	fj_destination_name = bggo_Exit0114b
-//	fj_reg_script 		= bggolock
+	fj_reg_script 		= dr0114uo
 END
 
 LPF fj_are_structure
@@ -148,3 +174,16 @@ LPF CreateHouseAreaScript
 		area_name_1 		= EVAL ~%NBaldursGate%~
 		area_name_2 		= EVAL ~%NEBaldursGate%~
 END
+
+
+
+INNER_ACTION BEGIN
+	COPY ~.../%MOD_FOLDER%/unlock_open_door_triggerscript.baf~ ~%workspace%/bif/temp/dr0114uo.baf~ EVAL
+	COMPILE ~%workspace%/bif/temp/dr0114uo.baf~ EVAL
+END
+
+INNER_ACTION BEGIN
+	COPY ~.../%MOD_FOLDER%/open_door_triggerscript.baf~ ~%workspace%/bif/temp/dr0300o.baf~ EVAL
+	COMPILE ~%workspace%/bif/temp/dr0300o.baf~ EVAL
+END
+

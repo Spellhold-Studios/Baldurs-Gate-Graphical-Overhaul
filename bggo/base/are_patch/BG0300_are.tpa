@@ -69,6 +69,7 @@ RET
 	bggo_deleted
 	existing_door_name
 	door_script
+	dialog_string
 END
 
 PATCH_IF bggo_deleted = 1 BEGIN

@@ -151,7 +151,7 @@ In addition to the methods above for removing individual components, you can com
 
 ## <a name="credits" id="credits"></a>Credits and Acknowledgements
 
-**Original author:** <a href="http://www.shsforums.net/user/3378-cbisson/">Yovaneth</a> (incredible graphic artist)   
+**Original author:** <a href="https://www.shsforums.net/user/3148-yovaneth/">Yovaneth</a> (incredible graphic artist)   
 **Coders:** <a href="http://www.shsforums.net/user/3958-weigo/">Weigo</a> (completely revised version)  
 
 

@@ -9,3 +9,46 @@ THEN
 END
 >>>>>>>>
 EXTEND_TOP ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_top.baf~ EVAL
+
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0300_bottom.baf
+
+IF
+    OpenState("Dr0114b",TRUE)
+	Global("BGGO_timer_Dr0114b","GLOBAL",0)
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",1)
+        SetGlobalTimer("BGGO_timer_BG0114","GLOBAL",TWO_ROUNDS)
+END
+
+IF
+	Global("BGGO_timer_Dr0114b","GLOBAL",1)
+	GlobalTimerExpired("BGGO_timer_BG0114","GLOBAL")
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",2)
+		CreateCreatureObject("Bork","Dr0114b",0,0,0)
+		ActionOverride("Bork",DisplayString(Myself,%dialog_string%))
+		Wait(3)
+		ActionOverride("Bork",Face(4))
+		Wait(3)
+		ActionOverride("Bork",Face(12))
+        ActionOverride("Bork",MoveToPointNoInterrupt([4379.1408]))
+		ActionOverride("Bork",DestroySelf())
+END
+
+IF
+	Global("BGGO_timer_Dr0114b","GLOBAL",2)
+THEN
+    RESPONSE #100
+		CloseDoor("Dr0114b")
+		SetGlobal("BGGO_opened_Dr0114b","BG0200",0)
+		SetGlobal("BGGO_opened_BG0114","GLOBAL",0)
+		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",0)
+		
+		SetGlobal("BGGO_unlocked_door_BG0114","GLOBAL",0)
+		Lock("Dr0114b")
+		SetGlobal("BG0200_text_Dr0114b","BG0200",0)
+END
+>>>>>>>>
+EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_bottom.baf~ EVAL

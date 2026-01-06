@@ -110,7 +110,7 @@ IF
 //	Closed([ANYONE])
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_%door_name%","GLOBAL",0)
+		
 END
 */
 %door_click%
@@ -122,7 +122,7 @@ END
 
 <<<<<<<< .../%MOD_FOLDER%/inlinedAreaScriptTriggerActivation.baf
 ////////////////////////////////////////////////////////////
-// Door0805 trigger destination script
+// %area_name_house% trigger destination script
 ////////////////////////////////////////////////////////////
 IF
     Global("%area_name_house%_entered","%area_name_1%",1)
@@ -142,3 +142,26 @@ THEN
 	SetGlobal("%area_name_house%_entered","%area_name_1%",0)
 END
 >>>>>>>> 
+
+<<<<<<<< .../%MOD_FOLDER%/unlock_open_door_triggerscript.baf
+IF
+	Clicked([ANYONE])
+//	Global("BGGO_opened_BG0114","GLOBAL",0)
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_BG0114","GLOBAL",1)
+		SetGlobal("BGGO_unlocked_door_BG0114","GLOBAL",1)
+//		OpenDoor("Dr0114b")
+//		SetGlobalTimer("BGGO_timer_BG0114","GLOBAL",TWO_ROUNDS)
+//		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",0)
+END
+>>>>>>>>
+
+<<<<<<<< .../%MOD_FOLDER%/open_door_triggerscript.baf
+IF
+	IsOverMe([ANYONE])
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_BG0300","GLOBAL",1)
+END
+>>>>>>>>

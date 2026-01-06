@@ -22,6 +22,7 @@ DEFINE_PATCH_FUNCTION Door_trigger_script_patch
 		existing_door_name
 		door_script
 		trigger_script
+		dialog_string
 BEGIN
 	SET found_door = 0
 	
@@ -216,6 +217,7 @@ DEFINE_PATCH_FUNCTION CreateAreaTravelScript
 				// if the variable is empty the door name is used otherwise the old name is used
 		RET
 		door_script
+		dialog_string
 BEGIN
 	PATCH_IF ~%old_door_name%~ STR_CMP ~~ BEGIN
 		SPRINT door_name ~%old_door_name%~
@@ -293,6 +295,8 @@ BEGIN
 		area_name_dest		  = EVAL ~%area_name_dest%~
 		// doorname from an existing door (perhabs from another mod)
 		// if the variable is empty the door name is used otherwise the old name is used
+	RET
+		dialog_string
 	END
 END
 
