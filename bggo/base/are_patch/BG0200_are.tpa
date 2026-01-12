@@ -373,3 +373,326 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_name           = bggo_Exit0114b
 	END
 END
+
+/////////////////////////////////////////////////////////
+// Door Object 12 is connected to Door0014
+/////////////////////////////////////////////////////////
+
+LPF Door_trigger_script_patch 
+STR_VAR
+	door_name_wed	 	= DOOR02
+	door_name			= ~Door0014~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT6 //BIT6 is door
+		fj_open_box_left       = 3030
+		fj_open_box_top        = 1160
+		fj_open_box_right      = 3063
+		fj_open_box_bottom     = 1205
+		fj_closed_box_left     = 3025
+		fj_closed_box_top      = 1160
+		fj_closed_box_right    = 3030
+		fj_closed_box_bottom   = 1230
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 3074
+		fj_open_loc_y          = 1198
+		fj_closed_loc_x        = 3074
+		fj_closed_loc_y        = 1198
+		fj_door_open_vert_0    = 3030 + (1199 << 16)
+		fj_door_open_vert_1    = 3063 + (1205 << 16)
+		fj_door_open_vert_2    = 3063 + (1165 << 16)
+		fj_door_open_vert_3    = 3030 + (1160 << 16)
+		fj_door_closed_vert_0  = 3025 + (1230 << 16)
+		fj_door_closed_vert_1  = 3030 + (1199 << 16)
+		fj_door_closed_vert_2  = 3030 + (1160 << 16)
+		fj_door_closed_vert_3  = 3025 + (1191 << 16)
+		fj_cell_open_vert_0    = 186 + (74 << 16)
+		fj_cell_open_vert_1    = 186 + (75 << 16)
+		fj_cell_open_vert_2    = 187 + (75 << 16)
+		fj_cell_open_vert_3    = 188 + (75 << 16)
+		fj_cell_closed_vert_0  = 186 + (72 << 16)
+		fj_cell_closed_vert_1  = 186 + (73 << 16)
+		fj_cell_closed_vert_2  = 186 + (74 << 16)
+		STR_VAR
+		fj_travel_trigger      = bggo_Door0014
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR02
+		fj_door_script		   = EVAL ~%door_script%~
+	END
+END
+
+
+/////////////////////////////////////////////////////////
+// Door Object 13 is connected to Door0016
+/////////////////////////////////////////////////////////
+
+LPF Door_trigger_script_patch 
+STR_VAR
+	door_name_wed	 	= DOOR01
+	door_name			= ~Door0016~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT6 //BIT6 is door
+		fj_open_box_left       = 2983
+		fj_open_box_top        = 867
+		fj_open_box_right      = 3018
+		fj_open_box_bottom     = 924
+		fj_closed_box_left     = 2976
+		fj_closed_box_top      = 837
+		fj_closed_box_right    = 2989
+		fj_closed_box_bottom   = 917
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 3030
+		fj_open_loc_y          = 922
+		fj_closed_loc_x        = 3030
+		fj_closed_loc_y        = 922
+		fj_door_open_vert_0    = 2983 + (918 << 16)
+		fj_door_open_vert_1    = 3018 + (924 << 16)
+		fj_door_open_vert_2    = 3018 + (873 << 16)
+		fj_door_open_vert_3    = 2983 + (867 << 16)
+		fj_door_closed_vert_0  = 2981 + (917 << 16)
+		fj_door_closed_vert_1  = 2989 + (884 << 16)
+		fj_door_closed_vert_2  = 2985 + (837 << 16)
+		fj_door_closed_vert_3  = 2976 + (872 << 16)
+		fj_cell_open_vert_0    = 189 + (100 << 16)
+		fj_cell_open_vert_1    = 190 + (100 << 16)
+		fj_cell_open_vert_2    = 191 + (100 << 16)
+		fj_cell_closed_vert_0  = 189 + (100 << 16)
+		fj_cell_closed_vert_1  = 189 + (99 << 16)
+		fj_cell_closed_vert_0  = 189 + (98 << 16)
+		fj_cell_closed_vert_1  = 189 + (97 << 16)
+		fj_cell_closed_vert_0  = 189 + (96 << 16)
+
+
+		STR_VAR
+		fj_travel_trigger      = bggo_Door0016
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR01
+		fj_door_script		   = EVAL ~%door_script%~
+	END
+END
+
+/////////////////////////////////////////////////////////
+// Door Object 15 unused Door04
+/////////////////////////////////////////////////////////
+
+LPF Door_trigger_script_patch 
+STR_VAR
+	door_name_wed	 	= DOOR04
+	door_name			= ~Door04~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT6 + BIT7 //BIT6 is door + BIT7 secret
+		fj_open_box_left       = 159
+		fj_open_box_top        = 2255
+		fj_open_box_right      = 200
+		fj_open_box_bottom     = 2344
+		fj_closed_box_left     = 160
+		fj_closed_box_top      = 2227
+		fj_closed_box_right    = 198
+		fj_closed_box_bottom   = 2312
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 206
+		fj_open_loc_y          = 2320
+		fj_closed_loc_x        = 206
+		fj_closed_loc_y        = 2320
+		fj_detect_diff 		   = 0xffff
+		fj_door_open_vert_0    = 159 + (2324 << 16)
+		fj_door_open_vert_1    = 200 + (2344 << 16)
+		fj_door_open_vert_2    = 200 + (2278 << 16)
+		fj_door_open_vert_3    = 159 + (2255 << 16)
+		fj_door_closed_vert_0  = 160 + (2312 << 16)
+		fj_door_closed_vert_1  = 198 + (2283 << 16)
+		fj_door_closed_vert_2  = 198 + (2227 << 16)
+		fj_door_closed_vert_3  = 160 + (2254 << 16)
+		fj_cell_open_vert_0    = 10 + (193 << 16)
+		fj_cell_open_vert_1    = 11 + (193 << 16)
+		fj_cell_open_vert_2    = 12 + (193 << 16)
+		fj_cell_open_vert_3    = 13 + (194 << 16)
+		fj_cell_closed_vert_0  = 10 + (192 << 16)
+		fj_cell_closed_vert_1  = 10 + (191 << 16)
+		fj_cell_closed_vert_2  = 11 + (191 << 16)
+		fj_cell_closed_vert_3  = 11 + (190 << 16)
+		fj_cell_closed_vert_4  = 12 + (190 << 16)
+		fj_cell_closed_vert_5  = 12 + (189 << 16)
+		STR_VAR
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR04
+		fj_door_script		   = EVAL ~%door_script%~
+	END
+END
+
+/////////////////////////////////////////////////////////
+// Door0143 to BG0700
+/////////////////////////////////////////////////////////
+LPF CreateTriggerScriptBggodest
+STR_VAR
+	trigger_script = dest0143
+	area_name_dest = BG0143	// used vor variable name, so we don't need cmpvars
+RET
+	trigger_script
+	area_name_dest
+END
+
+LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
+STR_VAR
+	door_name_wed	 	= DOOR0143
+	door_name			= ~Door0143~
+	area_name			= EVAL ~%NBaldursGate%~
+	new_trigger_name	= bggo_BG0143
+	trigger_script   	= EVAL ~%trigger_script%~
+	door_script			= dr01432
+	area_name_dest		= EVAL ~%area_name_dest%~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT1 + BIT6 //BIT1 locked BIT6 is door
+		fj_open_box_left       = 3430
+		fj_open_box_top        = 3127
+		fj_open_box_right      = 3482
+		fj_open_box_bottom     = 3192
+		fj_closed_box_left     = 3394
+		fj_closed_box_top      = 3112
+		fj_closed_box_right    = 3429
+		fj_closed_box_bottom   = 3198
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 3500
+		fj_open_loc_y          = 3170
+		fj_closed_loc_x        = 3500
+		fj_closed_loc_y        = 3170
+		fj_locked_diff		   = 30
+		fj_door_open_vert_0    = 3430 + (3182 << 16)
+		fj_door_open_vert_1    = 3482 + (3192 << 16)
+		fj_door_open_vert_2    = 3482 + (3137 << 16)
+		fj_door_open_vert_3    = 3430 + (3127 << 16)
+		fj_door_closed_vert_0  = 3429 + (3176 << 16)
+		fj_door_closed_vert_1  = 3413 + (3198 << 16)
+		fj_door_closed_vert_2  = 3394 + (3198 << 16)
+		fj_door_closed_vert_3  = 3398 + (3177 << 16)
+		fj_door_closed_vert_4  = 3404 + (3155 << 16)
+		fj_door_closed_vert_5  = 3414 + (3132 << 16)
+		fj_door_closed_vert_6  = 3422 + (3119 << 16)
+		fj_door_closed_vert_7  = 3429 + (3112 << 16)
+
+		fj_cell_closed_vert_0    = 213 + (266 << 16)
+		fj_cell_closed_vert_1    = 214 + (264 << 16)
+		fj_cell_closed_vert_2    = 214 + (265 << 16)
+		fj_cell_closed_vert_3    = 213 + (265 << 16)
+		fj_cell_open_vert_0      = 214 + (264 << 16)
+		fj_cell_open_vert_1      = 215 + (264 << 16)
+		fj_cell_open_vert_2      = 216 + (264 << 16)
+		fj_cell_open_vert_3      = 217 + (264 << 16)
+		fj_cell_open_vert_4      = 214 + (263 << 16)
+		fj_cell_open_vert_5      = 215 + (263 << 16)
+		fj_cell_open_vert_6      = 214 + (262 << 16)
+		fj_cell_open_vert_7      = 215 + (262 << 16)
+//		fj_cell_open_vert_8      = 214 + (265 << 16)
+//		fj_cell_open_vert_9      = 215 + (265 << 16)
+//		fj_cell_open_vert_10     = 216 + (265 << 16)
+//		fj_cell_open_vert_11     = 217 + (265 << 16)
+		STR_VAR
+		fj_travel_trigger      = bggo_BG0143
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR0143
+		fj_door_script		   = EVAL ~%door_script%~
+	END
+END
+
+PATCH_IF travel_trigger_found = 0 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_type         = 2    //travel
+		fj_box_left     = 3394
+		fj_box_top      = 3112
+		fj_box_right    = 3429
+		fj_box_bottom   = 3198
+		fj_cursor_idx   = 30   //door
+		fj_flags        = BIT11  //BIT11 door connected
+		fj_vertex_0  = 3429 + (3176 << 16)
+		fj_vertex_1  = 3413 + (3198 << 16)
+		fj_vertex_2  = 3394 + (3198 << 16)
+		fj_vertex_3  = 3398 + (3177 << 16)
+		fj_vertex_4  = 3404 + (3155 << 16)
+		fj_vertex_5  = 3414 + (3132 << 16)
+		fj_vertex_6  = 3422 + (3119 << 16)
+		fj_vertex_7  = 3429 + (3112 << 16)
+		STR_VAR
+		fj_structure_type   = region
+		fj_name             = bggo_BG0143
+		fj_destination_area = EVAL ~%CentralBaldursGate_OberonsEstate_L1%~
+		fj_destination_name = Exit0700
+		fj_reg_script       = EVAL ~%trigger_script%~
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 3510
+		fj_loc_y       = 3170
+		fj_orientation = 12
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = Exit0143
+	END
+END
+
+// map note Oberons Estate	
+INNER_ACTION BEGIN
+	COPY_EXISTING - ~%CentralBaldursGate%.are~ ~override~
+		GET_OFFSET_ARRAY mapnotes 0xc4 4 0xc8 4 0 0 0x34
+		PHP_EACH mapnotes AS i => off BEGIN
+			READ_SHORT off x_coord
+			READ_SHORT off + 0x02 y_coord
+			PATCH_IF x_coord = 3446 AND y_coord = 176 BEGIN
+				READ_LONG off + 0x04 dialog_string_1
+			END
+		END
+END
+
+PATCH_IF ~%dialog_string_1%~ STR_CMP ~~ BEGIN
+	LPF fj_are_structure
+	INT_VAR
+		fj_loc_x = 3346
+		fj_loc_y = 3127
+		fj_note_strref = ~%dialog_string_1%~
+	STR_VAR
+		fj_structure_type   = note
+	END
+END
+	

@@ -168,6 +168,7 @@ BEGIN
 				WRITE_ASCIIE off ~%new_trigger_name%~ #32
 				PATCH_IF debug BEGIN PATCH_PRINT ~%TAB%trigger: %triggername% - rename traveltrigger: %new_trigger_name%~ END
 			END
+			WRITE_LONG off + 0x60 THIS | BIT11
 			PATCH_IF ~%trigger_script%~ STR_CMP ~~ BEGIN
 				READ_ASCII off + 0x7c trigger_scriptname
 				PATCH_IF ~%trigger_scriptname%~ STR_EQ ~~ BEGIN

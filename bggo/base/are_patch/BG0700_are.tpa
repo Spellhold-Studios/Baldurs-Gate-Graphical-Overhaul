@@ -55,3 +55,27 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 	END
 END
 LPM ~CLEAR_ARRAY~
+
+/////////////////////////////////////////////////////////
+// Door0143 to BG0200
+/////////////////////////////////////////////////////////
+LPF CreateTriggerScriptBggodest
+STR_VAR
+	trigger_script = dest0143
+	area_name_dest = BG0143	// used vor variable name, so we don't need cmpvars
+RET
+	trigger_script
+	area_name_dest
+END
+
+LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
+STR_VAR
+	door_name_wed	 	= DOOR0143
+	area_name			= EVAL ~%CentralBaldursGate%~
+	new_trigger_name	= bggo_BG0143
+	trigger_script   	= EVAL ~%trigger_script%~
+	door_script			= dr01437
+	area_name_dest		= EVAL ~%area_name_dest%~
+END

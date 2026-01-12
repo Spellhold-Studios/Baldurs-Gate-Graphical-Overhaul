@@ -10,7 +10,12 @@ END
 >>>>>>>>
 EXTEND_TOP ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_top.baf~ EVAL
 
-
+COPY_EXISTING ~bork.cre~ ~override~
+	READ_ASCII 0x280 script_name (32) NULL
+	PATCH_IF ~%script_name%~ STR_EQ ~~ OR ~%script_name%~ STR_EQ ~none~ BEGIN
+		SPRINT script_name ~bork~
+		WRITE_ASCIIE 0x280 ~%script_name%~
+	END
 <<<<<<<< .../%MOD_FOLDER%/inlined_BG0300_bottom.baf
 IF
 	Global("BGGO_opened_BG0300","GLOBAL",1)
@@ -56,14 +61,14 @@ IF
 THEN
     RESPONSE #100
 		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",2)
-		CreateCreatureObject("Bork","Dr0114b",0,0,0)
-		ActionOverride("Bork",DisplayString(Myself,%dialog_string%))
+		CreateCreatureObject("%script_name%","Dr0114b",0,0,0)
+		ActionOverride("%script_name%",DisplayString(Myself,%dialog_string%))
 		Wait(3)
-		ActionOverride("Bork",Face(4))
+		ActionOverride("%script_name%",Face(4))
 		Wait(3)
-		ActionOverride("Bork",Face(12))
-        ActionOverride("Bork",MoveToPointNoInterrupt([109.1417]))
-		ActionOverride("Bork",DestroySelf())
+		ActionOverride("%script_name%",Face(12))
+        ActionOverride("%script_name%",MoveToPointNoInterrupt([109.1417]))
+		ActionOverride("%script_name%",DestroySelf())
 END
 
 IF
@@ -82,5 +87,3 @@ END
 
 >>>>>>>>
 EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_bottom.baf~ EVAL
-COPY_EXISTING ~bork.cre~ ~override~
-	WRITE_ASCII 0x280 bork
