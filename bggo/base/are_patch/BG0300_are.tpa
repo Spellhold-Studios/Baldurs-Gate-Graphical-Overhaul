@@ -186,3 +186,29 @@ RET
 	bggo_deleted
 	existing_door_name
 END
+
+////////////////////////////////////////////////////////////
+//  Door0307 from BG0800
+////////////////////////////////////////////////////////////
+
+LPF CreateTriggerScriptBggodest
+STR_VAR
+	trigger_script = dest0307
+	area_name_dest = BG0307	// used vor variable name, so we don't need cmpvars
+RET
+	trigger_script
+	area_name_dest
+END
+
+LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
+STR_VAR
+	door_name_wed	 	= DOOR0105
+	door_name			= ~Door0307~
+	area_name			= EVAL ~%NEBaldursGate%~
+	new_trigger_name	= bggo_BG0307
+	trigger_script   	= EVAL ~%trigger_script%~
+	door_script			= dr03073
+	area_name_dest		= EVAL ~%area_name_dest%~
+END

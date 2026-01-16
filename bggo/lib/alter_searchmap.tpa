@@ -10,7 +10,7 @@ DEFINE_ACTION_FUNCTION ~ALTER_SEARCHMAP~
 	RET
 
 BEGIN
-	COPY ~%path_to_2da_file%~ ~%path_to_2da_file%~
+	COPY - ~%path_to_2da_file%~ ~%path_to_2da_file%~
 		READ_2DA_ENTRIES_NOW ~newpixelarray~ 4
 		COUNT_2DA_ROWS 4 ~pixelnumber~
 		
