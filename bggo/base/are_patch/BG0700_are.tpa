@@ -165,31 +165,63 @@ END
 LPF fj_are_structure
 	INT_VAR
 	fj_type         = 2    //travel
-	fj_box_left     = 0
-	fj_box_top      = 0
-	fj_box_right    = 611
-	fj_box_bottom   = 32
+	fj_box_left     = 4383
+	fj_box_top      = 598
+	fj_box_right    = 4415
+	fj_box_bottom   = 1150
 	fj_cursor_idx   = 34   //worldmap
-	fj_flags        = BIT2  //  BIT2 party required
-//activation
-	fj_vertex_0  = 0   + (0  << 16)
-	fj_vertex_1  = 32  + (32 << 16)
-	fj_vertex_2  = 611 + (32 << 16)
-	fj_vertex_3  = 611 + (0  << 16)
+	fj_flags        = BIT2 + BIT10  //  BIT2 party required
+	fj_alt_x		= 4380
+	fj_alt_y		= 795
+	fj_vertex_0  = 4383 + (598  << 16)
+	fj_vertex_1  = 4415 + (598  << 16)
+	fj_vertex_2  = 4415 + (1150 << 16)
+	fj_vertex_3  = 4383 + (1150 << 16)
 	STR_VAR
 	fj_structure_type   = region
-	fj_name             = bggo_BG0300nw
-	fj_destination_area = EVAL ~%NEBaldursGate%~
-	fj_destination_name = Exit0800nw
-//	fj_reg_script       = EVAL ~%trigger_script%~
+	fj_name             = bggo_BG0300nw2
+	fj_destination_area = EVAL ~%EBaldursGate%~
+	fj_destination_name = Exit0700nw2
 END
 
 LPF fj_are_structure
 	INT_VAR
-	fj_loc_x       = 360
-	fj_loc_y       = 30
+	fj_loc_x       = 4377
+	fj_loc_y       = 832
 	fj_orientation = 2
 	STR_VAR
 	fj_structure_type = entrance
-	fj_name           = Exit0300se
+	fj_name           = Exit0800nw2
+END
+
+LPF fj_are_structure
+	INT_VAR
+	fj_type         = 2    //travel
+	fj_box_left     = 4383
+	fj_box_top      = 0
+	fj_box_right    = 4415
+	fj_box_bottom   = 384
+	fj_cursor_idx   = 34   //worldmap
+	fj_flags        = BIT2 + BIT10  //  BIT2 party required
+	fj_alt_x		= 4380
+	fj_alt_y		= 76
+	fj_vertex_0  = 4383 + (32  << 16)
+	fj_vertex_1  = 4415 + (0   << 16)
+	fj_vertex_2  = 4415 + (384 << 16)
+	fj_vertex_3  = 4383 + (384 << 16)
+	STR_VAR
+	fj_structure_type   = region
+	fj_name             = bggo_BG0300nw1
+	fj_destination_area = EVAL ~%EBaldursGate%~
+	fj_destination_name = Exit0700nw1
+END
+
+LPF fj_are_structure
+	INT_VAR
+	fj_loc_x       = 4377
+	fj_loc_y       = 50
+	fj_orientation = 2
+	STR_VAR
+	fj_structure_type = entrance
+	fj_name           = Exit0800nw1
 END

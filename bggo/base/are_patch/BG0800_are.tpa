@@ -414,6 +414,39 @@ END
 //  Travel regions to BG0700 & BG0300
 ////////////////////////////////////////////////////////////
 
+// BG0300
+LPF fj_are_structure
+	INT_VAR
+	fj_type         = 2    //travel
+	fj_box_left     = 0
+	fj_box_top      = 0
+	fj_box_right    = 245
+	fj_box_bottom   = 32
+	fj_cursor_idx   = 34   //worldmap
+	fj_flags        = BIT2  //  BIT2 party required
+//activation
+	fj_vertex_0  = 0   + (0  << 16)
+	fj_vertex_1  = 32  + (32 << 16)
+	fj_vertex_2  = 245 + (32 << 16)
+	fj_vertex_3  = 245 + (0  << 16)
+	STR_VAR
+	fj_structure_type   = region
+	fj_name             = bggo_BG0300nwl
+	fj_destination_area = EVAL ~%NEBaldursGate%~
+	fj_destination_name = Exit0800nwl
+//	fj_reg_script       = EVAL ~%trigger_script%~
+END
+
+LPF fj_are_structure
+	INT_VAR
+	fj_loc_x       = 115
+	fj_loc_y       = 30
+	fj_orientation = 2
+	STR_VAR
+	fj_structure_type = entrance
+	fj_name           = Exit0300sel
+END
+
 LPF fj_are_structure
 	INT_VAR
 	fj_type         = 2    //travel
@@ -424,15 +457,15 @@ LPF fj_are_structure
 	fj_cursor_idx   = 34   //worldmap
 	fj_flags        = BIT2  //  BIT2 party required
 //activation
-	fj_vertex_0  = 0   + (0  << 16)
-	fj_vertex_1  = 32  + (32 << 16)
+	fj_vertex_0  = 246 + (0  << 16)
+	fj_vertex_1  = 246 + (32 << 16)
 	fj_vertex_2  = 611 + (32 << 16)
 	fj_vertex_3  = 611 + (0  << 16)
 	STR_VAR
 	fj_structure_type   = region
-	fj_name             = bggo_BG0300nw
+	fj_name             = bggo_BG0300nwr
 	fj_destination_area = EVAL ~%NEBaldursGate%~
-	fj_destination_name = Exit0800nw
+	fj_destination_name = Exit0800nwr
 //	fj_reg_script       = EVAL ~%trigger_script%~
 END
 
@@ -443,9 +476,10 @@ LPF fj_are_structure
 	fj_orientation = 2
 	STR_VAR
 	fj_structure_type = entrance
-	fj_name           = Exit0300se
+	fj_name           = Exit0300ser
 END
 
+//BG0700
 LPF fj_are_structure
 	INT_VAR
 	fj_type         = 2    //travel
@@ -461,9 +495,9 @@ LPF fj_are_structure
 	fj_vertex_3  = 0  + (150 << 16)
 	STR_VAR
 	fj_structure_type   = region
-	fj_name             = bggo_BG0700nw
+	fj_name             = bggo_BG0700nw1
 	fj_destination_area = EVAL ~%CentralBaldursGate%~
-	fj_destination_name = Exit0800nw
+	fj_destination_name = Exit0800nw1
 //	fj_reg_script       = EVAL ~%trigger_script%~
 END
 
@@ -474,7 +508,7 @@ LPF fj_are_structure
 	fj_orientation = 2
 	STR_VAR
 	fj_structure_type = entrance
-	fj_name           = Exit0700nw
+	fj_name           = Exit0700nw1
 END
 
 LPF fj_are_structure
