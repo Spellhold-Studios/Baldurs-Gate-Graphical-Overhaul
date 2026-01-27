@@ -714,7 +714,12 @@ BEGIN
 		INCLUDE ~%BASH_FOR_FILESPEC%~
 	END
 	
-	MAKE_BIFF ~goMAIN~ BEGIN ~%workspace%/bif/goMAIN~ ~^.*$~ END
+	ACTION_IF ~%base%~ STR_EQ ~base~ BEGIN
+		MAKE_BIFF ~goMAIN~ BEGIN ~%workspace%/bif/goMAIN~ ~^.*$~ END
+	END
+	ACTION_IF ~%base%~ STR_EQ ~alternate~ BEGIN
+		MAKE_BIFF ~goALTER~ BEGIN ~%workspace%/bif/goMAIN~ ~^.*$~ END
+	END
 	ACTION_BASH_FOR ~%workspace%/bif/goMAIN~ ~^.*$~ BEGIN
 		DELETE +  ~%BASH_FOR_FILESPEC%~
 	END
