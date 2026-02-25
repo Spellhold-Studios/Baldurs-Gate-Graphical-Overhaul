@@ -541,3 +541,228 @@ LPF fj_are_structure
 	fj_structure_type = entrance
 	fj_name           = Exit0700nw2
 END
+
+/////////////////////////////////////////////////////////
+// Door Object 12 unused Door02
+/////////////////////////////////////////////////////////
+
+LPF Door_trigger_script_patch 
+STR_VAR
+	door_name_wed	 	= DOOR02
+	door_name			= ~Door02~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT6 + BIT7 //BIT6 is door + BIT7 secret
+		fj_open_box_left       = 188
+		fj_open_box_top        = 224
+		fj_open_box_right      = 521
+		fj_open_box_bottom     = 616
+		fj_closed_box_left     = 187
+		fj_closed_box_top      = 214
+		fj_closed_box_right    = 493
+		fj_closed_box_bottom   = 594
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 244
+		fj_open_loc_y          = 578
+		fj_closed_loc_x        = 244
+		fj_closed_loc_y        = 578
+		fj_detect_diff 		   = 0xffff
+		fj_door_open_vert_0    = 188 + (589 << 16)
+		fj_door_open_vert_1    = 224 + (616 << 16)
+		fj_door_open_vert_2    = 223 + (554 << 16)
+		fj_door_open_vert_3    = 188 + (521 << 16)
+		fj_door_closed_vert_0  = 18  + (594 << 16)
+		fj_door_closed_vert_1  = 213 + (555 << 16)
+		fj_door_closed_vert_2  = 214 + (493 << 16)
+		fj_door_closed_vert_3  = 188 + (531 << 16)
+		fj_cell_open_vert_0    = 11 + (48 << 16)
+		fj_cell_open_vert_1    = 12 + (48 << 16)
+		fj_cell_open_vert_2    = 12 + (49 << 16)
+		fj_cell_open_vert_3    = 13 + (50 << 16)
+		fj_cell_open_vert_4    = 13 + (49 << 16)
+		fj_cell_closed_vert_0  = 7  + (43 << 16)
+		fj_cell_closed_vert_1  = 7  + (44 << 16)
+		fj_cell_closed_vert_2  = 8  + (44 << 16)
+		fj_cell_closed_vert_3  = 8  + (43 << 16)
+		fj_cell_closed_vert_4  = 8  + (42 << 16)
+		fj_cell_closed_vert_5  = 9  + (42 << 16)
+		fj_cell_closed_vert_6  = 9  + (43 << 16)
+		fj_cell_closed_vert_7  = 9  + (44 << 16)
+		fj_cell_closed_vert_8  = 9  + (45 << 16)
+		fj_cell_closed_vert_9  = 8  + (45 << 16)
+		fj_cell_closed_vert_10 = 10 + (43 << 16)
+		fj_cell_closed_vert_11 = 10 + (44 << 16)
+		fj_cell_closed_vert_12 = 10 + (45 << 16)
+		fj_cell_closed_vert_13 = 10 + (46 << 16)
+		fj_cell_closed_vert_14 = 11 + (48 << 16)
+		fj_cell_closed_vert_15 = 11 + (47 << 16)
+		fj_cell_closed_vert_16 = 11 + (46 << 16)
+		fj_cell_closed_vert_17 = 11 + (45 << 16)
+		fj_cell_closed_vert_18 = 11 + (44 << 16)
+		fj_cell_closed_vert_19 = 12 + (45 << 16)
+		fj_cell_closed_vert_20 = 12 + (46 << 16)
+		fj_cell_closed_vert_21 = 12 + (47 << 16)
+		fj_cell_closed_vert_22 = 13 + (46 << 16)
+		fj_cell_closed_vert_23 = 13 + (45 << 16)
+
+		STR_VAR
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR02
+		fj_door_script		   = EVAL ~%door_script%~
+	END
+END
+
+/////////////////////////////////////////////////////////
+// Door Object 14 unused Door04
+/////////////////////////////////////////////////////////
+
+LPF Door_trigger_script_patch 
+STR_VAR
+	door_name_wed	 	= DOOR04
+	door_name			= ~Door04~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT6 + BIT7 //BIT6 is door + BIT7 secret
+		fj_open_box_left       = 126
+		fj_open_box_top        = 2597
+		fj_open_box_right      = 167
+		fj_open_box_bottom     = 2697
+		fj_closed_box_left     = 127
+		fj_closed_box_top      = 2577
+		fj_closed_box_right    = 185
+		fj_closed_box_bottom   = 2669
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 192
+		fj_open_loc_y          = 2695
+		fj_closed_loc_x        = 192
+		fj_closed_loc_y        = 2695
+		fj_detect_diff 		   = 0xffff
+		fj_door_open_vert_0    = 126 + (2668 << 16)
+		fj_door_open_vert_1    = 167 + (2697 << 16)
+		fj_door_open_vert_2    = 167 + (2636 << 16)
+		fj_door_open_vert_3    = 126 + (2597 << 16)
+		fj_door_closed_vert_0  = 127 + (2669 << 16)
+		fj_door_closed_vert_1  = 185 + (2644 << 16)
+		fj_door_closed_vert_2  = 185 + (2577 << 16)
+		fj_door_closed_vert_3  = 129 + (2602 << 16)
+		fj_cell_open_vert_0    = 10 + (224 << 16)
+		fj_cell_open_vert_1    = 9  + (224 << 16)
+		fj_cell_open_vert_2    = 9  + (223 << 16)
+		fj_cell_closed_vert_0  = 8  + (221 << 16)
+		fj_cell_closed_vert_1  = 9  + (221 << 16)
+		fj_cell_closed_vert_2  = 10 + (220 << 16)
+		fj_cell_closed_vert_3  = 9  + (220 << 16)
+		fj_cell_closed_vert_4  = 10 + (219 << 16)
+		fj_cell_closed_vert_5  = 9  + (217 << 16)
+		fj_cell_closed_vert_6  = 9  + (218 << 16)
+		fj_cell_closed_vert_7  = 9  + (219 << 16)
+		fj_cell_closed_vert_8  = 8  + (220 << 16)
+		fj_cell_closed_vert_9  = 7  + (220 << 16)
+		fj_cell_closed_vert_10 = 7  + (219 << 16)
+		fj_cell_closed_vert_11 = 8  + (219 << 16)
+		fj_cell_closed_vert_12 = 8  + (218 << 16)
+		fj_cell_closed_vert_13 = 7  + (218 << 16)
+		fj_cell_closed_vert_14 = 6  + (218 << 16)
+		fj_cell_closed_vert_15 = 6  + (217 << 16)
+		fj_cell_closed_vert_16 = 7  + (217 << 16)
+		fj_cell_closed_vert_17 = 8  + (217 << 16)
+		fj_cell_closed_vert_18 = 8  + (216 << 16)
+		fj_cell_closed_vert_19 = 7  + (216 << 16)
+		fj_cell_closed_vert_20 = 6  + (216 << 16)
+		fj_cell_closed_vert_21 = 5  + (216 << 16)
+		fj_cell_closed_vert_22 = 5  + (215 << 16)
+		fj_cell_closed_vert_23 = 6  + (215 << 16)
+		fj_cell_closed_vert_24 = 7  + (215 << 16)
+		fj_cell_closed_vert_25 = 8  + (215 << 16)
+		fj_cell_closed_vert_26 = 7  + (214 << 16)
+		fj_cell_closed_vert_27 = 6  + (214 << 16)
+		fj_cell_closed_vert_28 = 5  + (214 << 16)
+		fj_cell_closed_vert_29 = 6  + (213 << 16)
+		fj_cell_closed_vert_30 = 7  + (213 << 16)
+
+		STR_VAR
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR04
+		fj_door_script		   = EVAL ~%door_script%~
+	END
+END
+
+/////////////////////////////////////////////////////////
+// Door Object 15 unused Door05
+/////////////////////////////////////////////////////////
+
+LPF Door_trigger_script_patch 
+STR_VAR
+	door_name_wed	 	= DOOR05
+	door_name			= ~Door05~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT6 + BIT7 //BIT6 is door + BIT7 secret
+		fj_open_box_left       = 2722
+		fj_open_box_top        = 231
+		fj_open_box_right      = 167
+		fj_open_box_bottom     = 299
+		fj_closed_box_left     = 2765
+		fj_closed_box_top      = 240
+		fj_closed_box_right    = 2781
+		fj_closed_box_bottom   = 327
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 2728
+		fj_open_loc_y          = 339
+		fj_closed_loc_x        = 2728
+		fj_closed_loc_y        = 339
+		fj_detect_diff 		   = 0xffff
+		fj_door_open_vert_0    = 2722 + (299 << 16)
+		fj_door_open_vert_1    = 2772 + (299 << 16)
+		fj_door_open_vert_2    = 2772 + (244 << 16)
+		fj_door_open_vert_3    = 2761 + (236 << 16)
+		fj_door_open_vert_4    = 2722 + (231 << 16)
+		fj_door_closed_vert_0  = 2765 + (301 << 16)
+		fj_door_closed_vert_1  = 2781 + (327 << 16)
+		fj_door_closed_vert_2  = 2781 + (266 << 16)
+		fj_door_closed_vert_3  = 2765 + (240 << 16)
+		fj_cell_closed_vert_0  = 173 + (22 << 16)
+		fj_cell_closed_vert_1  = 173 + (23 << 16)
+		fj_cell_closed_vert_2  = 173 + (24 << 16)
+		fj_cell_closed_vert_3  = 173 + (25 << 16)
+		fj_cell_closed_vert_4  = 173 + (26 << 16)
+
+		STR_VAR
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR05
+		fj_door_script		   = EVAL ~%door_script%~
+	END
+END
+
+
+
+
+
+

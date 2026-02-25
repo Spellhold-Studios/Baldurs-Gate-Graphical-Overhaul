@@ -208,7 +208,7 @@ END
 BEGIN ~Baldurs Gate Graphical Overhaul Alternate Graphics~
 DESIGNATED 4 LABEL ~baldurs_gate_graphical_overhaul_alternate~
 REQUIRE_PREDICATE MOD_IS_INSTALLED "bggo.tp2" (ID_OF_LABEL "bggo.tp2" "baldurs_gate_graphical_overhaul" ) ~Core component is required~
-
+REQUIRE_PREDICATE DIRECTORY_EXISTS ~%MOD_FOLDER%/alternate~ ~~
 // source file for windows is standard
 ACTION_IF MOD_IS_INSTALLED "bggo.tp2" (ID_OF_LABEL "bggo.tp2" "baldurs_gate_graphical_overhaul_android" ) BEGIN
 	OUTER_SPRINT graphic_files ~BGGO-Android~

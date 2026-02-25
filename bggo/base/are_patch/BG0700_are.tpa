@@ -225,3 +225,51 @@ LPF fj_are_structure
 	fj_structure_type = entrance
 	fj_name           = Exit0800nw1
 END
+
+////////////////////////////////////////////////////////////
+//  Door0719 from BG0700
+////////////////////////////////////////////////////////////
+
+LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
+STR_VAR
+	door_name_wed	 	= DOOR0719
+	door_name			= ~Door0719~
+	area_name			= EVAL ~%CentralBaldursGate%~
+	new_trigger_name	= bggo_BG0719
+END
+
+LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
+STR_VAR
+	door_name_wed	 	= DOR0719b
+	door_name			= ~Door0719b~
+	area_name			= EVAL ~%CentralBaldursGate%~
+	new_trigger_name	= bggo_BG0719b
+END
+
+////////////////////////////////////////////////////////////
+//  Door0720 from BG0700
+////////////////////////////////////////////////////////////
+
+LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
+STR_VAR
+	door_name_wed	 	= DOOR0720
+	door_name			= ~Door0720~
+	area_name			= EVAL ~%CentralBaldursGate%~
+	new_trigger_name	= bggo_BG0720
+END
+
+LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
+STR_VAR
+	door_name_wed	 	= DOR0720b
+	door_name			= ~Door0720b~
+	area_name			= EVAL ~%CentralBaldursGate%~
+	new_trigger_name	= bggo_BG0720b
+END
