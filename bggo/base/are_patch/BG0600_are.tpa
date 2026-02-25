@@ -68,24 +68,95 @@ LPM ~CLEAR_ARRAY~
 //////////////////////////////
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	script_name = dest0619
-	area_name = EVAL ~%WBaldursGate_FentensHouse_L1%~
+	trigger_script = dest0619
+	area_name_dest = BG0619 // used vor variable name, so we don't need cmpvars
 RET
-	script_name
+	trigger_script
+	area_name_dest
 END
 
 LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
 STR_VAR
-	door_name	 		= DOOR0619
-	new_trigger_name	= bggo_0619
-	trigger_script   	= EVAL ~%script_name%~
+	door_name			= DOOR0619
+	area_name			= EVAL ~%WBaldursGate%~
+	new_trigger_name	= bggo_BG0619
+	trigger_script   	= EVAL ~%trigger_script%~
+	door_script			= dr061906
+	area_name_dest		= EVAL ~%area_name_dest%~
 END
 
-LPF CreateAreaTravelScript
-	INT_VAR
-		bggo_locked	   = 1
-	STR_VAR
-		from_area 	   = EVAL ~%WBaldursGate%~
-		to_area   	   = EVAL ~%SWBaldursGate%~
-		door_name_from = DOOR0619
+/////////////////////////////////////////////////////////
+// Door01 unused Door01
+/////////////////////////////////////////////////////////
+
+LPF Door_trigger_script_patch 
+STR_VAR
+	door_name_wed	 	= DOOR01
+	door_name			= ~Door01~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT6 + BIT7 //BIT6 is door + BIT7 secret
+		fj_open_box_left       = 4112
+		fj_open_box_top        = 291
+		fj_open_box_right      = 4151
+		fj_open_box_bottom     = 350
+		fj_closed_box_left     = 4105
+		fj_closed_box_top      = 286
+		fj_closed_box_right    = 4145
+		fj_closed_box_bottom   = 362
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 4116
+		fj_open_loc_y          = 372
+		fj_closed_loc_x        = 4116
+		fj_closed_loc_y        = 372
+		fj_detect_diff 		   = 0xffff
+		fj_door_open_vert_0    = 4112 + (336 << 16)
+		fj_door_open_vert_1    = 4151 + (350 << 16)
+		fj_door_open_vert_2    = 4151 + (304 << 16)
+		fj_door_open_vert_3    = 4112 + (291 << 16)
+		fj_door_closed_vert_0  = 4105 + (348 << 16)
+		fj_door_closed_vert_1  = 4145 + (362 << 16)
+		fj_door_closed_vert_2  = 4145 + (299 << 16)
+		fj_door_closed_vert_3  = 4105 + (286 << 16)
+
+		fj_cell_closed_vert_0  = 135 + (21 << 16)
+		fj_cell_closed_vert_1  = 257 + (29 << 16)
+		fj_cell_closed_vert_2  = 258 + (29 << 16)
+		fj_cell_closed_vert_3  = 259 + (29 << 16)
+		fj_cell_closed_vert_4  = 260 + (28 << 16)
+		fj_cell_closed_vert_5  = 259 + (28 << 16)
+		fj_cell_closed_vert_6  = 258 + (28 << 16)
+		fj_cell_closed_vert_7  = 257 + (28 << 16)
+		fj_cell_closed_vert_8  = 257 + (27 << 16)
+		fj_cell_closed_vert_9  = 258 + (27 << 16)
+		fj_cell_closed_vert_10 = 259 + (27 << 16)
+		fj_cell_closed_vert_11 = 260 + (27 << 16)
+		fj_cell_closed_vert_12 = 261 + (27 << 16)
+		fj_cell_closed_vert_13 = 260 + (26 << 16)
+		fj_cell_closed_vert_14 = 259 + (26 << 16)
+		fj_cell_closed_vert_15 = 258 + (26 << 16)
+		fj_cell_closed_vert_16 = 257 + (26 << 16)
+		fj_cell_closed_vert_17 = 257 + (25 << 16)
+		fj_cell_closed_vert_18 = 258 + (25 << 16)
+		fj_cell_closed_vert_19 = 258 + (24 << 16)
+		fj_cell_closed_vert_20 = 259 + (24 << 16)
+		fj_cell_closed_vert_21 = 259 + (25 << 16)
+		fj_cell_closed_vert_22 = 260 + (25 << 16)
+
+		STR_VAR
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR01
+		fj_door_script		   = EVAL ~%door_script%~
+	END
 END

@@ -8,3 +8,33 @@ SPRINT identical_area "BG1101"
 PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/base/are_patch/%identical_area%_are.tpa~ BEGIN // add animation for braziers, candles ...
 	PATCH_INCLUDE ~%MOD_FOLDER%/base/are_patch/%identical_area%_are.tpa~
 END
+
+////////////////////////////////////////////
+// trigger to leave to BG0800
+////////////////////////////////////////////
+LPF fj_are_structure
+    INT_VAR
+    fj_type         = 2    //travel
+    fj_box_left     = 833
+    fj_box_top      = 543
+    fj_box_right    = 972
+    fj_box_bottom   = 693
+	fj_flags        = BIT8 //BIT8 deativated
+    fj_cursor_idx   = 30   //door
+	fj_vertex_0  = 897 + (543 << 16)
+	fj_vertex_1  = 833 + (607 << 16)
+	fj_vertex_2  = 878 + (693 << 16)
+	fj_vertex_3  = 972 + (588 << 16)
+    STR_VAR
+    fj_structure_type   = region
+    fj_name             = bggo_BG0800
+    fj_destination_area = EVAL ~%EBaldursGate%~
+    fj_destination_name = Exit0307
+END
+
+LPF CreateHouseAreaScript
+	STR_VAR
+		area_name_house 	= EVAL ~%NEBaldursGate_CountingHouse_L1%~
+		area_name_1 		= EVAL ~%EBaldursGate%~
+		area_name_2 		= EVAL ~%NEBaldursGate%~
+END

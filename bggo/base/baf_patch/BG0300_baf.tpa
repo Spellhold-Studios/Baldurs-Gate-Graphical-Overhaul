@@ -1,0 +1,89 @@
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0300_top.baf
+IF
+	Global("Trigger_deactivate","%NEBaldursGate%",0)
+THEN
+	RESPONSE #100
+		TriggerActivation("Trigger Point 17",FALSE)
+		SetGlobal("Trigger_deactivate","%NEBaldursGate%",1)
+		Continue()
+END
+>>>>>>>>
+EXTEND_TOP ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_top.baf~ EVAL
+
+COPY_EXISTING ~bork.cre~ ~override~
+	READ_ASCII 0x280 script_name (32) NULL
+	PATCH_IF ~%script_name%~ STR_EQ ~~ OR ~%script_name%~ STR_EQ ~none~ BEGIN
+		SPRINT script_name ~bork~
+		WRITE_ASCIIE 0x280 ~%script_name%~
+	END
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0300_bottom.baf
+IF
+	Global("BGGO_opened_BG0300","GLOBAL",1)
+	Global("BGGO_opened_Door0114","BG0300",0)
+THEN
+	RESPONSE #100
+		OpenDoor("Door0114")
+		SetGlobal("BGGO_opened_Door0114","BG0300",1)
+		Continue()
+END
+
+IF
+    OpenState("Door0114",TRUE)
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_BG0300","GLOBAL",1)
+		SetGlobal("BGGO_opened_Door0114","BG0300",1)
+		Continue()
+END
+
+IF
+    OpenState("Door0114",FALSE)
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_BG0300","GLOBAL",0)
+		SetGlobal("BGGO_opened_Door0114","BG0300",0)
+		Continue()
+END
+
+IF
+    OpenState("Dr0114b",TRUE)
+	Global("BGGO_timer_Dr0114b","GLOBAL",0)
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",1)
+        SetGlobalTimer("BGGO_timer_BG0114","GLOBAL",TWO_ROUNDS)
+END
+
+IF
+	Global("BGGO_timer_Dr0114b","GLOBAL",1)
+	GlobalTimerExpired("BGGO_timer_BG0114","GLOBAL")
+	AreaCheck("%NEBaldursGate%")
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",2)
+		CreateCreatureObject("%script_name%","Dr0114b",0,0,0)
+		ActionOverride("%script_name%",DisplayString(Myself,%dialog_string%))
+		Wait(3)
+		ActionOverride("%script_name%",Face(4))
+		Wait(3)
+		ActionOverride("%script_name%",Face(12))
+        ActionOverride("%script_name%",MoveToPointNoInterrupt([109.1417]))
+		ActionOverride("%script_name%",DestroySelf())
+END
+
+IF
+	Global("BGGO_timer_Dr0114b","GLOBAL",2)
+THEN
+    RESPONSE #100
+		CloseDoor("Dr0114b")
+		SetGlobal("BGGO_opened_Dr0114b","BG0300",0)
+		SetGlobal("BGGO_opened_BG0114","GLOBAL",0)
+		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",0)
+		
+		SetGlobal("BGGO_unlocked_door_BG0114","GLOBAL",0)
+		Lock("Dr0114b")
+		SetGlobal("BG0300_text_Dr0114b","BG0300",0)
+END
+
+>>>>>>>>
+EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_bottom.baf~ EVAL

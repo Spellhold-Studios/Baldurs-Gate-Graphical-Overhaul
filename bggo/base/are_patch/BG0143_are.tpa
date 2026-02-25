@@ -35,3 +35,33 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 	END
 END
 LPM ~CLEAR_ARRAY~
+
+////////////////////////////////////////////
+// trigger to leave to BG1100
+////////////////////////////////////////////
+LPF fj_are_structure
+    INT_VAR
+    fj_type         = 2    //travel
+    fj_box_left     = 641
+    fj_box_top      = 424
+    fj_box_right    = 745
+    fj_box_bottom   = 564
+	fj_flags        = BIT8 //BIT8 deativated
+    fj_cursor_idx   = 30   //door
+	fj_vertex_0  = 641 + (485 << 16)
+	fj_vertex_1  = 694 + (564 << 16)
+	fj_vertex_2  = 745 + (475 << 16)
+	fj_vertex_3  = 700 + (424 << 16)
+    STR_VAR
+    fj_structure_type   = region
+    fj_name             = bggo_BG0200
+    fj_destination_area = EVAL ~%NBaldursGate%~
+    fj_destination_name = Exit0143
+END
+
+LPF CreateHouseAreaScript
+	STR_VAR
+		area_name_house 	= EVAL ~%CentralBaldursGate_OberonsEstate_L1%~
+		area_name_1 		= EVAL ~%NBaldursGate%~
+		area_name_2 		= EVAL ~%CentralBaldursGate%~
+END

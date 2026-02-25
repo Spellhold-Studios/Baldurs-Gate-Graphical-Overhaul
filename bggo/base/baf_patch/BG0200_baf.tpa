@@ -1,0 +1,60 @@
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0300_top.baf
+IF
+	Global("Trigger_deactivate","%NBaldursGate%",0)
+THEN
+	RESPONSE #100
+		TriggerActivation("Trigger Point 31",FALSE)
+		SetGlobal("Trigger_deactivate","%NBaldursGate%",1)
+		Continue()
+END
+>>>>>>>>
+EXTEND_TOP ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_top.baf~ EVAL
+
+COPY_EXISTING ~bork.cre~ ~override~
+	READ_ASCII 0x280 script_name (32) NULL
+	PATCH_IF ~%script_name%~ STR_EQ ~~ OR ~%script_name%~ STR_EQ ~none~ BEGIN
+		SPRINT script_name ~bork~
+		WRITE_ASCIIE 0x280 ~%script_name%~
+	END
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0300_bottom.baf
+
+IF
+    OpenState("Dr0114b",TRUE)
+	Global("BGGO_timer_Dr0114b","GLOBAL",0)
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",1)
+        SetGlobalTimer("BGGO_timer_BG0114","GLOBAL",TWO_ROUNDS)
+END
+
+IF
+	Global("BGGO_timer_Dr0114b","GLOBAL",1)
+	GlobalTimerExpired("BGGO_timer_BG0114","GLOBAL")
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",2)
+		CreateCreatureObject("%script_name%","Dr0114b",0,0,0)
+		ActionOverride("%script_name%",DisplayString(Myself,%dialog_string%))
+		Wait(3)
+		ActionOverride("%script_name%",Face(4))
+		Wait(3)
+		ActionOverride("%script_name%",Face(12))
+        ActionOverride("%script_name%",MoveToPointNoInterrupt([4379.1408]))
+		ActionOverride("%script_name%",DestroySelf())
+END
+
+IF
+	Global("BGGO_timer_Dr0114b","GLOBAL",2)
+THEN
+    RESPONSE #100
+		CloseDoor("Dr0114b")
+		SetGlobal("BGGO_opened_Dr0114b","BG0200",0)
+		SetGlobal("BGGO_opened_BG0114","GLOBAL",0)
+		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",0)
+		
+		SetGlobal("BGGO_unlocked_door_BG0114","GLOBAL",0)
+		Lock("Dr0114b")
+		SetGlobal("BG0200_text_Dr0114b","BG0200",0)
+END
+>>>>>>>>
+EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_bottom.baf~ EVAL

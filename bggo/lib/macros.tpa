@@ -634,7 +634,9 @@ BEGIN
 	END
 	
 	// scripts
-	COMPILE ~%MOD_FOLDER%/base/baf~
+	ACTION_IF DIRECTORY_EXISTS ~%MOD_FOLDER%/base/baf~ BEGIN
+		COMPILE ~%MOD_FOLDER%/base/baf~ EVAL
+	END
 
 	ACTION_IF ~%base%~ STR_EQ ~base~ BEGIN
 		//	BG1 Areas
@@ -708,7 +710,16 @@ BEGIN
 		END
 	END
 	
-	MAKE_BIFF ~goMAIN~ BEGIN ~%workspace%/bif/goMAIN~ ~^.*$~ END
+	ACTION_BASH_FOR ~%MOD_FOLDER%/base/mod_compat~ ~^.*\.tpa$~ BEGIN
+		INCLUDE ~%BASH_FOR_FILESPEC%~
+	END
+	
+	ACTION_IF ~%base%~ STR_EQ ~base~ BEGIN
+		MAKE_BIFF ~goMAIN~ BEGIN ~%workspace%/bif/goMAIN~ ~^.*$~ END
+	END
+	ACTION_IF ~%base%~ STR_EQ ~alternate~ BEGIN
+		MAKE_BIFF ~goALTER~ BEGIN ~%workspace%/bif/goMAIN~ ~^.*$~ END
+	END
 	ACTION_BASH_FOR ~%workspace%/bif/goMAIN~ ~^.*$~ BEGIN
 		DELETE +  ~%BASH_FOR_FILESPEC%~
 	END

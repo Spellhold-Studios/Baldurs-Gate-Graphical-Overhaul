@@ -8,3 +8,17 @@ SPRINT identical_area "BG0162"
 PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/base/are_patch/%identical_area%_are.tpa~ BEGIN // add animation for braziers, candles ...
 	PATCH_INCLUDE ~%MOD_FOLDER%/base/are_patch/%identical_area%_are.tpa~
 END
+
+// two exits to BG0700
+GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+PHP_EACH triggers AS i => off BEGIN
+	READ_ASCII off triggername (32) NULL
+	READ_ASCII off + 0x40 entrance (32) NULL
+	PATCH_PRINT ~%triggername% %entrance%~
+	PATCH_IF ~%triggername%~ STR_EQ ~Door0700~ AND ~%entrance%~ STR_EQ ~Exit0719a~ BEGIN
+		WRITE_ASCII off + 0x7c ~Dr0719a~
+	END
+	PATCH_IF ~%triggername%~ STR_EQ ~Door0700~ AND ~%entrance%~ STR_EQ ~Exit0719b~ BEGIN
+		WRITE_ASCII off + 0x7c ~Dr0719b~
+	END
+END

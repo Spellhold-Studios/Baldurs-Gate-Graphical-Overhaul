@@ -1,0 +1,25 @@
+<<<<<<<< .../%MOD_FOLDER%/open_door_triggerscript_a.baf
+IF
+	Clicked([ANYONE])
+//	Global("BGGO_opened_BG0719","GLOBAL",0)
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_BG0719","GLOBAL",1)
+END
+>>>>>>>>
+
+<<<<<<<< .../%MOD_FOLDER%/open_door_triggerscript_b.baf
+IF
+	Clicked([ANYONE])
+//	Global("BGGO_opened_BG0719b","GLOBAL",0)
+THEN
+    RESPONSE #100
+		SetGlobal("BGGO_opened_BG0719b","GLOBAL",1)
+END
+>>>>>>>>
+COPY ~.../%MOD_FOLDER%/open_door_triggerscript_a.baf~ ~%workspace%/bif/temp/dr0719a.baf~ EVAL
+COMPILE ~%workspace%/bif/temp/dr0719a.baf~ EVAL
+
+
+COPY ~.../%MOD_FOLDER%/open_door_triggerscript_b.baf~ ~%workspace%/bif/temp/dr0719b.baf~ EVAL
+COMPILE ~%workspace%/bif/temp/dr0719b.baf~ EVAL
