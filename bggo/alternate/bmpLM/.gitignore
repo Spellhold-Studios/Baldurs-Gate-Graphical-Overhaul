@@ -1,0 +1,62 @@
+# Archives
+*.7z
+*.bz2
+*.gz
+*.iemod
+*.rar
+*.tgz
+*.zip
+
+# Backup
+*.bak
+*.old
+*.tmp
+
+# Office
+*.xlk
+.~lock.*#
+Backup of *.doc*
+~$*.doc*
+~$*.xls*
+
+# Linux
+*~
+.Trash-*
+.directory
+.fuse_hidden*
+.nfs*
+
+# macOS
+*.icloud
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.DS_Store
+.DocumentRevisions-V100
+.LSOverride
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+._*
+.apdisk
+.com.apple.timemachine.donotpresent
+.fseventsd
+Network Trash Folder
+Temporary Items
+
+# Windows
+$RECYCLE.BIN/
+*.lnk
+*.stackdump
+Thumbs.db
+Thumbs.db:encryptable
+[Dd]esktop.ini
+ehthumbs.db
+ehthumbs_vista.db
+
+# WeiDU
+[Ss]etup-*.exe
+
+# Modder
+bggo/lib/macros.tpa_old

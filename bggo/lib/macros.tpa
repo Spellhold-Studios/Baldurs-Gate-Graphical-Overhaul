@@ -220,7 +220,7 @@ DEFINE_ACTION_FUNCTION ~INSTALL_TILESETS~
 	STR_VAR
 		purple = ~~
 		source_files = ~~ //EVAL ~%MOD_FOLDER%~
-		base = ~~ //~base~
+		base = ~~
 		file_list = EVAL ~%file_list%~ 
 		wed_list = EVAL  ~%wed_list%~
 	RET file_list
@@ -590,10 +590,6 @@ BEGIN
 			
 			// biffing
 			ACTION_IF (area_biff = 1) BEGIN
-				// delete old bif file
-				//ACTION_IF ~%base%~ STR_EQ ~alternate~ BEGIN
-				//	DELETE + ~data/go%are2%.bif~
-				//END
 				MAKE_BIFF ~go%are2%~ BEGIN ~%biffdir%~ ~^.*$~ END
 				ACTION_BASH_FOR ~%biffdir%~ ~^.*$~ BEGIN
 					DELETE +  ~%BASH_FOR_FILESPEC%~
@@ -633,11 +629,6 @@ BEGIN
 		COPY + ~%MOD_FOLDER%/base/bam/%BASH_FOR_FILE%~ ~%workspace%/bif/goMAIN~
 	END
 	
-	// scripts
-	ACTION_IF DIRECTORY_EXISTS ~%MOD_FOLDER%/base/baf~ BEGIN
-		COMPILE ~%MOD_FOLDER%/base/baf~ EVAL
-	END
-
 	ACTION_IF ~%base%~ STR_EQ ~base~ BEGIN
 		//	BG1 Areas
 		ACTION_IF GAME_IS ~eet bgee bgt tutu_totsc~ BEGIN
