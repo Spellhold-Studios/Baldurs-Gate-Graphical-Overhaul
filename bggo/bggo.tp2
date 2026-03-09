@@ -127,6 +127,9 @@ ALWAYS
 		// outdoor
 		BG0900
 	END
+	ACTION_PHP_EACH bg_alternate AS num => area BEGIN
+		OUTER_SET num +=1 
+	END
 END
 
 
@@ -172,7 +175,7 @@ REQUIRE_PREDICATE GAME_IS ~eet bgt tutu_totsc bgee bg2ee tob ~ ~This mod is curr
 // prevents a long loading time, if a bif file should still be present in the data folder during installation
 // close the program (e.g. Near Infinity, weidu)
 ACTION_TRY
-	ACTION_BASH_FOR ~data~ ~^go.*\.bif$~ BEGIN
+	ACTION_BASH_FOR ~data~ ~^go[ABOMabo].*\.bif$~ BEGIN
 		DELETE + ~%BASH_FOR_FILESPEC%~
 	END
 WITH
@@ -209,6 +212,7 @@ BEGIN ~Baldurs Gate Graphical Overhaul Alternate Graphics~
 DESIGNATED 4 LABEL ~baldurs_gate_graphical_overhaul_alternate~
 REQUIRE_PREDICATE MOD_IS_INSTALLED "bggo.tp2" (ID_OF_LABEL "bggo.tp2" "baldurs_gate_graphical_overhaul" ) ~Core component is required~
 REQUIRE_PREDICATE DIRECTORY_EXISTS ~%MOD_FOLDER%/alternate~ ~~
+REQUIRE_PREDICATE IS_AN_INT num ~~
 // source file for windows is standard
 ACTION_IF MOD_IS_INSTALLED "bggo.tp2" (ID_OF_LABEL "bggo.tp2" "baldurs_gate_graphical_overhaul_android" ) BEGIN
 	OUTER_SPRINT graphic_files ~BGGO-Android~
