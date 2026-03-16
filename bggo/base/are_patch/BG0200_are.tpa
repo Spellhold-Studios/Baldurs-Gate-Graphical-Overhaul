@@ -113,12 +113,14 @@ LPM ~CLEAR_ARRAY~
 
 
 //////////////////////////////
-// Door0159 from BG0100
+// Door0159 from BG0100 **
 //////////////////////////////
+SNPRINT "-4" CmpAreaNumDest ~%NWBaldursGate_House1_L1%~ //BG0159
+SNPRINT "-4" CmpAreaNum ~%NWBaldursGate%~ // for exit name
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	trigger_script = dest0159
-	area_name_dest = BG0159 // used vor variable name, so we don't need cmpvars
+	trigger_script = EVAL ~dest%CmpAreaNumDest%~ //bggo_BG0159
+	area_name_dest = EVAL ~%NWBaldursGate_House1_L1%~ //BG0159
 RET
 	trigger_script
 	area_name_dest
@@ -129,9 +131,9 @@ STR_VAR
 	door_name_wed	 	= DOOR03
 	door_name			= Door0159
 	area_name			= EVAL ~%NBaldursGate%~
-	new_trigger_name	= bggo_BG0159
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0159
 	trigger_script   	= EVAL ~%trigger_script%~
-	door_script			= dr015902
+	door_script			= EVAL ~dr%CmpAreaNumDest%02~ //dr015902
 	area_name_dest		= EVAL ~%area_name_dest%~
 RET
 	travel_trigger_found
@@ -192,7 +194,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_cell_closed_vert_3  = 1 + (196 << 16)
 
 		STR_VAR
-		fj_travel_trigger      = bggo_BG0159
+		fj_travel_trigger      = EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0159
 		fj_structure_type      = door
 		fj_name                = EVAL ~%existing_door_name%~
 		fj_door_wed_id         = Door03
@@ -221,9 +223,9 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_vertex_8  = 9  + (2355 << 16)
 		STR_VAR
 		fj_structure_type   = region
-		fj_name             = bggo_BG0159
+		fj_name             = EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0159
 		fj_destination_area = EVAL ~%NWBaldursGate_House1_L1%~
-		fj_destination_name = Exit0100
+		fj_destination_name = EVAL ~Exit%CmpAreaNum%~ //Exit0100
 		fj_reg_script       = EVAL ~%trigger_script%~
 	END
 	
@@ -234,19 +236,144 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_orientation = 13
 		STR_VAR
 		fj_structure_type = entrance
-		fj_name           = Exit0159
+		fj_name           = EVAL ~Exit%CmpAreaNumDest%~ //Exit0159
+	END
+END
+
+/////////////////////////////////////////////////////////
+// Door0143 to BG0700 **
+/////////////////////////////////////////////////////////
+SNPRINT "-4" CmpAreaNumDest ~%CentralBaldursGate_OberonsEstate_L1%~ //BG0143
+SNPRINT "-4" CmpAreaNum ~%CentralBaldursGate%~ //BG0700
+LPF CreateTriggerScriptBggodest
+STR_VAR
+	trigger_script = EVAL ~dest%CmpAreaNumDest%~ //dest0143
+	area_name_dest = EVAL ~%CentralBaldursGate_OberonsEstate_L1%~ //BG0143
+RET
+	trigger_script
+	area_name_dest
+END
+
+LPF Door_trigger_script_patch
+INT_VAR
+	bggo_locked 		  = 1	// is door locked =1 unlocked =0
+STR_VAR
+	door_name_wed	 	= DOOR0143
+	door_name			= Door0143
+	area_name			= EVAL ~%NBaldursGate%~
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0143
+	trigger_script   	= EVAL ~%trigger_script%~
+	door_script			= EVAL ~dr%CmpAreaNumDest%2~ //dr01432
+	area_name_dest		= EVAL ~%area_name_dest%~
+RET
+	travel_trigger_found
+	bggo_deleted
+	existing_door_name
+	door_script
+END
+
+PATCH_IF bggo_deleted = 1 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_flags               = BIT1 + BIT6 //BIT1 locked BIT6 is door
+		fj_open_box_left       = 3430
+		fj_open_box_top        = 3127
+		fj_open_box_right      = 3482
+		fj_open_box_bottom     = 3192
+		fj_closed_box_left     = 3394
+		fj_closed_box_top      = 3112
+		fj_closed_box_right    = 3429
+		fj_closed_box_bottom   = 3198
+		fj_cursor_idx          = 30
+		fj_open_loc_x          = 3500
+		fj_open_loc_y          = 3170
+		fj_closed_loc_x        = 3500
+		fj_closed_loc_y        = 3170
+		fj_locked_diff		   = 30
+		fj_door_open_vert_0    = 3430 + (3182 << 16)
+		fj_door_open_vert_1    = 3482 + (3192 << 16)
+		fj_door_open_vert_2    = 3482 + (3137 << 16)
+		fj_door_open_vert_3    = 3430 + (3127 << 16)
+		fj_door_closed_vert_0  = 3429 + (3176 << 16)
+		fj_door_closed_vert_1  = 3413 + (3198 << 16)
+		fj_door_closed_vert_2  = 3394 + (3198 << 16)
+		fj_door_closed_vert_3  = 3398 + (3177 << 16)
+		fj_door_closed_vert_4  = 3404 + (3155 << 16)
+		fj_door_closed_vert_5  = 3414 + (3132 << 16)
+		fj_door_closed_vert_6  = 3422 + (3119 << 16)
+		fj_door_closed_vert_7  = 3429 + (3112 << 16)
+
+		fj_cell_closed_vert_0    = 213 + (266 << 16)
+		fj_cell_closed_vert_1    = 214 + (264 << 16)
+		fj_cell_closed_vert_2    = 214 + (265 << 16)
+		fj_cell_closed_vert_3    = 213 + (265 << 16)
+		fj_cell_open_vert_0      = 214 + (264 << 16)
+		fj_cell_open_vert_1      = 215 + (264 << 16)
+		fj_cell_open_vert_2      = 216 + (264 << 16)
+		fj_cell_open_vert_3      = 217 + (264 << 16)
+		fj_cell_open_vert_4      = 214 + (263 << 16)
+		fj_cell_open_vert_5      = 215 + (263 << 16)
+		fj_cell_open_vert_6      = 214 + (262 << 16)
+		fj_cell_open_vert_7      = 215 + (262 << 16)
+//		fj_cell_open_vert_8      = 214 + (265 << 16)
+//		fj_cell_open_vert_9      = 215 + (265 << 16)
+//		fj_cell_open_vert_10     = 216 + (265 << 16)
+//		fj_cell_open_vert_11     = 217 + (265 << 16)
+		STR_VAR
+		fj_travel_trigger      = EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0143
+		fj_structure_type      = door
+		fj_name                = EVAL ~%existing_door_name%~
+		fj_door_wed_id         = DOOR0143
+		fj_door_script		   = EVAL ~%door_script%~
+	END
+END
+
+PATCH_IF travel_trigger_found = 0 BEGIN
+	LPF fj_are_structure
+		INT_VAR
+		fj_type         = 2    //travel
+		fj_box_left     = 3394
+		fj_box_top      = 3112
+		fj_box_right    = 3429
+		fj_box_bottom   = 3198
+		fj_cursor_idx   = 30   //door
+		fj_flags        = BIT11  //BIT11 door connected
+		fj_vertex_0  = 3429 + (3176 << 16)
+		fj_vertex_1  = 3413 + (3198 << 16)
+		fj_vertex_2  = 3394 + (3198 << 16)
+		fj_vertex_3  = 3398 + (3177 << 16)
+		fj_vertex_4  = 3404 + (3155 << 16)
+		fj_vertex_5  = 3414 + (3132 << 16)
+		fj_vertex_6  = 3422 + (3119 << 16)
+		fj_vertex_7  = 3429 + (3112 << 16)
+		STR_VAR
+		fj_structure_type   = region
+		fj_name             = EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0143
+		fj_destination_area = EVAL ~%CentralBaldursGate_OberonsEstate_L1%~
+		fj_destination_name = EVAL ~Exit%CmpAreaNum%~ //Exit0700
+		fj_reg_script       = EVAL ~%trigger_script%~
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 3510
+		fj_loc_y       = 3170
+		fj_orientation = 12
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = EVAL ~Exit%CmpAreaNumDest%~ //Exit0143
 	END
 END
 
 //////////////////////////////
-// Door0114 from BG0300
+// Door0114 from BG0300 **
 //////////////////////////////
 
-	
+SNPRINT "-4" CmpAreaNumDest ~%NEBaldursGate_BlushingMermaid_L1%~ //BG0114
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	trigger_script = dest0114
-	area_name_dest = BG0114	// used vor variable name, so we don't need cmpvars
+	trigger_script = EVAL ~dest%CmpAreaNumDest%~ //dest0114
+	area_name_dest = EVAL ~%NEBaldursGate_BlushingMermaid_L1%~ //BG0114
 RET
 	trigger_script
 	area_name_dest
@@ -259,9 +386,9 @@ STR_VAR
 	door_name_wed	 	= DOOR05
 	door_name			= Dr0114b
 	area_name			= EVAL ~%NBaldursGate%~
-	new_trigger_name	= bggo_BG0114b
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%b~ //bggo_BG0114b
 	trigger_script   	= EVAL ~%trigger_script%~
-	door_script			= dr0114b2
+	door_script			= EVAL ~dr%CmpAreaNumDest%b2~ //dr0114b2
 	area_name_dest		= EVAL ~%area_name_dest%~
 	trigger_name_dialog = "Trigger Point 31"
 RET
@@ -271,6 +398,7 @@ RET
 	door_script
 	dialog_string
 END
+SET DialogStringBG0200 = dialog_string
 
 PATCH_IF bggo_deleted = 1 BEGIN
 	LPF fj_are_structure
@@ -323,7 +451,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_cell_closed_vert_7  = 275 + (120 << 16)
 		
 		STR_VAR
-		fj_travel_trigger      = bggo_BG0114b
+		fj_travel_trigger      = EVAL ~bggo_Door%CmpAreaNumDest%b~ //bggo_BG0114b
 		fj_structure_type      = door
 		fj_name                = EVAL ~%existing_door_name%~
 		fj_door_wed_id         = DOOR05
@@ -352,9 +480,9 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_vertex_6  = 4358 + (1377 << 16)
 		STR_VAR
 		fj_structure_type   = region
-		fj_name             = bggo_BG0114b
+		fj_name             = EVAL ~bggo_Door%CmpAreaNumDest%b~ //bggo_BG0114b
 		fj_destination_area = EVAL ~%NEBaldursGate_BlushingMermaid_L1%~
-		fj_destination_name = bggo_Exit0300
+		fj_destination_name = bggo_Exit0300 // new exit
 		fj_reg_script       = EVAL ~%trigger_script%~ //dest0114
 	END
 
@@ -365,7 +493,7 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_orientation = 2
 		STR_VAR
 		fj_structure_type = entrance
-		fj_name           = bggo_Exit0114b
+		fj_name           = bggo_Exit0114b // new exit
 	END
 END
 
@@ -541,129 +669,6 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_name                = EVAL ~%existing_door_name%~
 		fj_door_wed_id         = DOOR04
 		fj_door_script		   = EVAL ~%door_script%~
-	END
-END
-
-/////////////////////////////////////////////////////////
-// Door0143 to BG0700
-/////////////////////////////////////////////////////////
-LPF CreateTriggerScriptBggodest
-STR_VAR
-	trigger_script = dest0143
-	area_name_dest = BG0143	// used vor variable name, so we don't need cmpvars
-RET
-	trigger_script
-	area_name_dest
-END
-
-LPF Door_trigger_script_patch
-INT_VAR
-	bggo_locked 		  = 1	// is door locked =1 unlocked =0
-STR_VAR
-	door_name_wed	 	= DOOR0143
-	door_name			= ~Door0143~
-	area_name			= EVAL ~%NBaldursGate%~
-	new_trigger_name	= bggo_BG0143
-	trigger_script   	= EVAL ~%trigger_script%~
-	door_script			= dr01432
-	area_name_dest		= EVAL ~%area_name_dest%~
-RET
-	travel_trigger_found
-	bggo_deleted
-	existing_door_name
-	door_script
-END
-
-PATCH_IF bggo_deleted = 1 BEGIN
-	LPF fj_are_structure
-		INT_VAR
-		fj_flags               = BIT1 + BIT6 //BIT1 locked BIT6 is door
-		fj_open_box_left       = 3430
-		fj_open_box_top        = 3127
-		fj_open_box_right      = 3482
-		fj_open_box_bottom     = 3192
-		fj_closed_box_left     = 3394
-		fj_closed_box_top      = 3112
-		fj_closed_box_right    = 3429
-		fj_closed_box_bottom   = 3198
-		fj_cursor_idx          = 30
-		fj_open_loc_x          = 3500
-		fj_open_loc_y          = 3170
-		fj_closed_loc_x        = 3500
-		fj_closed_loc_y        = 3170
-		fj_locked_diff		   = 30
-		fj_door_open_vert_0    = 3430 + (3182 << 16)
-		fj_door_open_vert_1    = 3482 + (3192 << 16)
-		fj_door_open_vert_2    = 3482 + (3137 << 16)
-		fj_door_open_vert_3    = 3430 + (3127 << 16)
-		fj_door_closed_vert_0  = 3429 + (3176 << 16)
-		fj_door_closed_vert_1  = 3413 + (3198 << 16)
-		fj_door_closed_vert_2  = 3394 + (3198 << 16)
-		fj_door_closed_vert_3  = 3398 + (3177 << 16)
-		fj_door_closed_vert_4  = 3404 + (3155 << 16)
-		fj_door_closed_vert_5  = 3414 + (3132 << 16)
-		fj_door_closed_vert_6  = 3422 + (3119 << 16)
-		fj_door_closed_vert_7  = 3429 + (3112 << 16)
-
-		fj_cell_closed_vert_0    = 213 + (266 << 16)
-		fj_cell_closed_vert_1    = 214 + (264 << 16)
-		fj_cell_closed_vert_2    = 214 + (265 << 16)
-		fj_cell_closed_vert_3    = 213 + (265 << 16)
-		fj_cell_open_vert_0      = 214 + (264 << 16)
-		fj_cell_open_vert_1      = 215 + (264 << 16)
-		fj_cell_open_vert_2      = 216 + (264 << 16)
-		fj_cell_open_vert_3      = 217 + (264 << 16)
-		fj_cell_open_vert_4      = 214 + (263 << 16)
-		fj_cell_open_vert_5      = 215 + (263 << 16)
-		fj_cell_open_vert_6      = 214 + (262 << 16)
-		fj_cell_open_vert_7      = 215 + (262 << 16)
-//		fj_cell_open_vert_8      = 214 + (265 << 16)
-//		fj_cell_open_vert_9      = 215 + (265 << 16)
-//		fj_cell_open_vert_10     = 216 + (265 << 16)
-//		fj_cell_open_vert_11     = 217 + (265 << 16)
-		STR_VAR
-		fj_travel_trigger      = bggo_BG0143
-		fj_structure_type      = door
-		fj_name                = EVAL ~%existing_door_name%~
-		fj_door_wed_id         = DOOR0143
-		fj_door_script		   = EVAL ~%door_script%~
-	END
-END
-
-PATCH_IF travel_trigger_found = 0 BEGIN
-	LPF fj_are_structure
-		INT_VAR
-		fj_type         = 2    //travel
-		fj_box_left     = 3394
-		fj_box_top      = 3112
-		fj_box_right    = 3429
-		fj_box_bottom   = 3198
-		fj_cursor_idx   = 30   //door
-		fj_flags        = BIT11  //BIT11 door connected
-		fj_vertex_0  = 3429 + (3176 << 16)
-		fj_vertex_1  = 3413 + (3198 << 16)
-		fj_vertex_2  = 3394 + (3198 << 16)
-		fj_vertex_3  = 3398 + (3177 << 16)
-		fj_vertex_4  = 3404 + (3155 << 16)
-		fj_vertex_5  = 3414 + (3132 << 16)
-		fj_vertex_6  = 3422 + (3119 << 16)
-		fj_vertex_7  = 3429 + (3112 << 16)
-		STR_VAR
-		fj_structure_type   = region
-		fj_name             = bggo_BG0143
-		fj_destination_area = EVAL ~%CentralBaldursGate_OberonsEstate_L1%~
-		fj_destination_name = Exit0700
-		fj_reg_script       = EVAL ~%trigger_script%~
-	END
-	
-	LPF fj_are_structure
-		INT_VAR
-		fj_loc_x       = 3510
-		fj_loc_y       = 3170
-		fj_orientation = 12
-		STR_VAR
-		fj_structure_type = entrance
-		fj_name           = Exit0143
 	END
 END
 

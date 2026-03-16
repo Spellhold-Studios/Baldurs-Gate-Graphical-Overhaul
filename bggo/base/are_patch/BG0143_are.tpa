@@ -37,8 +37,9 @@ END
 LPM ~CLEAR_ARRAY~
 
 ////////////////////////////////////////////
-// trigger to leave to BG1100
+// trigger to leave to BG0200 **
 ////////////////////////////////////////////
+SNPRINT "-4" exitvar ~%CentralBaldursGate_OberonsEstate_L1%~ //BG0143
 LPF fj_are_structure
     INT_VAR
     fj_type         = 2    //travel
@@ -56,7 +57,7 @@ LPF fj_are_structure
     fj_structure_type   = region
     fj_name             = bggo_BG0200
     fj_destination_area = EVAL ~%NBaldursGate%~
-    fj_destination_name = Exit0143
+    fj_destination_name = EVAL ~Exit%exitvar%~ //Exit0143
 END
 
 LPF CreateHouseAreaScript

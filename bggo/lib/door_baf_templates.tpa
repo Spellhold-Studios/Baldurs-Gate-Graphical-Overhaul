@@ -148,8 +148,8 @@ IF
 	Clicked([ANYONE])
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_BG0114","GLOBAL",1)
-		SetGlobal("BGGO_unlocked_door_BG0114","GLOBAL",1)
+		SetGlobal("BGGO_opened_%NEBaldursGate_BlushingMermaid_L1%","GLOBAL",1)
+		SetGlobal("BGGO_unlocked_door_%NEBaldursGate_BlushingMermaid_L1%","GLOBAL",1)
 END
 >>>>>>>>
 
@@ -158,6 +158,6 @@ IF
 	IsOverMe([ANYONE])
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_BG0300","GLOBAL",1)
+		SetGlobal("BGGO_opened_%NEBaldursGate%","GLOBAL",1)
 END
 >>>>>>>>

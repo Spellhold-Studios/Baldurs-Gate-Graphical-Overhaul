@@ -10,8 +10,9 @@ PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/base/are_patch/%identical_area%_are.tpa~ BEGI
 END
 
 ////////////////////////////////////////////
-// trigger to leave to BG1300
+// trigger to leave to BG1300 **
 ////////////////////////////////////////////
+SNPRINT "-4" exitvar ~%EBaldursGate_ArkionsHouse_L1%~ //BG0805
 LPF fj_are_structure
     INT_VAR
     fj_type         = 2    //travel
@@ -29,7 +30,7 @@ LPF fj_are_structure
     fj_structure_type   = region
     fj_name             = bggo_BG1300
     fj_destination_area = EVAL ~%SEBaldursGate%~
-    fj_destination_name = Exit0805
+    fj_destination_name = EVAL ~Exit%exitvar%~ //Exit0805
 END
 
 LPF CreateHouseAreaScript

@@ -16,11 +16,22 @@ COPY_EXISTING ~bork.cre~ ~override~
 		SPRINT script_name ~bork~
 		WRITE_ASCIIE 0x280 ~%script_name%~
 	END
-<<<<<<<< .../%MOD_FOLDER%/inlined_BG0300_bottom.baf
+	
+<<<<<<<< .../%MOD_FOLDER%/inlined_BG0200_bottom.baf
+
+IF
+	Global("BGGO_unlocked_door_%NEBaldursGate_BlushingMermaid_L1%","GLOBAL",0)
+THEN
+    RESPONSE #100
+		Lock("Dr0114b")
+		SetGlobal("BG0200_text_Dr0114b","%NBaldursGate%",0)
+		Continue()
+END
 
 IF
     OpenState("Dr0114b",TRUE)
 	Global("BGGO_timer_Dr0114b","GLOBAL",0)
+	Global("BGGO_unlocked_door_%NEBaldursGate_BlushingMermaid_L1%","GLOBAL",1)
 THEN
     RESPONSE #100
 		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",1)
@@ -34,7 +45,7 @@ THEN
     RESPONSE #100
 		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",2)
 		CreateCreatureObject("%script_name%","Dr0114b",0,0,0)
-		ActionOverride("%script_name%",DisplayString(Myself,%dialog_string%))
+		ActionOverride("%script_name%",DisplayString(Myself,%DialogStringBG0200%))
 		Wait(3)
 		ActionOverride("%script_name%",Face(4))
 		Wait(3)
@@ -48,13 +59,12 @@ IF
 THEN
     RESPONSE #100
 		CloseDoor("Dr0114b")
-		SetGlobal("BGGO_opened_Dr0114b","BG0200",0)
-		SetGlobal("BGGO_opened_BG0114","GLOBAL",0)
+		SetGlobal("BGGO_opened_%NEBaldursGate_BlushingMermaid_L1%","GLOBAL",0)
+		SetGlobal("BGGO_opened_Dr0114b","%NBaldursGate%",0)
 		SetGlobal("BGGO_timer_Dr0114b","GLOBAL",0)
-		
-		SetGlobal("BGGO_unlocked_door_BG0114","GLOBAL",0)
+		SetGlobal("BGGO_unlocked_door_%NEBaldursGate_BlushingMermaid_L1%","GLOBAL",0)
 		Lock("Dr0114b")
-		SetGlobal("BG0200_text_Dr0114b","BG0200",0)
+		SetGlobal("BG0200_text_Dr0114b","%NBaldursGate%",0)
 END
 >>>>>>>>
-EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0300_bottom.baf~ EVAL
+EXTEND_BOTTOM ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0200_bottom.baf~ EVAL

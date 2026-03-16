@@ -39,14 +39,17 @@ END
 LPM ~CLEAR_ARRAY~
 
 //////////////////////////////
-// bggo_BG0300 from BG0144
+// bggo_BG0300 from BG0144 **
 //////////////////////////////
 
 //Dr0114 Second door from Blushing Mermaid
+
+SNPRINT "-4" CmpAreaNumDest ~%NEBaldursGate_BlushingMermaid_L1%~ //BG0114
+//SNPRINT "-4" CmpAreaNum ~%EBaldursGate%~ //BG0800
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	trigger_script = dest0114
-	area_name_dest = BG0114	// used vor variable name, so we don't need cmpvars
+	trigger_script = EVAL ~dest%CmpAreaNumDest%~ //dest0114
+	area_name_dest = EVAL ~%NEBaldursGate_BlushingMermaid_L1%~ //BG0114
 RET
 	trigger_script
 	area_name_dest
@@ -59,9 +62,9 @@ STR_VAR
 	door_name_wed	 	= Dr0114b
 	door_name			= Dr0114b
 	area_name			= EVAL ~%NEBaldursGate%~
-	new_trigger_name	= bggo_BG0114b
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%b~ //bggo_BG0114b
 	trigger_script   	= EVAL ~%trigger_script%~
-	door_script			= dr0114b3
+	door_script			= EVAL ~dr%CmpAreaNumDest%b3~ //dr0114b3
 	area_name_dest		= EVAL ~%area_name_dest%~
 	trigger_name_dialog = "Trigger Point 17"
 RET
@@ -71,6 +74,7 @@ RET
 	door_script
 	dialog_string
 END
+SET DialogStringBG0300 = dialog_string
 
 PATCH_IF bggo_deleted = 1 BEGIN
 	LPF fj_are_structure
@@ -129,7 +133,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_cell_closed_vert_12 = 7 + (115 << 16)
 		fj_cell_closed_vert_13 = 8 + (115 << 16)
 		STR_VAR
-		fj_travel_trigger      = bggo_BG0114b
+		fj_travel_trigger      = EVAL ~bggo_Door%CmpAreaNumDest%b~ //bggo_BG0114b
 		fj_structure_type      = door
 		fj_name                = EVAL ~%existing_door_name%~
 		fj_door_wed_id         = Dr0114b
@@ -158,9 +162,9 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_vertex_6  = 70  + (1380 << 16)
 		STR_VAR
 		fj_structure_type   = region
-		fj_name             = bggo_BG0114b
+		fj_name             = EVAL ~bggo_Door%CmpAreaNumDest%b~ //bggo_BG0114b
 		fj_destination_area = EVAL ~%NEBaldursGate_BlushingMermaid_L1%~
-		fj_destination_name = bggo_Exit0300
+		fj_destination_name = bggo_Exit0300 // new exit
 		fj_reg_script       = EVAL ~%trigger_script%~ //dest0114
 	END
 	
@@ -171,7 +175,7 @@ PATCH_IF travel_trigger_found = 0 BEGIN
 		fj_orientation = 2
 		STR_VAR
 		fj_structure_type = entrance
-		fj_name           = bggo_Exit0114b
+		fj_name           = bggo_Exit0114b // new exit
 	END
 END
 
@@ -179,7 +183,7 @@ END
 LPF Door_trigger_script_patch
 STR_VAR
 	door_name_wed	 	= Door0114
-	new_trigger_name	= bggo_BG0114
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0114
 	trigger_script   	= EVAL ~%trigger_script%~ //dest0114
 RET
 	travel_trigger_found
@@ -188,13 +192,14 @@ RET
 END
 
 ////////////////////////////////////////////////////////////
-//  Door0307 from BG0800
+//  Door0307 from BG0800 **
 ////////////////////////////////////////////////////////////
 
+SNPRINT "-4" CmpAreaNumDest ~%NEBaldursGate_CountingHouse_L1%~ //BG0307
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	trigger_script = dest0307
-	area_name_dest = BG0307	// used vor variable name, so we don't need cmpvars
+	trigger_script = EVAL ~dest%CmpAreaNumDest%~ //dest0307
+	area_name_dest = EVAL ~%NEBaldursGate_CountingHouse_L1%~ //BG0307
 RET
 	trigger_script
 	area_name_dest
@@ -205,16 +210,16 @@ INT_VAR
 	bggo_locked 		  = 1	// is door locked =1 unlocked =0
 STR_VAR
 	door_name_wed	 	= DOOR0105
-	door_name			= ~Door0307~
+	door_name			= Door0307
 	area_name			= EVAL ~%NEBaldursGate%~
-	new_trigger_name	= bggo_BG0307
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0307
 	trigger_script   	= EVAL ~%trigger_script%~
-	door_script			= dr03073
+	door_script			= EVAL ~dr%CmpAreaNumDest%3~ //dr03073
 	area_name_dest		= EVAL ~%area_name_dest%~
 END
 
 ////////////////////////////////////////////////////////////
-//  Travel regions to BG0800
+//  Travel regions to BG0800 **
 ////////////////////////////////////////////////////////////
 LPF fj_are_structure
 	INT_VAR

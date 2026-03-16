@@ -3,13 +3,13 @@
 
 // door a
 IF
-    Global("BGGO_opened_Door0719","BG0700",0)
+    Global("BGGO_opened_Door0719","%CentralBaldursGate%",0)
     Global("BGGO_opened_BG0719","GLOBAL",1)
 THEN
 	RESPONSE #100
 		Unlock("Door0719")
 		OpenDoor("Door0719")
-		SetGlobal("BGGO_opened_Door0719","BG0700",1)
+		SetGlobal("BGGO_opened_Door0719","%CentralBaldursGate%",1)
 		Continue()
 END
 
@@ -17,7 +17,7 @@ IF
     OpenState("Door0719",TRUE)
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_Door0719","BG0700",1)
+		SetGlobal("BGGO_opened_Door0719","%CentralBaldursGate%",1)
 		SetGlobal("BGGO_opened_BG0719","GLOBAL",1)
 		Continue()
 END
@@ -26,19 +26,19 @@ IF
     OpenState("Door0719",FALSE)
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_Door0719","BG0700",0)
+		SetGlobal("BGGO_opened_Door0719","%CentralBaldursGate%",0)
 		SetGlobal("BGGO_opened_BG0719","GLOBAL",0)
 		Continue()
 END
 // door b
 IF
-    Global("BGGO_opened_Door0719b","BG0700",0)
+    Global("BGGO_opened_Door0719b","%CentralBaldursGate%",0)
     Global("BGGO_opened_BG0719b","GLOBAL",1)
 THEN
 	RESPONSE #100
 		Unlock("Door0719b")
 		OpenDoor("Door0719b")
-		SetGlobal("BGGO_opened_Door0719b","BG0700",1)
+		SetGlobal("BGGO_opened_Door0719b","%CentralBaldursGate%",1)
 		Continue()
 END
 
@@ -46,7 +46,7 @@ IF
     OpenState("Door0719b",TRUE)
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_Door0719b","BG0700",1)
+		SetGlobal("BGGO_opened_Door0719b","%CentralBaldursGate%",1)
 		SetGlobal("BGGO_opened_BG0719b","GLOBAL",1)
 		Continue()
 END
@@ -55,7 +55,7 @@ IF
     OpenState("Door0719b",FALSE)
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_Door0719b","BG0700",0)
+		SetGlobal("BGGO_opened_Door0719b","%CentralBaldursGate%",0)
 		SetGlobal("BGGO_opened_BG0719b","GLOBAL",0)
 		Continue()
 END
@@ -67,13 +67,13 @@ EXTEND_TOP ~%are2%.bcs~ ~.../%MOD_FOLDER%/inlined_BG0700_bottom.baf~ EVAL
 
 // door a
 IF
-    Global("BGGO_opened_Door0720","BG0700",0)
+    Global("BGGO_opened_Door0720","%CentralBaldursGate%",0)
     Global("BGGO_opened_BG0720","GLOBAL",1)
 THEN
 	RESPONSE #100
 		Unlock("Door0720")
 		OpenDoor("Door0720")
-		SetGlobal("BGGO_opened_Door0720","BG0700",1)
+		SetGlobal("BGGO_opened_Door0720","%CentralBaldursGate%",1)
 		Continue()
 END
 
@@ -81,7 +81,7 @@ IF
     OpenState("Door0720",TRUE)
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_Door0720","BG0700",1)
+		SetGlobal("BGGO_opened_Door0720","%CentralBaldursGate%",1)
 		SetGlobal("BGGO_opened_BG0720","GLOBAL",1)
 		Continue()
 END
@@ -90,19 +90,19 @@ IF
     OpenState("Door0720",FALSE)
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_Door0720","BG0700",0)
+		SetGlobal("BGGO_opened_Door0720","%CentralBaldursGate%",0)
 		SetGlobal("BGGO_opened_BG0720","GLOBAL",0)
 		Continue()
 END
 // door b
 IF
-    Global("BGGO_opened_Door0720b","BG0700",0)
+    Global("BGGO_opened_Door0720b","%CentralBaldursGate%",0)
     Global("BGGO_opened_BG0720b","GLOBAL",1)
 THEN
 	RESPONSE #100
 		Unlock("Door0720b")
 		OpenDoor("Door0720b")
-		SetGlobal("BGGO_opened_Door0720b","BG0700",1)
+		SetGlobal("BGGO_opened_Door0720b","%CentralBaldursGate%",1)
 		Continue()
 END
 
@@ -110,7 +110,7 @@ IF
     OpenState("Door0720b",TRUE)
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_Door0720b","BG0700",1)
+		SetGlobal("BGGO_opened_Door0720b","%CentralBaldursGate%",1)
 		SetGlobal("BGGO_opened_BG0720b","GLOBAL",1)
 		Continue()
 END
@@ -119,7 +119,7 @@ IF
     OpenState("Door0720b",FALSE)
 THEN
     RESPONSE #100
-		SetGlobal("BGGO_opened_Door0720b","BG0700",0)
+		SetGlobal("BGGO_opened_Door0720b","%CentralBaldursGate%",0)
 		SetGlobal("BGGO_opened_BG0720b","GLOBAL",0)
 		Continue()
 END

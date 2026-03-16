@@ -1,7 +1,7 @@
 
 DEFINE_PATCH_FUNCTION Door_trigger_script_patch
 	INT_VAR
-		debug 				  = 1
+		debug 				  = 0
 		detail_debug		  = 0
 		bggo_deleted		  = 0		
 		travel_trigger_found  = 0	
@@ -157,8 +157,10 @@ BEGIN
 	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
 	PHP_EACH triggers AS i => off BEGIN
 		READ_ASCII off triggername (32) NULL
+		READ_ASCII off + 0x38 destination
 		// search for existing travel_trigger
-		PATCH_IF ~%triggername%~ STR_EQ ~%door_name%~ OR ~%triggername%~ STR_EQ ~%new_trigger_name%~ BEGIN
+		PATCH_IF ~%triggername%~ STR_EQ ~%door_name%~ OR ~%triggername%~ STR_EQ ~%new_trigger_name%~ 
+				 OR ~bggo_%triggername%~ STR_EQ ~%new_trigger_name%~ BEGIN
 			SET travel_trigger_found = 1
 			PATCH_IF ~%new_trigger_name%~ STR_CMP ~~ BEGIN
 				WRITE_ASCIIE off ~%new_trigger_name%~ #32

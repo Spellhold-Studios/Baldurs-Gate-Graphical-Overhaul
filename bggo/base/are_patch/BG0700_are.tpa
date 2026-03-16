@@ -57,12 +57,13 @@ END
 LPM ~CLEAR_ARRAY~
 
 /////////////////////////////////////////////////////////
-// Door0143 to BG0200
+// Door0143 to BG0200 **
 /////////////////////////////////////////////////////////
+SNPRINT "-4" CmpAreaNumDest ~%CentralBaldursGate_OberonsEstate_L1%~ //BG0143
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	trigger_script = dest0143
-	area_name_dest = BG0143	// used vor variable name, so we don't need cmpvars
+	trigger_script = EVAL ~dest%CmpAreaNumDest%~ //dest0143
+	area_name_dest = EVAL ~%CentralBaldursGate_OberonsEstate_L1%~ //BG0143
 RET
 	trigger_script
 	area_name_dest
@@ -74,21 +75,22 @@ INT_VAR
 STR_VAR
 	door_name_wed	 	= DOOR0143
 	area_name			= EVAL ~%CentralBaldursGate%~
-	new_trigger_name	= bggo_BG0143
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0143
 	trigger_script   	= EVAL ~%trigger_script%~
-	door_script			= dr01437
+	door_script			= EVAL ~dr%CmpAreaNumDest%7~ //dr01437
 	area_name_dest		= EVAL ~%area_name_dest%~
 END
 
 ////////////////////////////////////////////////////////////
-//  Door0713 from BG0800
+//  Door0713 from BG0800 **
 ////////////////////////////////////////////////////////////
 
-
+SNPRINT "-4" CmpAreaNumDest ~%CentralBaldursGate_House5_L1%~ //BG0713
+//SNPRINT "-4" CmpAreaNum ~%EBaldursGate%~ //BG0800
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	trigger_script = dest0713
-	area_name_dest = BG0713	// used vor variable name, so we don't need cmpvars
+	trigger_script = EVAL ~dest%CmpAreaNumDest%~ //dest0713
+	area_name_dest = EVAL ~%CentralBaldursGate_House5_L1%~ //BG0713
 RET
 	trigger_script
 	area_name_dest
@@ -101,9 +103,9 @@ STR_VAR
 	door_name_wed	 	= DOOR0713
 	door_name			= ~Door0713~
 	area_name			= EVAL ~%CentralBaldursGate%~
-	new_trigger_name	= bggo_BG0713
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0713
 	trigger_script   	= EVAL ~%trigger_script%~
-	door_script			= dr07137
+	door_script			= EVAL ~dr%CmpAreaNumDest%7~ //dr07137
 	area_name_dest		= EVAL ~%area_name_dest%~
 RET
 	travel_trigger_found
@@ -150,7 +152,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_cell_open_vert_3      = 269 + (58 << 16)
 
 		STR_VAR
-		fj_travel_trigger      = bggo_BG0713
+		fj_travel_trigger      = EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0713
 		fj_structure_type      = door
 		fj_name                = EVAL ~%existing_door_name%~
 		fj_door_wed_id         = DOOR0713
@@ -159,7 +161,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 END
 
 ////////////////////////////////////////////////////////////
-//  Travel regions to BG0800
+//  Travel regions to BG0800 **
 ////////////////////////////////////////////////////////////
 
 LPF fj_are_structure
@@ -225,19 +227,35 @@ LPF fj_are_structure
 	fj_structure_type = entrance
 	fj_name           = Exit0800nw1
 END
-
 ////////////////////////////////////////////////////////////
-//  Door0719 from BG0700
+//  Door0719 Door0720 same travel trigger name, rename trigger
 ////////////////////////////////////////////////////////////
-
+SNPRINT "-4" CmpAreaNumDest719 ~%CentralBaldursGate_FeloniusManor%~ //BG0719
+SNPRINT "-4" CmpAreaNumDest720 ~%CentralBaldursGate_DrakonTavern%~ //BG0720
+SNPRINT "-4" CmpAreaNum ~%CentralBaldursGate%~ //BG0700
+GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+PHP_EACH triggers AS i => off BEGIN
+	READ_ASCII off triggername (32) NULL
+	READ_ASCII off + 0x40 entrance (32) NULL
+	PATCH_IF ~%triggername%~ STR_EQ ~Door%CmpAreaNumDest719%~ AND ~%entrance%~ STR_EQ ~Exit%CmpAreaNum%b~ BEGIN
+		WRITE_ASCIIE off ~Door%CmpAreaNumDest719%b~
+	END
+	PATCH_IF ~%triggername%~ STR_EQ ~Door%CmpAreaNumDest720%~ AND ~%entrance%~ STR_EQ ~Exit%CmpAreaNum%b~ BEGIN
+		WRITE_ASCIIE off ~Door%CmpAreaNumDest720%b~
+	END
+END
+////////////////////////////////////////////////////////////
+//  Door0719 from BG0700 **
+////////////////////////////////////////////////////////////
+SNPRINT "-4" CmpAreaNumDest ~%CentralBaldursGate_FeloniusManor%~ //BG0719
 LPF Door_trigger_script_patch
 INT_VAR
 	bggo_locked 		  = 1	// is door locked =1 unlocked =0
 STR_VAR
 	door_name_wed	 	= DOOR0719
-	door_name			= ~Door0719~
+	door_name			= Door0719
 	area_name			= EVAL ~%CentralBaldursGate%~
-	new_trigger_name	= bggo_BG0719
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0719
 END
 
 LPF Door_trigger_script_patch
@@ -245,15 +263,15 @@ INT_VAR
 	bggo_locked 		  = 1	// is door locked =1 unlocked =0
 STR_VAR
 	door_name_wed	 	= DOR0719b
-	door_name			= ~Door0719b~
+	door_name			= Door0719b
 	area_name			= EVAL ~%CentralBaldursGate%~
-	new_trigger_name	= bggo_BG0719b
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%b~ //bggo_BG0719b
 END
 
 ////////////////////////////////////////////////////////////
-//  Door0720 from BG0700
+//  Door0720 from BG0700 **
 ////////////////////////////////////////////////////////////
-
+SNPRINT "-4" CmpAreaNumDest ~%CentralBaldursGate_DrakonTavern%~ //BG0720
 LPF Door_trigger_script_patch
 INT_VAR
 	bggo_locked 		  = 1	// is door locked =1 unlocked =0
@@ -261,7 +279,7 @@ STR_VAR
 	door_name_wed	 	= DOOR0720
 	door_name			= ~Door0720~
 	area_name			= EVAL ~%CentralBaldursGate%~
-	new_trigger_name	= bggo_BG0720
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0720
 END
 
 LPF Door_trigger_script_patch
@@ -271,5 +289,5 @@ STR_VAR
 	door_name_wed	 	= DOR0720b
 	door_name			= ~Door0720b~
 	area_name			= EVAL ~%CentralBaldursGate%~
-	new_trigger_name	= bggo_BG0720b
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%b~ //bggo_BG0720b
 END

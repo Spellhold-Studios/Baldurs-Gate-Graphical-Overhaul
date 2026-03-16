@@ -64,12 +64,13 @@ END
 LPM ~CLEAR_ARRAY~
 
 //////////////////////////////
-// Door0619 from BG1100
+// Door0619 from BG1100 **
 //////////////////////////////
+SNPRINT "-4" CmpAreaNumDest ~%WBaldursGate_FentensHouse_L1%~ //BG0619
 LPF CreateTriggerScriptBggodest
 STR_VAR
-	trigger_script = dest0619
-	area_name_dest = BG0619 // used vor variable name, so we don't need cmpvars
+	trigger_script = EVAL ~dest%CmpAreaNumDest%~ //dest0619
+	area_name_dest = EVAL ~%WBaldursGate_FentensHouse_L1%~ //BG0619
 RET
 	trigger_script
 	area_name_dest
@@ -81,14 +82,14 @@ INT_VAR
 STR_VAR
 	door_name			= DOOR0619
 	area_name			= EVAL ~%WBaldursGate%~
-	new_trigger_name	= bggo_BG0619
+	new_trigger_name	= EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0619
 	trigger_script   	= EVAL ~%trigger_script%~
-	door_script			= dr061906
+	door_script			= EVAL ~dr%CmpAreaNumDest%06~ //dr061906
 	area_name_dest		= EVAL ~%area_name_dest%~
 END
 
 /////////////////////////////////////////////////////////
-// Door01 unused Door01
+// Door01 unused Door01 **
 /////////////////////////////////////////////////////////
 
 LPF Door_trigger_script_patch 

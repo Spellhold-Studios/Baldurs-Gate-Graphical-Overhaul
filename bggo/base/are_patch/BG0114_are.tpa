@@ -38,14 +38,17 @@ END
 LPM ~CLEAR_ARRAY~
 
 //////////////////////////////
-// Door0112
+// Door0112 **
 //////////////////////////////
-
+SNPRINT "-4" CmpAreaNumDest ~%BaldursGate_Undercellars%~ //BG0112
+SNPRINT "-4" CmpAreaNum ~%NEBaldursGate_BlushingMermaid_L1%~ //BG0114
+SNPRINT "-4" TriggerCmpAreaNum ~%NEBaldursGate%~ //BG0300
 // delete old one
 GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
 PHP_EACH triggers AS i => off BEGIN
 	READ_ASCII off triggername (32) NULL
-	PATCH_IF ~%triggername%~ STR_EQ ~Door0112~ OR ~%triggername%~ STR_EQ ~Door0300~  BEGIN
+	PATCH_IF ~%triggername%~ STR_EQ ~Door%CmpAreaNumDest%~ /*Door0112*/
+		  OR ~%triggername%~ STR_EQ ~Door%TriggerCmpAreaNum%~ /*Door0300*/  BEGIN
 		LPF fj_are_structure
 			INT_VAR fj_delete_mode = i
 			STR_VAR fj_structure_type = region
@@ -70,23 +73,25 @@ LPF fj_are_structure
 	fj_vertex_3  = 66  + (331 << 16)
 	STR_VAR
 	fj_structure_type   = region
-	fj_name             = Door0112
-	fj_destination_area = EVAL ~%BaldursGate_Undercellars%~
-	fj_destination_name = Exit0114
+	fj_name             = EVAL ~Door%CmpAreaNumDest%~ //Door0112
+	fj_destination_area = EVAL ~%BaldursGate_Undercellars%~ //BG0112
+	fj_destination_name = EVAL ~Exit%CmpAreaNum%~ //BG0114
 END
 
 GET_OFFSET_ARRAY entrances ARE_V10_ENTRANCES
 PHP_EACH entrances AS i => off BEGIN
 	READ_ASCII off entrancename (32) NULL
-	PATCH_IF ~%entrancename%~ STR_EQ ~EXIT0112~ BEGIN
+	PATCH_IF ~%entrancename%~ STR_EQ ~EXIT%CmpAreaNumDest%~ BEGIN //EXIT0112
 		WRITE_SHORT off + 0x20 179
 		WRITE_SHORT off + 0x22 261
 	END
 END
 
 //////////////////////////////
-// bggo_BG0300
+// bggo_BG0300 **
 //////////////////////////////
+SNPRINT "-4" CmpAreaNumDest ~%NEBaldursGate%~ //BG0300
+SNPRINT "-4" CmpAreaNum ~%NEBaldursGate_BlushingMermaid_L1%~ //BG0114
 LPF fj_are_structure
 	INT_VAR
 	fj_type         = 2    //travel
@@ -105,9 +110,9 @@ LPF fj_are_structure
 	fj_vertex_4  = 662 + (851 << 16)
 	STR_VAR
 	fj_structure_type   = region
-	fj_name             = Door0300
+	fj_name             = EVAL ~Door%CmpAreaNumDest%~ //Door0300
 	fj_destination_area = EVAL ~%NEBaldursGate%~
-	fj_destination_name = Exit0114
+	fj_destination_name = EVAL ~Exit%CmpAreaNum%~ //Exit0114
 	fj_reg_script 		= Dr0300o
 END
 
@@ -129,11 +134,12 @@ LPF fj_are_structure
 	fj_vertex_0  = 340 + (476 << 16)
 	STR_VAR
 	fj_structure_type   = region
-	fj_name             = bggo_BG0300
+	fj_name             = EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0300
 	fj_destination_area = EVAL ~%NEBaldursGate%~
-	fj_destination_name = bggo_Exit0114b
+	fj_destination_name = bggo_Exit0114b // new exit
 	fj_reg_script 		= dr0114uo
 END
+SNPRINT "-4" CmpAreaNumDest ~%NBaldursGate%~ //BG0200
 LPF fj_are_structure
 	INT_VAR
 	fj_type         = 2    //travel
@@ -152,9 +158,9 @@ LPF fj_are_structure
 	fj_vertex_0  = 340 + (476 << 16)
 	STR_VAR
 	fj_structure_type   = region
-	fj_name             = bggo_BG0200
+	fj_name             = EVAL ~bggo_Door%CmpAreaNumDest%~ //bggo_BG0200
 	fj_destination_area = EVAL ~%NBaldursGate%~
-	fj_destination_name = bggo_Exit0114b
+	fj_destination_name = bggo_Exit0114b // new exit
 	fj_reg_script 		= dr0114uo
 END
 
@@ -165,7 +171,7 @@ LPF fj_are_structure
 	fj_orientation = 10
 	STR_VAR
 	fj_structure_type = entrance
-	fj_name           = bggo_Exit0300
+	fj_name           = bggo_Exit0300 // new exit
 END
 
 LPF CreateHouseAreaScript
