@@ -100,6 +100,40 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 			END
 		END
 		LPM ~CLEAR_ARRAY~
+		
+		// The tailor shop windows are lit up
+		PATCH_DEFINE_ARRAY x_coord BEGIN 4224 END
+		PATCH_DEFINE_ARRAY y_coord BEGIN 320  END
+		PATCH_PHP_EACH x_coord AS index => x BEGIN
+			LPM ~DELETE_EXISTING_ANIMATIONS~
+			LPF fj_are_structure
+			INT_VAR
+				fj_loc_x = $x_coord("%index%")
+				fj_loc_y = $y_coord("%index%")
+				fj_schedule = 0b111000000000000000111111 //Hours 22.00 - 07.00
+				fj_flags = 0b00000000000000000001000101100011	// Visible, blend colours, not covered by wall, don't remove in combat
+				STR_VAR
+				fj_structure_type = animation
+				fj_name = BG1200L
+				fj_bam_resref = BG1200L //bgrd
+			END
+		END
+		PATCH_DEFINE_ARRAY x_coord BEGIN 4306 END
+		PATCH_DEFINE_ARRAY y_coord BEGIN 384  END
+		PATCH_PHP_EACH x_coord AS index => x BEGIN
+			LPM ~DELETE_EXISTING_ANIMATIONS~
+			LPF fj_are_structure
+			INT_VAR
+				fj_loc_x = $x_coord("%index%")
+				fj_loc_y = $y_coord("%index%")
+				fj_schedule = 0b111000000000000000111111 //Hours 22.00 - 07.00
+				fj_flags = 0b00000000000000000001000101100011	// Visible, blend colours, not covered by wall, don't remove in combat
+				STR_VAR
+				fj_structure_type = animation
+				fj_name = BG1200R
+				fj_bam_resref = BG1200R //bgrd
+			END
+		END
 
 	////////////////////////////////////////////
 	// BG1300.are SEBaldursGate
