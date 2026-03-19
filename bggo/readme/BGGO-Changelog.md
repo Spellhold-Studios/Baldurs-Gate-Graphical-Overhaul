@@ -1,4 +1,53 @@
 ### Version 3.6 (by Weigo)
+
+#### Baldur's Gate City new door functions
+
+##### Doors in two areas
+- Door0159: BG0100 - Door0159: BG0200
+- Door0143: BG0200 - Door0143: BG0700
+- Door0114: BG0200 - Dr0114b: BG0300
+- Door0307: BG0300 - Door0307: BG0800
+- Door0619: BG0600 - Door0619: BG1100
+- Door0713: BG0700 - Door0713: BG0800
+- Door0805: BG0800 - Door0805: BG1300
+- Door0813: BG0800 - Door0813: BG1300
+- Door01:   BG1200 - Door01: BG1300 (used by Balduran's Seatower)
+
+##### Houses with 2 entrances
+- Door0114, Dr0114b: BG0200
+- Door0719, Door0719b :BG0700
+- Door0720, Door0720b :BG0700
+
+##### Used Doors connected to unused door animation
+- Doorname - DoorID (wed) - area
+- Door0014 - DOOR02 - BG0200
+- Door0016 - DOOR01 - BG0200
+
+##### Unused doors
+- Doorname - DoorID (wed) - area - orininal trigger name
+- Door04 - DOOR04 - BG0200 - Door Object 15
+- Door02 - DOOR02 - BG0800 - Door Object 12
+- Door04 - DOOR04 - BG0800 - Door Object 14
+- Door05 - DOOR05 - BG0800 - Door Object 15
+- Door01 - DOOR01 - BG1200 - used by Balduran's Seatower
+- Door01 - DOOR01 - BG1300 - used by Balduran's Seatower
+
+##### Traveltrigger to reach parts of Baldur's Gate City
+- BG0300 sw1 -> BG0800 nw1
+- BG0300 sw2 -> BG0800 nw2
+- BG0700 ne1 -> BG0800 nw2
+- BG0700 ne2 -> BG0800 nw2
+- BG0800 nw1 -> BG0300 sw1
+- BG0800 nw2 -> BG0300 sw2
+- BG0800 nw1 -> BG0700 ne1
+- BG0800 nw2 -> BG0700 ne2
+
+#### fixes
+- Baldur's Gate City grafic fixes
+- IWDGO compatibility
+- Baldurans Seatower compatibility
+- code fixes
+- fixed grafical issues in BG0100 and BG0700
 - fixed braziers in East Baldurs Gate
 - BG1NPC compatibility
 - 2. component with alternative graphics for Wyrm's crossing

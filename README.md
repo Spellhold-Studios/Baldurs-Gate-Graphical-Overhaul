@@ -77,6 +77,13 @@ Amkethran
 
 <hr>
 
+### Doors in Baldur's Gate City
+Many doors in Baldur's Gate City have now been updated. 
+1. There are a number of doors that, due to overlapping maps, can be seen in two areas at the same time. An example can be seen here in BG0600 and BG1100 (link). It is now possible to use these doors on both maps. If the door is opened or closed on one map, it is automatically opened or closed on the other map. You also exit via the same door on the map through which you entered the house. This now feels much more realistic than when the door did not work on one map.
+2. Some houses have two doors. If you entered through the first door and exited through the other, the other door would not open. This has now been changed; the door opens automatically when you leave.
+3. Two doors in BG0200 had door animations in the TIS and WED files but were not being used. These have now been reactivated, and both doors now open and close smoothly.
+4. A whole series of doors in BG0200, BG0800, BG1100 and BG1200 were not being used. In the game, they are marked as dilapidated houses. These doors are still marked as such, but I have provided the animations as described in point 3. This is of interest to modders. The door found in BG1100 and BG1200, which, as mentioned in point 1, is visible in both maps, is used by the Baldurans Seatower mod. You can find a list of the doors here (link)
+
 
 ## <a name="compat" id="compat"></a>Compatibility
 
