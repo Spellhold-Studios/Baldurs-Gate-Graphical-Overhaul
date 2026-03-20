@@ -77,13 +77,26 @@ Amkethran
 
 <hr>
 
-### Doors in Baldur's Gate City
+### <a name = "doors" id="doors"></a> Doors in Baldur's Gate City
 Many doors in Baldur's Gate City have now been updated. 
-1. There are a number of doors that, due to overlapping maps, can be seen in two areas at the same time. An example can be seen here in BG0600 and BG1100 (link). It is now possible to use these doors on both maps. If the door is opened or closed on one map, it is automatically opened or closed on the other map. You also exit via the same door on the map through which you entered the house. This now feels much more realistic than when the door did not work on one map.
+1. There are a number of doors that, due to overlapping maps, can be seen in two areas at the same time. An example can be seen here in BG0600 and BG1100 (<a href="#doorpics">Pictures</a></div>). It is now possible to use these doors on both maps. If the door is opened or closed on one map, it is automatically opened or closed on the other map. You also exit via the same door on the map through which you entered the house. This now feels much more realistic than when the door did not work on one map.
 2. Some houses have two doors. If you entered through the first door and exited through the other, the other door would not open. This has now been changed; the door opens automatically when you leave.
-3. Two doors in BG0200 had door animations in the TIS and WED files but were not being used. These have now been reactivated, and both doors now open and close smoothly.
+3. Two doors in BG0200 had door animations in the TIS and WED files but were not being used. These have now been reactivated, and both doors now open and close smoothly. (<a href="#reactivateddoors">Pictures</a></div>)
 4. A whole series of doors in BG0200, BG0800, BG1100 and BG1200 were not being used. In the game, they are marked as dilapidated houses. These doors are still marked as such, but I have provided the animations as described in point 3. This is of interest to modders. The door found in BG1100 and BG1200, which, as mentioned in point 1, is visible in both maps, is used by the Baldurans Seatower mod. You can find a list of the doors here (link)
 
+<div align="right"><a href="#top">Back to top</a></div>
+
+## <a name = "doorpics" id="doorpics"></a>
+Door0619 in BG0600 (unused in original BG0600) <br>
+<img src="https://github.com/user-attachments/assets/72167ae4-1b9b-4e04-943b-c161a0aa4951" alt="BG0600" width="50%" max-width="1000px"/><br>
+Door0619 in BG1100 <br>
+<img src="https://github.com/user-attachments/assets/d6adb776-cd73-4ab2-9ba0-c72ce7436957" alt="BG1100" width="50%" max-width="1000px"/><br>
+
+## <a name = "doorpics" id="reactivateddoors"></a>
+Reactiviation of unused door animation in BG0200 <br>
+<img src="https://github.com/user-attachments/assets/72c381ef-29ab-45ac-bf30-0a96b6f66323" alt="BG1100" width="50%" max-width="1000px"/><br>
+
+<hr>
 
 ## <a name="compat" id="compat"></a>Compatibility
 
@@ -98,8 +111,6 @@ Additional built-in mod compatibility: <br>
  -BG1NPC (alternative Wyrm's Crossing)
 
 <div align="right"><a href="#top">Back to top</a></div>
-
-
 <hr>
 
 
