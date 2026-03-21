@@ -231,7 +231,9 @@ No: Open the bggo.tp2 with a text editor and add the name of the area in the cor
 For the naming of the BG1 areas the labeling of EET is taken (BG0100), because the clarity of the area names is easier.<br><br>
 For example, if we want to add new candles to an interior map:<br>
 Create in the  :file_folder: bggo/base/are_patch/... a file with the name ARXXXX_are.tpa where ARXXXX is the name of the area.<br> Copy the code <br>
-<sub><code>PATCH_DEFINE_ARRAY x_coord BEGIN 1235 235 785 END
+
+```
+PATCH_DEFINE_ARRAY x_coord BEGIN 1235 235 785 END
 PATCH_DEFINE_ARRAY y_coord BEGIN  847 333 753 END
 PATCH_PHP_EACH x_coord AS index => x BEGIN
 	LPM ~DELETE_EXISTING_ANIMATIONS~
@@ -247,7 +249,9 @@ PATCH_PHP_EACH x_coord AS index => x BEGIN
 		fj_bam_resref = FLAME2S
 	END
 END
-LPM ~CLEAR_ARRAY~</code></sub> <br>
+LPM ~CLEAR_ARRAY~
+```
+ <br>
 and add the correct coordinates. Now you have to check if the map appears in the lists of bggo.tp2. If not, you have to add the map to the list. Have a look at the examples in the existing files, there you can see different variants. <br>
 
 Compatibility with other mods is also taken care of. For this you can use the above mentioned ARXXXX_are.tpa or also the ARXXXX_wed.tpa in the  :file_folder: bggo/base/wed_patch/... directory. Depending on what the compatibility requires, you can choose the appropriate files.
@@ -258,18 +262,184 @@ GavinNPC: Here a door must be added to the wed file, so we use the BG3300_wed.tp
 Also with the searchmap you can prevent overwriting the files by using the SRmap_modding_tool. The ARXXXXSR.2da file created with this tool is always preferred to the corresponding ARXXXXSR.bmp. So only the changed pixels are added to the bmp file.
 ### Unused doors
 ### <a name = "unuseddoors" id="unuseddoors"></a>
+To reactivate the unused doors, you can use the code below the image.
+Please note the following:
+1. //BIT1 is for locked: remove the // before + BIT1 and the door will be locked
+2. //lock difficulty: Enter a numerical value between 0 and 100 here, depending on the difficulty level
+3. // destination_area: The house area you wish to travel to (e.g.: BG0114). Replace the ??? with the destination_area
+4. // destination_name: This is the name of the exit where you come out of the house (e.g.: Exit0800). Replace the ??? with the destination_name
+5. // Exit Name: The name of the exit you must specify when leaving your house to arrive in BG City (destination_name in BG0114)
+
 Door04 in BG0200 - original triggername: Door Object 15 <br>
 <img src="https://github.com/user-attachments/assets/6a2192a0-a45e-4b0d-a565-c0370dea5c0e" alt="BG0600" width="50%" max-width="1000px"/><br>
 
+```
+COPY_EXISTING ~BG0200~ ~override~							// EET: BG0200, BGT: AR7300, cpmvars: %NBaldursGate%
+    GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off + 0x20 door_id
+		PATCH_IF ~%door_id%~ STR_EQ ~Door04~ BEGIN
+			WRITE_LONG off + 0x28 BIT6 // + BIT1 				//BIT1 is for locked if necessary
+			WRITE_SHORT off + 0x8c 0							//lock difficulty			
+			WRITE_SHORT off + 0x88 0							
+			READ_ASCII off doorname (32) NULL
+			WRITE_ASCIIE off + 0x9c ~bggo_%doorname%~ #32
+		END
+	END
+	
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		READ_SHORT off + 0x22 xmin
+		READ_SHORT off + 0x24 ymin
+		PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND xmin = 162 AND ymin = 2225 BEGIN
+			WRITE_ASCIIE off ~bggo_%doorname%~ #32
+			WRITE_SHORT off + 0x20 2
+			WRITE_SHORT off + 0x34 30
+			WRITE_ASCII off + 0x38 ~???~					// destination_area
+			WRITE_ASCII off + 0x40 ~???~					// destination_name - exit
+			WRITE_LONG off + 0x60 BIT11
+			WRITE_LONG off + 0x64 `0
+		END
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 212
+		fj_loc_y       = 2319
+		fj_orientation = 13
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = ExitDoor04								// Exit Name
+	END
+```
+
 Door02 in BG0800 - original triggername: Door Object 12 <br>
 <img src="https://github.com/user-attachments/assets/62eca225-e45d-4fcc-af98-30eb89172424" alt="BG0600" width="50%" max-width="1000px"/><br>
-
+```
+COPY_EXISTING ~BG0800~ ~override~							// EET: BG0800, BGT: AR7800, cpmvars: %EBaldursGate%
+    GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off + 0x20 door_id
+		PATCH_IF ~%door_id%~ STR_EQ ~Door02~ BEGIN
+			WRITE_LONG off + 0x28 BIT6 // + BIT1  				//BIT1 is for locked if necessary
+			WRITE_SHORT off + 0x8c 0							//lock difficulty			
+			WRITE_SHORT off + 0x88 0
+			READ_ASCII off doorname (32) NULL
+			WRITE_ASCIIE off + 0x9c ~bggo_%doorname%~ #32
+		END
+	END
+	
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		READ_SHORT off + 0x22 xmin
+		READ_SHORT off + 0x24 ymin
+		PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND xmin = 186 AND ymin = 500 BEGIN
+			WRITE_ASCIIE off ~bggo_%doorname%~ #32
+			WRITE_SHORT off + 0x20 2
+			WRITE_SHORT off + 0x34 30
+			WRITE_ASCII off + 0x38 ~???~					// destination_area
+			WRITE_ASCII off + 0x40 ~???~					// destination_name - exit
+			WRITE_LONG off + 0x60 BIT11
+			WRITE_LONG off + 0x64 `0
+		END
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 225
+		fj_loc_y       = 585
+		fj_orientation = 11
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = ExitDoor02								// Exit Name
+	END
+```
 Door04 in BG0800 - original triggername: Door Object 14 <br>
 <img src="https://github.com/user-attachments/assets/9bd603b5-d3f4-4bc1-b554-d64895e52a42" alt="BG0600" width="50%" max-width="1000px"/><br>
-
+```
+COPY_EXISTING ~BG0800~ ~override~							// EET: BG0800, BGT: AR7800, cpmvars: %EBaldursGate%
+    GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off + 0x20 door_id
+		PATCH_IF ~%door_id%~ STR_EQ ~Door04~ BEGIN
+			WRITE_LONG off + 0x28 BIT6 // + BIT1 	 			//BIT1 is for locked if necessary
+			WRITE_SHORT off + 0x8c 0							//lock difficulty			
+			WRITE_SHORT off + 0x88 0
+			READ_ASCII off doorname (32) NULL
+			WRITE_ASCIIE off + 0x9c ~bggo_%doorname%~ #32
+		END
+	END
+	
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		READ_SHORT off + 0x22 xmin
+		READ_SHORT off + 0x24 ymin
+		PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND xmin = 129 AND ymin = 2581 BEGIN
+			WRITE_ASCIIE off ~bggo_%doorname%~ #32
+			WRITE_SHORT off + 0x20 2
+			WRITE_SHORT off + 0x34 30
+			WRITE_ASCII off + 0x38 ~???~					// destination_area
+			WRITE_ASCII off + 0x40 ~???~ 					// destination_name - exit
+			WRITE_LONG off + 0x60 BIT11
+			WRITE_LONG off + 0x64 `0
+		END
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 181
+		fj_loc_y       = 2680
+		fj_orientation = 13
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = ExitDoor04								// Exit Name
+	END
+```
 Door05 in BG0800 - original triggername: Door Object 15 <br>
 <img src="https://github.com/user-attachments/assets/556f65d9-2bcd-4e49-b3aa-0eb81fb4563f" alt="BG0600" width="50%" max-width="1000px"/><br>
+```
+COPY_EXISTING ~BG0800~ ~override~							// EET: BG0800, BGT: AR7800, cpmvars: %EBaldursGate%
+    GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off + 0x20 door_id
+		PATCH_IF ~%door_id%~ STR_EQ ~Door05~ BEGIN
+			WRITE_LONG off + 0x28 BIT6 // + BIT1 	  			//BIT1 is for locked if necessary
+			WRITE_SHORT off + 0x8c 0							//lock difficulty			
+			WRITE_SHORT off + 0x88 0
+			READ_ASCII off doorname (32) NULL
+			WRITE_ASCIIE off + 0x9c ~bggo_%doorname%~ #32
+		END
+	END
+	
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		READ_SHORT off + 0x22 xmin
+		READ_SHORT off + 0x24 ymin
+		PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND xmin = 2761 AND ymin = 229 BEGIN
+			WRITE_ASCIIE off ~bggo_%doorname%~ #32
+			WRITE_SHORT off + 0x20 2
+			WRITE_SHORT off + 0x34 30
+			WRITE_ASCII off + 0x38 ~???~					// destination_area
+			WRITE_ASCII off + 0x40 ~???~					// destination_name - exit
+			WRITE_LONG off + 0x60 BIT11
+			WRITE_LONG off + 0x64 `0
+		END
+	END
 
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 2723
+		fj_loc_y       = 343
+		fj_orientation = 3
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = ExitDoor05								// Exit Name
+	END
+```
 Door01 in BG1200 - used by Baldurans Seatower <br>
 <img src="https://github.com/user-attachments/assets/8bbf57a7-7c23-4230-93fc-c7bcc19b8224" alt="BG0600" width="50%" max-width="1000px"/><br>
 Door01 in BG1300 - used by Baldurans Seatower <br>
