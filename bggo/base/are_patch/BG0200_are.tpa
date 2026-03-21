@@ -696,4 +696,48 @@ PATCH_IF dialog_string > 0 BEGIN
 		fj_structure_type   = note
 	END
 END
+
+/////////////////////////////////////////////////////////
+// Code for the unused doors
+/////////////////////////////////////////////////////////
+/*
+// Door04
+
+	GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off + 0x20 door_id
+		PATCH_IF ~%door_id%~ STR_EQ ~Door04~ BEGIN
+			WRITE_LONG off + 0x28 BIT6 // + BIT1 				//BIT1 is for locked if necessary
+			WRITE_SHORT off + 0x8c 0							//lock difficulty			
+			WRITE_SHORT off + 0x88 0							
+			READ_ASCII off doorname (32) NULL
+			WRITE_ASCIIE off + 0x9c ~bggo_%doorname%~ #32
+		END
+	END
 	
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		READ_SHORT off + 0x22 xmin
+		READ_SHORT off + 0x24 ymin
+		PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND xmin = 162 AND ymin = 2225 BEGIN
+			WRITE_ASCIIE off ~bggo_%doorname%~ #32
+			WRITE_SHORT off + 0x20 2
+			WRITE_SHORT off + 0x34 30
+			WRITE_ASCII off + 0x38 ~???~						// destination_area
+			WRITE_ASCII off + 0x40 ~???~					// destination_name - exit
+			WRITE_LONG off + 0x60 BIT11
+			WRITE_LONG off + 0x64 `0
+		END
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 212
+		fj_loc_y       = 2319
+		fj_orientation = 13
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = ExitDoor04								// Exit Name
+	END
+*/

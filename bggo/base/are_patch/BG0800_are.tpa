@@ -583,7 +583,7 @@ PATCH_IF bggo_deleted = 1 BEGIN
 		fj_door_open_vert_1    = 224 + (616 << 16)
 		fj_door_open_vert_2    = 223 + (554 << 16)
 		fj_door_open_vert_3    = 188 + (521 << 16)
-		fj_door_closed_vert_0  = 18  + (594 << 16)
+		fj_door_closed_vert_0  = 188  + (594 << 16)
 		fj_door_closed_vert_1  = 213 + (555 << 16)
 		fj_door_closed_vert_2  = 214 + (493 << 16)
 		fj_door_closed_vert_3  = 188 + (531 << 16)
@@ -765,8 +765,127 @@ PATCH_IF bggo_deleted = 1 BEGIN
 	END
 END
 
+/////////////////////////////////////////////////////////
+// Code for the unused doors
+/////////////////////////////////////////////////////////
+/*
+// Door02
 
+	GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off + 0x20 door_id
+		PATCH_IF ~%door_id%~ STR_EQ ~Door02~ BEGIN
+			WRITE_LONG off + 0x28 BIT6 // + BIT1  				//BIT1 is for locked if necessary
+			WRITE_SHORT off + 0x8c 0							//lock difficulty			
+			WRITE_SHORT off + 0x88 0
+			READ_ASCII off doorname (32) NULL
+			WRITE_ASCIIE off + 0x9c ~bggo_%doorname%~ #32
+		END
+	END
+	
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		READ_SHORT off + 0x22 xmin
+		READ_SHORT off + 0x24 ymin
+		PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND xmin = 186 AND ymin = 500 BEGIN
+			WRITE_ASCIIE off ~bggo_%doorname%~ #32
+			WRITE_SHORT off + 0x20 2
+			WRITE_SHORT off + 0x34 30
+			WRITE_ASCII off + 0x38 ~???~						// destination_area
+			WRITE_ASCII off + 0x40 ~???~					// destination_name - exit
+			WRITE_LONG off + 0x60 BIT11
+			WRITE_LONG off + 0x64 `0
+		END
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 225
+		fj_loc_y       = 585
+		fj_orientation = 11
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = ExitDoor02								// Exit Name
+	END
 
+// Door04
 
+	GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off + 0x20 door_id
+		PATCH_IF ~%door_id%~ STR_EQ ~Door04~ BEGIN
+			WRITE_LONG off + 0x28 BIT6 // + BIT1 	 			//BIT1 is for locked if necessary
+			WRITE_SHORT off + 0x8c 0							//lock difficulty			
+			WRITE_SHORT off + 0x88 0
+			READ_ASCII off doorname (32) NULL
+			WRITE_ASCIIE off + 0x9c ~bggo_%doorname%~ #32
+		END
+	END
+	
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		READ_SHORT off + 0x22 xmin
+		READ_SHORT off + 0x24 ymin
+		PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND xmin = 129 AND ymin = 2581 BEGIN
+			WRITE_ASCIIE off ~bggo_%doorname%~ #32
+			WRITE_SHORT off + 0x20 2
+			WRITE_SHORT off + 0x34 30
+			WRITE_ASCII off + 0x38 ~???~						// destination_area
+			WRITE_ASCII off + 0x40 ~???~					// destination_name - exit
+			WRITE_LONG off + 0x60 BIT11
+			WRITE_LONG off + 0x64 `0
+		END
+	END
+	
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 181
+		fj_loc_y       = 2680
+		fj_orientation = 13
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = ExitDoor04								// Exit Name
+	END
 
+// Door05
 
+	GET_OFFSET_ARRAY doors ARE_V10_DOORS
+	PHP_EACH doors AS i => off BEGIN
+		READ_ASCII off + 0x20 door_id
+		PATCH_IF ~%door_id%~ STR_EQ ~Door05~ BEGIN
+			WRITE_LONG off + 0x28 BIT6 // + BIT1 	  			//BIT1 is for locked if necessary
+			WRITE_SHORT off + 0x8c 0							//lock difficulty			
+			WRITE_SHORT off + 0x88 0
+			READ_ASCII off doorname (32) NULL
+			WRITE_ASCIIE off + 0x9c ~bggo_%doorname%~ #32
+		END
+	END
+	
+	GET_OFFSET_ARRAY triggers ARE_V10_REGIONS
+	PHP_EACH triggers AS i => off BEGIN
+		READ_ASCII off triggername (32) NULL
+		READ_SHORT off + 0x22 xmin
+		READ_SHORT off + 0x24 ymin
+		PATCH_IF ~%triggername%~ STR_EQ ~InfoHouse~ AND xmin = 2761 AND ymin = 229 BEGIN
+			WRITE_ASCIIE off ~bggo_%doorname%~ #32
+			WRITE_SHORT off + 0x20 2
+			WRITE_SHORT off + 0x34 30
+			WRITE_ASCII off + 0x38 ~???~						// destination_area
+			WRITE_ASCII off + 0x40 ~???~					// destination_name - exit
+			WRITE_LONG off + 0x60 BIT11
+			WRITE_LONG off + 0x64 `0
+		END
+	END
+
+	LPF fj_are_structure
+		INT_VAR
+		fj_loc_x       = 2723
+		fj_loc_y       = 343
+		fj_orientation = 3
+		STR_VAR
+		fj_structure_type = entrance
+		fj_name           = ExitDoor05								// Exit Name
+	END
+*/
