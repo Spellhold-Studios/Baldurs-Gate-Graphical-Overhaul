@@ -83,6 +83,7 @@ Many doors in Baldur's Gate City have now been updated.
 2. Some houses have two doors. If you entered through the first door and exited through the other, the other door would not open. This has now been changed; the door opens automatically when you leave.
 3. Two doors in BG0200 had door animations in the TIS and WED files but were not being used. These have now been reactivated, and both doors now open and close smoothly. (<a href="#reactivateddoors">Pictures</a></div>)
 4. A whole series of doors in BG0200, BG0800, BG1100 and BG1200 were not being used. In the game, they are marked as dilapidated houses. These doors are still marked as such, but I have provided the animations as described in point 3. This is of interest to modders. The door found in BG1100 and BG1200, which, as mentioned in point 1, is visible in both maps, is used by the Baldurans Seatower mod. You can find a list of the doors here (<a href="#unuseddoors">Pictures</a></div>)
+5. In BG0800, there is a street that cannot be accessed. For this journey, the short section on the edge is no longer accessible via the world map, but via traveltrigger as a direct route. (<a href="#notaccasible">Pictures</a></div>)
 
 <div align="right"><a href="#top">Back to top</a></div>
 
@@ -96,7 +97,10 @@ Door0619 in BG1100 <br>
 Reactiviation of unused door animation in BG0200 <br>
 <img src="https://github.com/user-attachments/assets/9ea6fbce-c0f3-4adf-9568-c74e11ff619d" alt="BG1100" width="50%" max-width="1000px"/><br>
 
-<hr>
+## <a name = "doorpics" id="notaccasible"></a>
+This part of BG0800 is not accasible
+<img src="https://github.com/user-attachments/assets/f5a7f373-23e1-4b8c-8159-f9c5549de6de" alt="BG1100" width="50%" max-width="1000px"/><br>
+hr>
 
 ## <a name="compat" id="compat"></a>Compatibility
 
