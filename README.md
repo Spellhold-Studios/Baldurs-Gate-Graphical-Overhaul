@@ -82,7 +82,7 @@ Many doors in Baldur's Gate City have now been updated.
 1. There are a number of doors that, due to overlapping maps, can be seen in two areas at the same time. An example can be seen here in BG0600 and BG1100 (<a href="#doorpics">Pictures</a></div>). It is now possible to use these doors on both maps. If the door is opened or closed on one map, it is automatically opened or closed on the other map. You also exit via the same door on the map through which you entered the house. This now feels much more realistic than when the door did not work on one map.
 2. Some houses have two doors. If you entered through the first door and exited through the other, the other door would not open. This has now been changed; the door opens automatically when you leave.
 3. Two doors in BG0200 had door animations in the TIS and WED files but were not being used. These have now been reactivated, and both doors now open and close smoothly. (<a href="#reactivateddoors">Pictures</a></div>)
-4. A whole series of doors in BG0200, BG0800, BG1100 and BG1200 were not being used. In the game, they are marked as dilapidated houses. These doors are still marked as such, but I have provided the animations as described in point 3. This is of interest to modders. The door found in BG1100 and BG1200, which, as mentioned in point 1, is visible in both maps, is used by the Baldurans Seatower mod. You can find a list of the doors here (link)
+4. A whole series of doors in BG0200, BG0800, BG1100 and BG1200 were not being used. In the game, they are marked as dilapidated houses. These doors are still marked as such, but I have provided the animations as described in point 3. This is of interest to modders. The door found in BG1100 and BG1200, which, as mentioned in point 1, is visible in both maps, is used by the Baldurans Seatower mod. You can find a list of the doors here (<a href="#unuseddoors">Pictures</a></div>)
 
 <div align="right"><a href="#top">Back to top</a></div>
 
@@ -94,7 +94,7 @@ Door0619 in BG1100 <br>
 
 ## <a name = "doorpics" id="reactivateddoors"></a>
 Reactiviation of unused door animation in BG0200 <br>
-<img src="https://github.com/user-attachments/assets/72c381ef-29ab-45ac-bf30-0a96b6f66323" alt="BG1100" width="50%" max-width="1000px"/><br>
+<img src="https://github.com/user-attachments/assets/9ea6fbce-c0f3-4adf-9568-c74e11ff619d" alt="BG1100" width="50%" max-width="1000px"/><br>
 
 <hr>
 
@@ -252,9 +252,26 @@ TDDz: Here the are files must be patched. So we use for example the BG2900_are.t
 GavinNPC: Here a door must be added to the wed file, so we use the BG3300_wed.tpa.<br>
 
 Also with the searchmap you can prevent overwriting the files by using the SRmap_modding_tool. The ARXXXXSR.2da file created with this tool is always preferred to the corresponding ARXXXXSR.bmp. So only the changed pixels are added to the bmp file.
+### Unused doors
+### <a name = "unuseddoors" id="unuseddoors"></a>
+Door04 in BG0200 - original triggername: Door Object 15 <br>
+<img src="https://github.com/user-attachments/assets/6a2192a0-a45e-4b0d-a565-c0370dea5c0e" alt="BG0600" width="50%" max-width="1000px"/><br>
 
+Door02 in BG0800 - original triggername: Door Object 12 <br>
+<img src="https://github.com/user-attachments/assets/62eca225-e45d-4fcc-af98-30eb89172424" alt="BG0600" width="50%" max-width="1000px"/><br>
 
+Door04 in BG0800 - original triggername: Door Object 14 <br>
+<img src="https://github.com/user-attachments/assets/9bd603b5-d3f4-4bc1-b554-d64895e52a42" alt="BG0600" width="50%" max-width="1000px"/><br>
+
+Door05 in BG0800 - original triggername: Door Object 15 <br>
+<img src="https://github.com/user-attachments/assets/556f65d9-2bcd-4e49-b3aa-0eb81fb4563f" alt="BG0600" width="50%" max-width="1000px"/><br>
+
+Door01 in BG1200 - used by Baldurans Seatower <br>
+<img src="https://github.com/user-attachments/assets/8bbf57a7-7c23-4230-93fc-c7bcc19b8224" alt="BG0600" width="50%" max-width="1000px"/><br>
+Door01 in BG1300 - used by Baldurans Seatower <br>
+<img src="https://github.com/user-attachments/assets/3e15ebaa-cc15-4b37-9683-22e722c8463e" alt="BG0600" width="50%" max-width="1000px"/><br>
 <hr>
+
 
 ## <a name="versions" id="versions"></a>Version History
 
