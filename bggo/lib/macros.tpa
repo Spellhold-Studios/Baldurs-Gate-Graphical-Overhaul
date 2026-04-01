@@ -286,6 +286,13 @@ BEGIN
 						END
 					END
 					PHP_EACH animations AS i => off BEGIN
+						READ_ASCII off + 0x0028 cre_resref
+						TO_UPPER cre_resref
+						PATCH_IF VARIABLE_IS_SET $turn_off_at_night("%cre_resref%") BEGIN
+							WRITE_LONG off+0x34 0x00
+						END
+					END
+					PHP_EACH animations AS i => off BEGIN
 						READ_ASCII off + 0x0028 animation
 						TO_UPPER animation
 						PATCH_IF VARIABLE_IS_SET $turn_off_anim_at_night("%animation%") BEGIN
