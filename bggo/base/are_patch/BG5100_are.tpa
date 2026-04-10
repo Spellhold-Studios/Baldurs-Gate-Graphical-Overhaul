@@ -2,6 +2,15 @@ PATCH_IF MOD_IS_INSTALLED "thecalling.tp2" (ID_OF_LABEL "thecalling.tp2" "cd_the
 	PATCH_PRINT ~The Calling detected~
 	INNER_ACTION BEGIN
 		MKDIR ~%workspace%/thecalling~
+		ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/%base%/bmpSR/BG5100SR.2da~ BEGIN // changes to existing SR
+			LAF ALTER_SEARCHMAP
+			STR_VAR
+				path_to_2da_file 	= EVAL ~%MOD_FOLDER%/%base%/bmpSR/BG5100SR.2da~ 
+				areaname 			= EVAL ~%GnollStronghold%~ // area name, e.g. ~AR3700~
+				output_path			= EVAL ~override~ // output directory
+				type				= EVAL ~SR~
+			END
+		END
 		COPY_EXISTING ~%GnollStronghold%.tis~ ~%workspace%/thecalling~
 					  ~%GnollStronghold%.wed~ ~%workspace%/thecalling~
 					  ~%GnollStronghold%.mos~ ~%workspace%/thecalling~
