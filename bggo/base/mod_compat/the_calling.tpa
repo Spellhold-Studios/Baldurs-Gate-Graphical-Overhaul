@@ -22,7 +22,7 @@ ACTION_IF MOD_IS_INSTALLED "thecalling.tp2" (ID_OF_LABEL "thecalling.tp2" "cd_th
 	END
 	
 	LAF TIS_RES_TO_PVRZ STR_VAR tis_res = ~%GnollStronghold%.tis~ RET prefix END
-	ACTION_BASH_FOR ~%workspace%/thecalling~ ~%prefix%[nN]?[0-9][0-9].pvrz~ BEGIN
+	ACTION_BASH_FOR ~%workspace%/thecalling~ ~%prefix%[nN]?[0-9][0-9].pvrz~ BEGIN
 		COPY ~%BASH_FOR_FILESPEC%~ ~override~
 	END
 
