@@ -1,0 +1,9 @@
+///////////////////////////////////////////////////
+// The Calling
+///////////////////////////////////////////////////
+
+PATCH_IF MOD_IS_INSTALLED "thecalling.tp2" (ID_OF_LABEL "thecalling.tp2" "cd_the_calling_fighter" ) BEGIN
+	PATCH_PRINT ~The Calling detected~
+	SET area_biff = 0	// The biff directory will not be biffed and thus will be deleted again 
+						//=> The Sirines Call biff files will be not overwritten
+END

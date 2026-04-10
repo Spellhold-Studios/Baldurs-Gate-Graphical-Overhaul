@@ -1,0 +1,23 @@
+PATCH_IF MOD_IS_INSTALLED "thecalling.tp2" (ID_OF_LABEL "thecalling.tp2" "cd_the_calling_fighter" ) BEGIN
+	PATCH_PRINT ~The Calling detected~
+	INNER_ACTION BEGIN
+		MKDIR ~%workspace%/thecalling~
+		COPY_EXISTING ~%GnollStronghold%.tis~ ~%workspace%/thecalling~
+					  ~%GnollStronghold%.wed~ ~%workspace%/thecalling~
+					  ~%GnollStronghold%.mos~ ~%workspace%/thecalling~
+					  ~%GnollStronghold%N.tis~ ~%workspace%/thecalling~
+					  ~%GnollStronghold%N.wed~ ~%workspace%/thecalling~
+					  ~%GnollStronghold%N.mos~ ~%workspace%/thecalling~
+					  ~%GnollStronghold%LM.bmp~ ~%workspace%/thecalling~
+					  ~%GnollStronghold%LN.bmp~ ~%workspace%/thecalling~
+					  ~%GnollStronghold%HT.bmp~ ~%workspace%/thecalling~ 
+					  ~%GnollStronghold%SR.bmp~ ~%workspace%/thecalling~ IF_EXISTS
+		
+		
+
+		LAF TIS_RES_TO_PVRZ STR_VAR tis_res = ~%GnollStronghold%.tis~ RET prefix END
+		ACTION_BASH_FOR ~override~ ~%prefix%[nN]?[0-9][0-9].pvrz~ BEGIN
+			COPY ~%BASH_FOR_FILESPEC%~ ~%workspace%/thecalling~
+		END
+	END
+END

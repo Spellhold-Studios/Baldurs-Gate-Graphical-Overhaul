@@ -286,13 +286,6 @@ BEGIN
 						END
 					END
 					PHP_EACH animations AS i => off BEGIN
-						READ_ASCII off + 0x0028 cre_resref
-						TO_UPPER cre_resref
-						PATCH_IF VARIABLE_IS_SET $turn_off_at_night("%cre_resref%") BEGIN
-							WRITE_LONG off+0x34 0x00
-						END
-					END
-					PHP_EACH animations AS i => off BEGIN
 						READ_ASCII off + 0x0028 animation
 						TO_UPPER animation
 						PATCH_IF VARIABLE_IS_SET $turn_off_anim_at_night("%animation%") BEGIN
@@ -426,18 +419,18 @@ BEGIN
 
 			// day wed file
 			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/%base%/wedD/%ee%/%are%.wed~ BEGIN
-				COPY ~%MOD_FOLDER%/%base%/wedD/%ee%/%are%.wed~ ~%biffdir%/%are2%.wed~
+				COPY ~%MOD_FOLDER%/%base%/wedD/%ee%/%are%.wed~ ~override/%are2%.wed~
 					REPLACE_TEXTUALLY ~%are%~ ~%are2%~
 					PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/%base%/wed_patch/%are%_wed.tpa~ BEGIN
 						PATCH_INCLUDE ~%MOD_FOLDER%/%base%/wed_patch/%are%_wed.tpa~
 					END
 					LPM ~DEBUG~
-				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.wed~ END
+//				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.wed~ END
 			END ELSE BEGIN
 				ACTION_IF (area_biff = 1) AND (day = 1) BEGIN
-					COPY_EXISTING ~%are2%.wed~ ~%biffdir%~
+					COPY_EXISTING ~%are2%.wed~ ~override~
 						LPM ~DEBUG~
-					LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.wed~ END
+//					LAF ~BACKUP_BIFFING~ STR_VAR ext = ~.wed~ END
 				END
 			END
 			
@@ -539,25 +532,25 @@ BEGIN
 			
 			// night wed
 			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/%base%/wedN/%ee%/%are%N.wed~ BEGIN
-				COPY ~%MOD_FOLDER%/%base%/wedN/%ee%/%are%N.wed~ ~%biffdir%/%are2%N.wed~
+				COPY ~%MOD_FOLDER%/%base%/wedN/%ee%/%are%N.wed~ ~override/%are2%N.wed~
 					REPLACE_TEXTUALLY ~%are%~ ~%are2%~
 					PATCH_IF FILE_EXISTS ~%MOD_FOLDER%/%base%/wed_patch/%are%_wed.tpa~ BEGIN
 						PATCH_INCLUDE ~%MOD_FOLDER%/%base%/wed_patch/%are%_wed.tpa~
 					END
 					LPM ~DEBUG~
-				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.wed~ END
+//				LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.wed~ END
 			END ELSE BEGIN
 				ACTION_IF (area_biff = 1) AND (night = 1) BEGIN
 					ACTION_IF FILE_EXISTS_IN_GAME ~%are2%N.wed~ BEGIN
-						COPY_EXISTING + ~%are2%N.wed~ ~%biffdir%~
+						COPY_EXISTING + ~%are2%N.wed~ ~override~
 							LPM ~DEBUG~
-						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.wed~ END
+//						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.wed~ END
 					END ELSE BEGIN
-						COPY_EXISTING + ~%are2%.wed~ ~%biffdir%/%are2%N.wed~
+						COPY_EXISTING + ~%are2%.wed~ ~override/%are2%N.wed~
 							WRITE_BYTE 0x2a 0x4e // add the N to the area name 
 							LPM ~RENAME_OVL_NAMES~ // change known ovl from WT to YS
 							LPM ~DEBUG~
-						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.wed~ END
+//						LAF ~BACKUP_BIFFING~ STR_VAR ext = ~N.wed~ END
 					END
 				END
 			END
@@ -723,7 +716,7 @@ BEGIN
 	END
 	DELETE + ~%workspace%/bif/goMAIN~
 	DELETE + ~%workspace%/bif~
-	DELETE + ~%workspace%~
+//	DELETE + ~%workspace%~
 	
 	// create the log files
 	ACTION_IF debug BEGIN

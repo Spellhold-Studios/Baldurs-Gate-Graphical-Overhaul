@@ -1,0 +1,30 @@
+ACTION_IF MOD_IS_INSTALLED "thecalling.tp2" (ID_OF_LABEL "thecalling.tp2" "cd_the_calling_fighter" ) BEGIN
+	PRINT ~The Calling detected~
+	COPY ~%workspace%/thecalling/%GnollStronghold%.tis~ ~override~
+		 ~%workspace%/thecalling/%GnollStronghold%.wed~ ~override~
+		 ~%workspace%/thecalling/%GnollStronghold%.mos~ ~override~
+		 ~%workspace%/thecalling/%GnollStronghold%N.tis~ ~override~
+		 ~%workspace%/thecalling/%GnollStronghold%N.wed~ ~override~
+		 ~%workspace%/thecalling/%GnollStronghold%N.mos~ ~override~
+		 ~%workspace%/thecalling/%GnollStronghold%LM.bmp~ ~override~
+		 ~%workspace%/thecalling/%GnollStronghold%LN.bmp~ ~override~
+		 ~%workspace%/thecalling/%GnollStronghold%HT.bmp~ ~override~
+		 ~%workspace%/thecalling/%GnollStronghold%SR.bmp~ ~override~ IF_EXISTS
+	
+	ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/%base%/bmpSR/BG5100SR.2da~ BEGIN // changes to existing SR
+		LAF ALTER_SEARCHMAP
+		STR_VAR
+			path_to_2da_file 	= EVAL ~%MOD_FOLDER%/%base%/bmpSR/BG5100SR.2da~ 
+			areaname 			= EVAL ~%GnollStronghold%~ // area name, e.g. ~AR3700~
+			output_path			= EVAL ~override~ // output directory
+			type				= EVAL ~SR~
+		END
+	END
+	
+	LAF TIS_RES_TO_PVRZ STR_VAR tis_res = ~%GnollStronghold%.tis~ RET prefix END
+	ACTION_BASH_FOR ~%workspace%/thecalling~ ~%prefix%[nN]?[0-9][0-9].pvrz~ BEGIN
+		COPY ~%BASH_FOR_FILESPEC%~ ~override~
+	END
+
+
+END

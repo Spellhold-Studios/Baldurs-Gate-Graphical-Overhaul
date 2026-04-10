@@ -1,6 +1,5 @@
 ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_BalduransSeatower-main" ) BEGIN
 	PRINT ~%BASH_FOR_FILESPEC%~
-/*
 	////////////////////////////////////////////
 	// BS0110.are
 	////////////////////////////////////////////
@@ -51,20 +50,19 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 		COPY ~.../%MOD_FOLDER%/inlinedAreaScriptTriggerActivation.baf~ ~%workspace%/bif/temp/%area_name_house%.baf~
 		COMPILE EVAL ~%workspace%/bif/temp/%area_name_house%.baf~
 	END
-*/	
+	
 	////////////////////////////////////////////
 	// BG1200.are BaldursGateDocks
 	////////////////////////////////////////////
-/*	
+	
 	// travel trigger script
 	COPY_EXISTING ~dest01xx.bcs~ ~override~
 		DECOMPILE_AND_PATCH BEGIN
 			REPLACE_TEXTUALLY ~BG01xx~ ~BS0110~
 		END
-*/	
+	
 	// delete unused exit
 	COPY_EXISTING ~%BaldursGateDocks%.are~ ~override~
-		/*
 		GET_OFFSET_ARRAY entrances ARE_V10_ENTRANCES 
 		PHP_EACH entrances AS i => off BEGIN
 			READ_ASCII off entrancename (32) NULL
@@ -83,7 +81,7 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 				READ_LONG off + 0x64 dialog_string
 			END
 		END
-		*/
+		
 		// brazier outside the tailor shop
 		PATCH_DEFINE_ARRAY x_coord BEGIN 4313 END
 		PATCH_DEFINE_ARRAY y_coord BEGIN 459  END
@@ -149,7 +147,6 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 		END
 	*/
 	COPY_EXISTING ~%SEBaldursGate%.are~ ~override~
-		/*
 		// change flag for taylor shop door
 		GET_OFFSET_ARRAY doors ARE_V10_DOORS
 		PHP_EACH doors AS i => off BEGIN
@@ -183,7 +180,7 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 		STR_VAR
 			fj_structure_type   = note
 		END
-		*/
+		
 		// brazier outside the tailor shop
 		PATCH_DEFINE_ARRAY x_coord BEGIN 36  END
 		PATCH_DEFINE_ARRAY y_coord BEGIN 443 END
@@ -202,7 +199,7 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 			END
 		END
 		LPM ~CLEAR_ARRAY~
-		/*
+		
 		// door script for info text when the door is clicked
 		<<<<<<<< .../%MOD_FOLDER%/inlined_door_script.baf
 		IF
@@ -225,5 +222,4 @@ ACTION_IF MOD_IS_INSTALLED "setup-bst.tp2" (ID_OF_LABEL "setup-bst.tp2" "BS_Bald
 		>>>>>>>>
 	
 	EXTEND_BOTTOM ~dr01XX13.bcs~ ~.../%MOD_FOLDER%/inlined_door_script.baf~ EVAL
-	*/
 END
