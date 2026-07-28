@@ -179,7 +179,7 @@ In addition to the methods above for removing individual components, you can com
 
 #### Special Acknowledgements to:
 
-- <a href="http://www.spellholdstudios.net/">Spellhold Studios</a> team for hosting the mod (<a href="http://www.shsforums.net">Forums</a>).
+- <a href="https://www.shsforums.net/">Spellhold Studios</a> team for hosting the mod.
 - <a href="https://www.gibberlings3.net/">Gibberlings3</a> team for hosting the mod (<a href="https://www.gibberlings3.net/forums">Forums</a>).
 - The creators of the Baldur's Gate series: <a href="http://www.bioware.com/">Bioware</a> and <a href="http://www.obsidian.net/">Black Isle Studios</a>.
 - For the great support and help: **Galactygon**, **Jastey**, **Salk**, **Sam**, **TotoR**, **ALIENQuake**, **skellytz** ... without the constant feedback, everything would not have been so possible<br> and many more, which I can't look up now, because the SHSForum is down. Should it work again, I will add all the others here, or they should contact me :)
